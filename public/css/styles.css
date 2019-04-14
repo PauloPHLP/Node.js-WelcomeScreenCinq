@@ -1,0 +1,249 @@
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+table.table {
+    table-layout: fixed;
+}
+
+table.table tr th table.table tr td {
+    border-color: #e9e9e9;
+}
+
+table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+table.table th:last-child {
+    width: 100px;
+}
+
+table.table td a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    min-width: 24px;
+}    
+
+table.table td a.add {
+    color: #27C46B;
+}
+
+table.table td a.edit {
+    color: #FFC107;
+}
+
+table.table td a.delete {
+    color: #E34724;
+}
+
+table.table td i {
+    font-size: 19px;
+}
+
+table.table td a.add i {
+    font-size: 24px;
+    margin-right: -1px;
+    position: relative;
+    top: 3px;
+}    
+
+table.table .form-control {
+    height: 32px;
+    line-height: 32px;
+    box-shadow: none;
+    border-radius: 2px;
+}
+
+table.table .form-control.error {
+    border-color: #f50000;
+}
+
+table.table td .add {
+    display: none;
+}
+
+.table-title .add-new i {
+    margin-right: 4px;
+}
+
+.cd-slider-nav a,
+.navbar-nav .nav-link {
+	color: #EE9658; 
+    display: table-cell;
+    font-weight: 400;
+    font-size: 1em;
+    vertical-align: middle;
+    width: 130px;
+    height: 63px;
+}
+
+.table-title h2 {
+    margin: 6px 0px 15px;
+    font-size: 22px;
+}
+
+.table-wrapper {
+    width: 700px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;	
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.table-title {
+    margin: 0 0 10px;
+}
+
+.table-title .add-new {
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+}
+
+.btn_add {
+    padding-right: 15px;
+}
+
+.add-new {
+    margin-right: 5px;
+}
+
+.page-login{
+    width: 100%;
+	padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    max-width: 350px;
+    border-radius: 3px;
+}
+
+.form-signin {
+    padding-top: 30px;  
+    margin: 0 auto;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-control {
+    margin-top: 10px;
+    margin-bottom: 10px;
+	text-align: center;
+}
+
+.btn-info {
+	background-color: #EE9658;
+	border: none;
+}
+
+.logo-signin {
+    float: none;
+    text-align: center;
+    padding: 30px;
+    margin: 0 auto;
+    width: 250px;
+}
+
+.cd-slider-nav {
+    width: 100%;
+    height: 64px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(5, 11, 15);
+}
+
+.logo {
+    margin-top: -12px;
+    height: 50px;
+    width: 180px;
+}
+
+.btn-register {
+    margin-top: 10px;
+    background-color: #002C4F;
+}
+
+.cd-slider-nav .nav-item.selected .nav-link,
+.cd-slider-nav .nav-item .nav-link:hover,
+.cd-slider-nav .nav-item .nav-link:focus {	
+    color: #FFF;
+	background-color: #EE9658;
+}
+
+.tm-navbar-bg {
+    text-transform: uppercase;
+    text-align: center;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	padding-left: 10px;
+    padding-right: 0;
+    position: static;
+}
+
+#current_image, #background_image {
+    width: 100%;
+    height: 100%;
+    left: 0%;
+    z-index: -1;
+    position: fixed;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#guests {
+    top: 45%;
+    left: 10%;
+    z-index: 1;
+    position: fixed;
+}
+
+#company_name {
+    color: #FFF;
+    font-size: 65px;
+}
+
+#guests_names {
+    color: #FFF;
+    font-size: 45px;
+    padding-left: 20%;
+}
+
+#new_welcome_screen_form, #ws_list {
+    margin-top: 30%;
+    z-index: 1;
+}

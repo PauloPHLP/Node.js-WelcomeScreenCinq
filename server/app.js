@@ -32,8 +32,28 @@ app.get('/', Auth, (req, res) => {
     res.render('home');
 })
 
-app.get('/upload', Auth, (req, res) => {
-    res.render('upload');
+app.get('/login', Auth, (req, res) => {
+    res.render('login');
+})
+
+app.get('/registration', Auth, (req, res) => {
+    res.render('registration');
+})
+
+app.get('/welcome_screen_preview', Auth, (req, res) => {
+    res.render('welcome_screen_preview');
+})
+
+app.get('/welcome_screens_list', Auth, (req, res) => {
+    res.render('welcome_screens_list');
+})
+
+app.get('/new_welcome_screen_image', Auth, (req, res) => {
+    res.render('new_welcome_screen_image');
+})
+
+app.get('/new_welcome_screen_video', Auth, (req, res) => {
+    res.render('new_welcome_screen_video');
 })
 
 app.listen(config.PORT, () => {
