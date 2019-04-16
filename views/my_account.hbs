@@ -61,17 +61,21 @@
     $('#btn_delete').click((e) => {
         e.preventDefault();
 
-        $.ajax({
-            type:'DELETE',
-            url: '/api/delete_user',
-            contentType: 'application/json',
-            success: (data) => {
-                alert('User deleted successfully!');
-                window.location.href = "/welcome_screens_list"
-            },
-            error: () => {
-                alert('An issue has occurred!');
-            }
-        })
+        let confirmation = confirm("Are you sure about this?");
+
+        if (confirmation === true) {
+            $.ajax({
+                type:'DELETE',
+                url: '/api/delete_user',
+                contentType: 'application/json',
+                success: (data) => {
+                    alert('User deleted successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred!');
+                }
+            })
+        }
     })
 </script>

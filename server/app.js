@@ -3,11 +3,16 @@ const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
 const config = require('./config/config').get(process.env.NODE_ENV);
+const {ScreenImage} = require('./models/screen_image');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
 
 const app = express();
+let imageName = '';
+let videoName = '';
+let date = '';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE, {useNewUrlParser: true});
@@ -99,10 +104,23 @@ app.get('/logout', Auth, (req, res) => {
     })
 });
 
-app.put('/api/update_user', Auth, (req, res) => {
-    const user = req.body;
+app.get('/my_account', Auth, (req, res) => {
+    if (!req.user) { 
+        return res.render('login', {
+            header: false
+        });
+    } else {
+        User.find({'_id': req.user._id}).exec((err, user) => {
+            res.render('my_account', {
+                header: true,
+                user: req.user
+            });
+        })
+    }    
+});
 
-    User.updateOne(req.params._id, user)
+app.put('/api/update_user', Auth, (req, res) => {
+    User.updateOne(req.params._id, req.body)
     .then((user) => {
         res.status(201).send(user);
     })
@@ -119,19 +137,96 @@ app.delete('/api/delete_user', (req, res) => {
     .catch(err => res.status(500).send(err));
 })
 
-app.get('/my_account', Auth, (req, res) => {
+app.get('/new_welcome_screen_image', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
             header: false
         });
     } else {
-        User.find({'_id': req.user._id}).exec((err, user) => {
-            res.render('my_account', {
-                header: true,
-                user: req.user 
-            });
-        })
+        res.render('new_welcome_screen_image', {
+            header: true
+        });
     }    
+});
+
+app.get('/api/new_welcome_screen_image', Auth, (req, res) => {
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb (null, 'welcome_screen_images/')
+        },
+        filename: (req, file, cb) => {
+            date = Date.now();
+            imageName = date + "_" + file.originalname;
+            cb (null, `${imageName}`);
+        }
+    })
+    
+    const upload = multer({
+        storage
+    }).single('image');
+
+    upload(req, res, function(err) {
+        const screenImage = new ScreenImage({
+            companyName: req.body.companyName,
+            guestsNames: req.body.guestsNames,
+            imageName: imageName,
+            date: date
+        });
+
+        screenImage.save((err, doc) => {
+            if (err)
+                res.status(400).send(err);
+        })
+
+        if (err)
+            return res.end('Invalid file format.');
+        res.end('Welcome screen uploaded successfully!');
+    })
+});
+
+app.get('/new_welcome_screen_video', Auth, (req, res) => {
+    if (!req.user) { 
+        return res.render('login', {
+            header: false
+        });
+    } else {
+        res.render('new_welcome_screen_video', {
+            header: true
+        });
+    }    
+});
+
+app.get('/api/new_welcome_screen_video', Auth, (req, res) => {
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb (null, 'welcome_screen_videos/')
+        },
+        filename: (req, file, cb) => {
+            date = Date.now();
+            videoName = date + "_" + file.originalname;
+            cb (null, `${videoName}`);
+        }
+    })
+    
+    const upload = multer({
+        storage
+    }).single('videoFile');
+
+    upload(req, res, function(err) {
+        const screenVideo = new ScreenVideo({
+            videoName: videoName,
+            date: date
+        });
+
+        screenVideo.save((err, doc) => {
+            if (err)
+                res.status(400).send(err);
+        })
+
+        if (err)
+            return res.end('Invalid file format.');
+        res.end('Welcome screen uploaded successfully!');
+    }) 
 });
 
 app.get('/welcome_screen_preview', Auth, (req, res) => {
@@ -157,30 +252,6 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
                 header: true,
                 user: req.user 
             });
-        });
-    }    
-});
-
-app.get('/new_welcome_screen_image', Auth, (req, res) => {
-    if (!req.user) { 
-        return res.render('login', {
-            header: false
-        });
-    } else {
-        res.render('new_welcome_screen_image', {
-            header: true
-        });
-    }    
-});
-
-app.get('/new_welcome_screen_video', Auth, (req, res) => {
-    if (!req.user) { 
-        return res.render('login', {
-            header: false
-        });
-    } else {
-        res.render('new_welcome_screen_video', {
-            header: true
         });
     }    
 });

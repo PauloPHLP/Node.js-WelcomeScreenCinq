@@ -7,7 +7,7 @@
                     <h3 class="panel-title">New image as Welcome Screen</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form id="upload_form">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group" style="float: left">
@@ -41,3 +41,37 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('#defaultImage').change(function() {
+        if ($(this).is(':checked')) {
+            $('#image').prop('disabled', true);
+        } else {
+            $('#image').prop('disabled', false);
+        }
+    })
+
+    $('#upload_form').submit(function(e) {
+        e.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+        
+        $.ajax({
+            url: '/api/new_welcome_screen_image',
+            type: 'POST',
+            data: formData,
+            async: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: (data) => {
+                alert('Welcome screen image uploaded successfully!');
+                window.location.href = "/"
+            },
+            error: () => {
+                alert('An issue has occurred!');
+            }
+        })
+    })
+</script>

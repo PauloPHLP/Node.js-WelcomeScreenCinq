@@ -7,18 +7,18 @@
                     <h3 class="panel-title">New video as Welcome Screen</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form id="upload_form">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group" style="float: left">
-                                    <label for="defaultImage" style="float: right">&nbsp Default video as Welcome Screen</label>
-                                    <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage" checked>
+                                    <label for="defaultVideo" style="float: right">&nbsp Default video as Welcome Screen</label>
+                                    <input type="checkbox" style="float: right" name="defaultVideo" id="defaultVideo" checked>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="image">Choose a new video</label>
-                                    <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image" disabled>
+                                    <label for="video">Choose a new video</label>
+                                    <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video" disabled>
                                 </div>
                             </div>
                         </div>
@@ -29,3 +29,37 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('#defaultVideo').change(function() {
+        if ($(this).is(':checked')) {
+            $('#video').prop('disabled', true);
+        } else {
+            $('#video').prop('disabled', false);
+        }
+    })
+
+    $('#upload_form').submit(function(e) {
+        e.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+        
+        $.ajax({
+            url: '/api/new_welcome_screen_video',
+            type: 'POST',
+            data: formData,
+            async: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: (data) => {
+                alert('Welcome screen video uploaded successfully!');
+                window.location.href = "/"
+            },
+            error: () => {
+                alert('An issue has occurred!');
+            }
+        })
+    })
+</script>
