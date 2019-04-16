@@ -1,0 +1,77 @@
+<div>
+    <img id="current_image_with_nav" src="/images/cinq_background.png">
+    <div class="container page-login">
+        <div class="logo-signin ">
+            <img class="img-responsive" src="/images/logo.png" />
+        </div>
+        <div>
+            <form id="register_form" class="form-signin">
+                <fieldset>
+                    <input required autofocus name="name" id="name" type="text" class="form-control" placeholder="Name" maxlength="100" value="{{user.name}}">
+                    <input required name="login" id="login" type="text" class="form-control" placeholder="Login" maxlength="100" value="{{user.login}}">
+                    <input required name="email" id="email" type="email" class="form-control" placeholder="E-mail" maxlength="100" value="{{user.email}}">
+                    <input required id="password" name="password" type="password" class="form-control" placeholder="Password" maxlength="100">
+                    <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Confirm password" maxlength="100">
+                    <button type="submit" class="btn btn-info btn-block">Update account</button>
+                </fieldset>
+            </form>
+            <button type="submit" id="btn_delete" class="btn btn-info btn-block"><a class="nav-link" href="/api/delete"></a>Delete account</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#register_form').submit((e) => {
+        e.preventDefault();
+
+        const user = {
+            name: $('#name').val(),
+            login: $('#login').val(),
+            email: $('#email').val(),
+            password: $('#password').val()
+        }
+
+        if (user.password != $('#confirmPassword').val()) {
+            alert('Those passwords don\'t match!');
+
+            $('#confirmPassword').addClass('passesDontMatch');
+            $('#password').addClass('passesDontMatch');
+
+            return false;
+        } else {
+            $('#confirmPassword').addClass('passesMatch');
+            $('#password').addClass('passesMatch');
+
+            $.ajax({
+                type:'PUT',
+                url: '/api/update_user',
+                data: JSON.stringify(user),
+                contentType: 'application/json',
+                success: (data) => {
+                    alert('User updated successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred! Try a different e-mail or login.');
+                }
+            })
+        }
+    })
+
+    $('#btn_delete').click((e) => {
+        e.preventDefault();
+
+        $.ajax({
+            type:'DELETE',
+            url: '/api/delete_user',
+            contentType: 'application/json',
+            success: (data) => {
+                alert('User deleted successfully!');
+                window.location.href = "/welcome_screens_list"
+            },
+            error: () => {
+                alert('An issue has occurred!');
+            }
+        })
+    })
+</script>

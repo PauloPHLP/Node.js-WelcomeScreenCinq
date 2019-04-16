@@ -2,23 +2,22 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('./../config/config').get(process.env.NODE_ENV);
+const SALT_I = 10;
 
 const userSchema = mongoose.Schema({
     name: {
         type: String,
-        trim: true,
-        require: true
+        require: true,
     },
     login: {
         type: String,
-        trim: true,
         require: true,
         unique: 1
     },
     email: {
         type: String,
-        trim: true,
         require: true,
+        trim: true,
         unique: 1
     },
     password: {
@@ -32,7 +31,7 @@ const userSchema = mongoose.Schema({
 }, {timestamps: true});
 
 userSchema.pre('save', function(next) {
-    var user = this;
+    let user = this;
 
     if(user.isModified('password')) {
         bcrypt.genSalt(SALT_I, function(err, salt) {
@@ -60,6 +59,21 @@ userSchema.statics.findByToken = function(token, cb) {
             cb(null, user)
         })
     })
+}
+
+userSchema.methods.updateOne = function(id, user) {
+    const updatedUser = {
+        name: user.name,
+        login: user.login,
+        email: user.email,
+        password: user.password
+    }
+
+    User.findByIdAndUpdate(id, updatedUser, {new: true});
+}
+
+userSchema.methods.deleteOne = function(id) {
+    User.findByIdAndRemove(id);
 }
 
 userSchema.methods.generateToken = function(cb) {

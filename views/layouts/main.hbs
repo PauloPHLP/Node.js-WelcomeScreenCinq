@@ -18,7 +18,9 @@
     <title>Welcome Screen Cinq</title>
 </head>
 <body>
-    {{>header}}
+    {{#if header}}
+        {{>header}}
+    {{/if}}
     {{{body}}}
 </body>
 </html>

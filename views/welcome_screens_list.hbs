@@ -1,11 +1,13 @@
 <div class="container">
-    <img id="background_image" src="/images/cinq_background.png"/>
+    <img id="current_image_with_nav" src="/images/cinq_background.png"/>
     <div id="ws_list" class="table-wrapper">
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h2>Welcome Screens list</h2>
+                    <h2>{{user.name}}</h2>
+                    <h3>Welcome Screen list</h3>
                 </div>
+                <br/><br/>
                 <div class="btn_add" class="col-sm-3">
                     <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_image'">
                         <i class="fa fa-plus">Add new image</i>

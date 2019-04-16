@@ -66,8 +66,18 @@ table.table td .add {
     display: none;
 }
 
+ul#guests_names{
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+}
+
 .table-title .add-new i {
     margin-right: 4px;
+}
+
+.cd-slider-nav {
+    position: fixed;
 }
 
 .cd-slider-nav a,
@@ -213,7 +223,15 @@ table.table td .add {
     position: static;
 }
 
-#current_image, #background_image {
+.passesDontMatch {
+    border-color: red;
+}
+
+.passesMatch {
+    border-color: #0F0;
+}
+
+#current_image, #background_image, #current_image_with_nav {
     width: 100%;
     height: 100%;
     left: 0%;
@@ -222,12 +240,15 @@ table.table td .add {
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: auto;
+}
+
+#current_image_with_nav {
+    top: 64px;
 }
 
 #guests {
-    top: 45%;
-    left: 10%;
+    padding-top: 280px;
     z-index: 1;
     position: fixed;
 }
@@ -238,12 +259,18 @@ table.table td .add {
 }
 
 #guests_names {
+    margin-left: 50px;
+    position: static;
     color: #FFF;
     font-size: 45px;
-    padding-left: 20%;
 }
 
 #new_welcome_screen_form, #ws_list {
-    margin-top: 30%;
+    margin-top: 230px;
     z-index: 1;
+}
+
+#btn_delete {
+    margin-top: 10px;
+    background: #F50000; 
 }
