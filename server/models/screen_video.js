@@ -1,7 +1,15 @@
 const mongoose = require('mongoose');
 
 const screenVideoSchema = mongoose.Schema({
+    title: {
+        type: String,
+        require: true
+    },
     videoName: {
+        type: String,
+        require: true
+    },
+    wsType: {
         type: String,
         require: true
     },

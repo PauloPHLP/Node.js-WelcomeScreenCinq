@@ -12,3 +12,11 @@
         <li class="list-group-item col-xs-6 text-center">&#x2022; Mike Mayers</li>
     </ul>
 </div>
+
+<script>
+    function timedRefresh(timeoutPeriod) {
+	    setTimeout("location.reload(true);", timeoutPeriod);
+    }
+
+    window.onload = timedRefresh(60000);
+</script>

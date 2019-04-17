@@ -6,10 +6,12 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const config = require('./config/config').get(process.env.NODE_ENV);
 const {ScreenImage} = require('./models/screen_image');
+const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
 
 const app = express();
+let title = '';
 let imageName = '';
 let videoName = '';
 let date = '';
@@ -29,6 +31,7 @@ app.use('/css', express.static(__dirname + './../public/css'));
 app.use('/js', express.static(__dirname + './../public/js'));
 app.use('/images', express.static(__dirname + './../public/images'));
 app.use('/icons', express.static(__dirname + './../public/icons'));
+app.use('/uploads', express.static(__dirname + './../uploads'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -166,6 +169,12 @@ app.get('/api/new_welcome_screen_image', Auth, (req, res) => {
     }).single('image');
 
     upload(req, res, function(err) {
+        req.body.defaultImage = Boolean(req.body.defaultImage);
+
+        if (req.body.defaultImage == true) {
+            imageName = 'default_image.jpg';
+        }
+
         const screenImage = new ScreenImage({
             companyName: req.body.companyName,
             guestsNames: req.body.guestsNames,
@@ -196,25 +205,35 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
     }    
 });
 
-app.get('/api/new_welcome_screen_video', Auth, (req, res) => {
+app.post('/api/new_welcome_screen_video', (req, res) => {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb (null, 'welcome_screen_videos/')
+            cb (null, 'uploads/')
         },
         filename: (req, file, cb) => {
             date = Date.now();
-            videoName = date + "_" + file.originalname;
+            videoName = Date.now() + "_" + file.originalname;
+            title = req.body.title;
             cb (null, `${videoName}`);
         }
     })
     
     const upload = multer({
         storage
-    }).single('videoFile');
+    }).single('video');
 
     upload(req, res, function(err) {
+        req.body.defaultVideo = Boolean(req.body.defaultVideo);
+
+        if (req.body.defaultVideo == true) {
+            videoName = 'default_video.mp4';
+            title = 'Default video';
+        }
+
         const screenVideo = new ScreenVideo({
+            title: title,
             videoName: videoName,
+            wsType: 'video',
             date: date
         });
 
@@ -224,10 +243,10 @@ app.get('/api/new_welcome_screen_video', Auth, (req, res) => {
         })
 
         if (err)
-            return res.end('Invalid file format.');
-        res.end('Welcome screen uploaded successfully!');
-    }) 
-});
+            return res.end('An error has occurred!');
+        res.end('Video uploaded successfully!');
+    })
+})
 
 app.get('/welcome_screen_preview', Auth, (req, res) => {
     if (!req.user) { 
@@ -248,10 +267,15 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
         });
     } else {
         User.find({'_id': req.user._id}).exec((err, user) => {
-            res.render('welcome_screens_list', {
-                header: true,
-                user: req.user 
-            });
+            ScreenVideo.find().exec((err, doc) => {
+                if (err) 
+                    return res.status(400).send(err);
+                res.render('welcome_screens_list', {
+                    header: true,
+                    videos: doc,
+                    user: req.user 
+                });
+            })
         });
     }    
 });

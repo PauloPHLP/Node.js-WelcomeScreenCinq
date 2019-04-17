@@ -30,27 +30,31 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Banco Barigui</td>
-                    <td>14/04/2019</td>
-                    <td>
-                        <div class="form-group" style="float: left">
-                            <label for="defaultImage" style="float: right" id="defaultImageText">&nbspActivate this WS</label>
-                            <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage" checked>
-                        </div>
-                    </td>
-                    <td>
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
+                {{#each videos}}
+                    <tr>
+                        <td>{{this.title}}</td>
+                        <td>{{this.date}}</td>
+                        <td>
+                            <div class="form-group" style="float: left">
+                                <label for="defaultImage" style="float: right; display: none" id="checkbox-unchecked">&nbspEnable</label>
+                                <label for="defaultImage" style="float: right; display: inline" id="checkbox-checked">&nbspDisable</label>
+                                <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage" checked onclick="ChangeCheckboxLabel(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                {{/each}}
+                {{!-- <tr>
                     <td>Bosh</td>
                     <td>10/04/2019</td>
                     <td>
                         <div class="form-group" style="float: left">
-                            <label for="defaultImage" style="float: right" class="defaultImageText">&nbspActivate this WS</label>
-                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked>
+                            <label for="defaultImage" style="float: right; display: none" id="checkbox-unchecked">&nbspEnable</label>
+                            <label for="defaultImage" style="float: right; display: inline" id="checkbox-checked">&nbspDisable</label>
+                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked onclick="ChangeCheckboxLabel(this)">
                         </div>
                     </td>
                     <td>
@@ -63,19 +67,34 @@
                     <td>09/04/2019</td>
                     <td>
                         <div class="form-group" style="float: left">
-                            <label for="defaultImage" style="float: right" class="defaultImageText">&nbspActivate this WS</label>
-                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked>
+                            <label for="defaultImage" style="float: right; display: none" id="checkbox-unchecked">&nbspEnable</label>
+                            <label for="defaultImage" style="float: right; display: inline" id="checkbox-checked">&nbspDisable</label>
+                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked onclick="ChangeCheckboxLabel(this)">
                         </div>
                     </td>
                     <td>
                         <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                         <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                     </td>
-                </tr>      
+                </tr>       --}}
             </tbody>
         </table>
     </div>
 </div>                            
 
 <script>
+function ChangeCheckboxLabel(ckbx)
+{
+   var d = ckbx.id;
+   if(ckbx.checked)
+   {
+      document.getElementById("checkbox-checked").style.display = "inline";
+      document.getElementById("checkbox-unchecked").style.display = "none";
+   }
+   else
+   {
+      document.getElementById("checkbox-checked").style.display = "none";
+      document.getElementById("checkbox-unchecked").style.display = "inline";
+   }
+}
 </script>

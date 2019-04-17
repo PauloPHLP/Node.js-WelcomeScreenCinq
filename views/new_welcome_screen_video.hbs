@@ -17,12 +17,18 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <label for="title">Choose a title for the video</label>
+                                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" disabled>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
                                     <label for="video">Choose a new video</label>
                                     <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video" disabled>
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Upload and create" class="btn btn-info btn-block">
+                        <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     </form>
                 </div>
             </div>
@@ -34,8 +40,10 @@
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
             $('#video').prop('disabled', true);
+            $('#title').prop('disabled', true);
         } else {
             $('#video').prop('disabled', false);
+            $('#title').prop('disabled', false);
         }
     })
 
@@ -54,12 +62,12 @@
             enctype: 'multipart/form-data',
             processData: false,
             success: (data) => {
-                alert('Welcome screen video uploaded successfully!');
-                window.location.href = "/"
+                alert('Video uploaded successfully!');
+                window.location.href = "welcome_screens_list"
             },
             error: () => {
                 alert('An issue has occurred!');
             }
-        })
+        });
     })
 </script>

@@ -72,6 +72,7 @@ table.table td .add {
 
 .cd-slider-nav {
     position: fixed;
+    z-index: 1;
 }
 
 .cd-slider-nav a,
@@ -164,7 +165,9 @@ table.table td .add {
 
 .btn-info {
 	background-color: #EE9658;
-	border: none;
+    border: none;
+    left: 25%;
+    right: 25%;
 }
 
 .logo-signin {
@@ -238,8 +241,8 @@ table.table td .add {
 }
 
 .company-name {
-    padding-left: 50px;
-    margin-bottom: 15px;
+    padding-left: 70px;
+    margin-bottom: 10px;
 }
 
 #current_image, #background_image, #current_image_with_nav {
@@ -260,7 +263,6 @@ table.table td .add {
 
 #new_welcome_screen_form, #ws_list {
     margin-top: 230px;
-    z-index: 1;
 }
 
 #btn_delete {
@@ -269,11 +271,15 @@ table.table td .add {
 } 
 
 #guests-list {
-    position: absolute;
-    top: 40%;
+    position: fixed;
+    top: 35%;
     bottom: 5vw;
     left: 10;
     right: 10;
     width: 100%;
     margin: 0 auto;
+}
+
+#field {
+    margin-bottom:20px;
 }
