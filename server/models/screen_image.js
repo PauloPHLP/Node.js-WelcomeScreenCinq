@@ -1,21 +1,13 @@
 const mongoose = require('mongoose');
 
 const screenImageSchema = mongoose.Schema({
-    companyName: {
+    company: {
         type: String,
         require: true,
         trim: true
     },
-    guestsNames: {
-        type: [String],
-        require: true,
-        trim: true
-    },
+    guestsNames: [],
     imageName: {
-        type: String,
-        require: true
-    },
-    wsType: {
         type: String,
         require: true
     },
@@ -23,6 +15,10 @@ const screenImageSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
         require: true
+    },
+    activated: {
+        type: String,
+        default: 'Enabled'
     }
 }, {timestamps: true});
 

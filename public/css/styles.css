@@ -262,7 +262,7 @@ table.table td .add {
 }
 
 #new_welcome_screen_form, #ws_list {
-    margin-top: 230px;
+    margin-top: 10vw;
 }
 
 #btn_delete {
@@ -282,4 +282,9 @@ table.table td .add {
 
 #field {
     margin-bottom:20px;
+}
+
+#create-btn {
+    top: 10px;
+    margin-bottom: 10px;
 }

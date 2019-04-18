@@ -9,14 +9,14 @@ const screenVideoSchema = mongoose.Schema({
         type: String,
         require: true
     },
-    wsType: {
-        type: String,
-        require: true
-    },
     date: {
         type: Date,
         default: Date.now,
         require: true
+    },
+    activated: {
+        type: String,
+        default: 'Enabled'
     }
 }, {timestamps: true});
 
