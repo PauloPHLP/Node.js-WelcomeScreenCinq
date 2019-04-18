@@ -23,9 +23,10 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Company</th>
+                    <th>Company/Title</th>
                     <th>Date</th>
                     <th>Is enable?</th>
+                    <th>Type</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,45 +34,27 @@
                 {{#each videos}}
                     <tr>
                         <td>{{this.title}}</td>
-                        <td class="data">{{this.date}}</td>
+                        <td>{{dateVideo}}</td>
                         <td>{{this.activated}}</td>
+                        <td>{{this.wsType}}</td>
                         <td>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 {{/each}}
-                
-                {{!-- <tr>
-                    <td>Bosh</td>
-                    <td>10/04/2019</td>
-                    <td>
-                        <div class="form-group" style="float: left">
-                            <label for="defaultImage" style="float: right; display: none" id="checkbox-unchecked">&nbspEnable</label>
-                            <label for="defaultImage" style="float: right; display: inline" id="checkbox-checked">&nbspDisable</label>
-                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked onclick="ChangeCheckboxLabel(this)">
-                        </div>
-                    </td>
-                    <td>
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Fender</td>
-                    <td>09/04/2019</td>
-                    <td>
-                        <div class="form-group" style="float: left">
-                            <label for="defaultImage" style="float: right; display: none" id="checkbox-unchecked">&nbspEnable</label>
-                            <label for="defaultImage" style="float: right; display: inline" id="checkbox-checked">&nbspDisable</label>
-                            <input type="checkbox" style="float: right" name="defaultImage" class="defaultImage" checked onclick="ChangeCheckboxLabel(this)">
-                        </div>
-                    </td>
-                    <td>
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                    </td>
-                </tr>       --}}
+                {{#each images}}
+                    <tr>
+                        <td>{{this.company}}</td>
+                        <td>{{dateImage}}</td>
+                        <td>{{this.activated}}</td>
+                        <td>{{this.wsType}}</td>
+                        <td>
+                            <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>

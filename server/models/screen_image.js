@@ -11,6 +11,10 @@ const screenImageSchema = mongoose.Schema({
         type: String,
         require: true
     },
+    defaultImageName: {
+        type: String,
+        require: true
+    },
     date: {
         type: Date,
         default: Date.now,
@@ -19,6 +23,10 @@ const screenImageSchema = mongoose.Schema({
     activated: {
         type: String,
         default: 'Enabled'
+    },
+    wsType: {
+        type: String,
+        default: 'Image'
     }
 }, {timestamps: true});
 

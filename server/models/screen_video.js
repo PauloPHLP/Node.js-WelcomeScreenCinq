@@ -9,6 +9,10 @@ const screenVideoSchema = mongoose.Schema({
         type: String,
         require: true
     },
+    defaultVideoName: {
+        type: String,
+        require: true
+    },
     date: {
         type: Date,
         default: Date.now,
@@ -17,6 +21,10 @@ const screenVideoSchema = mongoose.Schema({
     activated: {
         type: String,
         default: 'Enabled'
+    },
+    wsType: {
+        type: String,
+        default: 'Video'
     }
 }, {timestamps: true});
 
