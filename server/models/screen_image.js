@@ -16,7 +16,7 @@ const screenImageSchema = mongoose.Schema({
         require: true
     },
     date: {
-        type: Date,
+        type: String,
         default: Date.now,
         require: true
     },

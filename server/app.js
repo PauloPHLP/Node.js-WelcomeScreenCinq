@@ -162,7 +162,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             cb (null, 'uploads/')
         },
         filename: (req, file, cb) => {
-            date = Date.now();
+            date = moment(Date.now()).format('MM/DD/YY');
             imageName = Date.now() + "_" + file.originalname;
             defaultImageName = file.originalname;
             cb (null, `${imageName}`);
@@ -280,7 +280,7 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
             cb (null, 'uploads/')
         },
         filename: (req, file, cb) => {
-            date = Date.now();
+            date = moment(Date.now()).format('MM/DD/YY');
             videoName = Date.now() + "_" + file.originalname;
             defaultVideoName = file.originalname;
             title = req.body.title;

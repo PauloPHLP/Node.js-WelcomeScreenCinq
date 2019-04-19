@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <th>Company/Title</th>
-                    <th>Date</th>
+                    <th>Created at</th>
                     <th>Is enable?</th>
                     <th>Type</th>
                     <th>Actions</th>
@@ -34,7 +34,7 @@
                 {{#each videos}}
                     <tr>
                         <td>{{this.title}}</td>
-                        <td>{{dateVideo}}</td>
+                        <td>{{this.date}}</td>
                         <td>{{this.activated}}</td>
                         <td>{{this.wsType}}</td>
                         <td>
@@ -46,7 +46,7 @@
                 {{#each images}}
                     <tr>
                         <td>{{this.company}}</td>
-                        <td>{{dateImage}}</td>
+                        <td>{{this.date}}</td>
                         <td>{{this.activated}}</td>
                         <td>{{this.wsType}}</td>
                         <td>
