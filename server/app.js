@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const moment = require('moment');
+const fileStream = require('fs');
 const config = require('./config/config').get(process.env.NODE_ENV);
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
@@ -254,7 +255,12 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
     }    
 });
 
-app.delete('/api/delete_welcome_screen_image/:id', Auth, (req, res) => {
+app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
+    ScreenImage.findById(req.params.id, (err, screenImage) => {
+        fileStream.unlink('./uploads/' + screenImage.imageName, function (err) {
+        });
+    });
+
     ScreenImage.deleteOne(req.params._id)
     .then((screenImage) => {
         res.status(200).send(screenImage);
@@ -366,7 +372,12 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
     }    
 });
 
-app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
+app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
+    ScreenVideo.findById(req.params.id, (err, screenVideo) => {
+        fileStream.unlink('./uploads/' + screenVideo.videoName, function (err) {
+        });
+    });
+    
     ScreenVideo.deleteOne(req.params._id)
     .then((screenVideo) => {
         res.status(200).send(screenVideo);

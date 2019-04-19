@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="video">Current video: {{screenVideo.defaultVideoName}}</label>
+                                    <label for="video" id="currentVideo">Current video: {{screenVideo.defaultVideoName}}</label>
                                     <br/>
                                     <label for="video">Choose a new video</label>
                                     {{#if isDefaultVideo}}
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     </form>
                 </div>
             </div>
@@ -63,13 +63,20 @@
 </div>
 
 <script>
+    let oldTitle = $('#title').val();
+    let oldCurrentVideo = $('#currentVideo').text();
+
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
             $('#video').prop('disabled', true);
             $('#title').prop('disabled', true);
+            $('#title').prop('value', 'Default video');
+            $('#currentVideo').text('Current video: default_video.mp4');
         } else {
             $('#video').prop('disabled', false);
             $('#title').prop('disabled', false);
+            $('#title').prop('value', oldTitle);
+            $('#currentVideo').text(oldCurrentVideo);
         }
     })
 

@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <th>Company/Title</th>
-                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Is enable?</th>
                     <th>Type</th>
                     <th>Actions</th>
@@ -39,7 +39,7 @@
                         <td>{{this.wsType}}</td>
                         <td>
                             <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="deleteVideo" title="Delete" data-toggle="tooltip" href="api/delete_welcome_screen_video/{{this.id}}"><i class="material-icons">&#xE872;</i></a>
+                            <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 {{/each}}
@@ -51,8 +51,7 @@
                         <td>{{this.wsType}}</td>
                         <td>
                             <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="deleteImage" title="Delete" data-toggle="tooltip" 
-                            href="api/delete_welcome_screen_image/{{this.id}}"><i class="material-icons">&#xE872;</i></a>
+                            <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="deleteImage('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 {{/each}}
@@ -62,15 +61,13 @@
 </div>                            
 
 <script>
-    $('.deleteVideo').click((e) => {
-        e.preventDefault();
-
+    function deleteVideo(id) {
         let confirmation = confirm("Are you sure about this?");
 
         if (confirmation === true) {
             $.ajax({
                 type:'DELETE',
-                url: '/api/delete_welcome_screen_video/:id',
+                url: `/api/delete_welcome_screen_video/${id}`,
                 contentType: 'application/json',
                 success: (data) => {
                     alert('Welcome Screen deleted successfully!');
@@ -81,17 +78,15 @@
                 }
             })
         }
-    })
+    }
 
-    $('.deleteImage').click((e) => {
-        e.preventDefault();
-
+    function deleteImage(id) {
         let confirmation = confirm("Are you sure about this?");
 
         if (confirmation === true) {
             $.ajax({
                 type:'DELETE',
-                url: '/api/delete_welcome_screen_image/:id',
+                url: `/api/delete_welcome_screen_image/${id}`,
                 contentType: 'application/json',
                 success: (data) => {
                     alert('Welcome Screen deleted successfully!');
@@ -102,5 +97,5 @@
                 }
             })
         }
-    })
+    }
 </script>
