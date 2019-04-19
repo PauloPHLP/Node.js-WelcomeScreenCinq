@@ -39,7 +39,7 @@
                         <td>{{this.wsType}}</td>
                         <td>
                             <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a class="deleteVideo" title="Delete" data-toggle="tooltip" href="api/delete_welcome_screen_video/{{this.id}}"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 {{/each}}
@@ -51,7 +51,8 @@
                         <td>{{this.wsType}}</td>
                         <td>
                             <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a href="" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a class="deleteImage" title="Delete" data-toggle="tooltip" 
+                            href="api/delete_welcome_screen_image/{{this.id}}"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                 {{/each}}
@@ -61,14 +62,45 @@
 </div>                            
 
 <script>
-    function ChangeCheckboxLabel(ckbx) {
-        var d = ckbx.id;
-        if (ckbx.checked) {
-            document.getElementById("checkbox-checked").style.display = "inline";
-            document.getElementById("checkbox-unchecked").style.display = "none";
-        } else {
-            document.getElementById("checkbox-checked").style.display = "none";
-            document.getElementById("checkbox-unchecked").style.display = "inline";
+    $('.deleteVideo').click((e) => {
+        e.preventDefault();
+
+        let confirmation = confirm("Are you sure about this?");
+
+        if (confirmation === true) {
+            $.ajax({
+                type:'DELETE',
+                url: '/api/delete_welcome_screen_video/:id',
+                contentType: 'application/json',
+                success: (data) => {
+                    alert('Welcome Screen deleted successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred!');
+                }
+            })
         }
-    }
+    })
+
+    $('.deleteImage').click((e) => {
+        e.preventDefault();
+
+        let confirmation = confirm("Are you sure about this?");
+
+        if (confirmation === true) {
+            $.ajax({
+                type:'DELETE',
+                url: '/api/delete_welcome_screen_image/:id',
+                contentType: 'application/json',
+                success: (data) => {
+                    alert('Welcome Screen deleted successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred!');
+                }
+            })
+        }
+    })
 </script>

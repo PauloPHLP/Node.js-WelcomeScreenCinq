@@ -203,7 +203,12 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
         if (err)
             return res.end('An error has occurred!');
         res.end('Image uploaded successfully!');
-    })
+    });
+
+    imageName = '';
+    company = '';
+    defaultImageName = '';
+    guests = [];
 });
 
 app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => { 
@@ -248,6 +253,14 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
         })
     }    
 });
+
+app.delete('/api/delete_welcome_screen_image/:id', Auth, (req, res) => {
+    ScreenImage.deleteOne(req.params._id)
+    .then((screenImage) => {
+        res.status(200).send(screenImage);
+    })
+    .catch(err => res.status(500).send(err));
+})
 
 app.get('/new_welcome_screen_video', Auth, (req, res) => {
     if (!req.user) { 
@@ -303,7 +316,11 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
         if (err)
             return res.end('An error has occurred!');
         res.end('Video uploaded successfully!');
-    })
+    });
+
+    videoName = '';
+    defaultVideoName = '';
+    title = '';
 });
 
 app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
@@ -348,6 +365,14 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
         })
     }    
 });
+
+app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
+    ScreenVideo.deleteOne(req.params._id)
+    .then((screenVideo) => {
+        res.status(200).send(screenVideo);
+    })
+    .catch(err => res.status(500).send(err));
+})
 
 app.get('/welcome_screen_preview', Auth, (req, res) => {
     if (!req.user) { 

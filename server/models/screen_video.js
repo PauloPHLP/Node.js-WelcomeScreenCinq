@@ -28,6 +28,10 @@ const screenVideoSchema = mongoose.Schema({
     }
 }, {timestamps: true});
 
+screenVideoSchema.methods.deleteOne = function(id) {
+    ScreenVideo.findByIdAndRemove(id);
+}
+
 const ScreenVideo = mongoose.model('ScreenVideo', screenVideoSchema);
 
 module.exports = {ScreenVideo};

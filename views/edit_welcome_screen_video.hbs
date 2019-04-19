@@ -23,24 +23,34 @@
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group" style="float: left">
                                     {{#if isEnabled}}
-                                        <label for="defaultImage" style="float: right">&nbsp This Welcome Screen is enabled</label>
-                                        <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage" checked>
+                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
+                                        <input type="checkbox" style="float: right" name="isEnable" id="isEnable" checked>
                                     {{else}}
-                                        <label for="defaultImage" style="float: right">&nbsp This Welcome Screen is disabled</label>
-                                        <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage">
+                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
+                                        <input type="checkbox" style="float: right" name="isEnable" id="isEnable">
                                     {{/if}}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="title">Choose a title for the video</label>
-                                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title">
+                                    <label for="title">Current video title</label>
+                                    {{#if isDefaultVideo}}
+                                        <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}" disabled>
+                                    {{else}}
+                                        <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}">
+                                    {{/if}}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <label for="video">Current video: {{screenVideo.defaultVideoName}}</label>
+                                    <br/>
                                     <label for="video">Choose a new video</label>
-                                    <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
+                                    {{#if isDefaultVideo}}
+                                        <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video" disabled>
+                                    {{else}}
+                                        <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
