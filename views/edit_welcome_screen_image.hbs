@@ -7,7 +7,7 @@
                     <h3 class="panel-title">Edit Welcome Screen</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="upload_form">
+                    <form id="update_form">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group" style="float: left">
@@ -23,17 +23,18 @@
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group" style="float: left">
                                     {{#if isEnabled}}
-                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
+                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
                                         <input type="checkbox" style="float: right" name="isEnable" id="isEnable" checked>
                                     {{else}}
-                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
+                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
                                         <input type="checkbox" style="float: right" name="isEnable" id="isEnable">
                                     {{/if}}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="image">Current image: {{screenImage.defaultImageName}}</label>
+                                    <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
+                                    <label id="imageName" style="visibility: hidden">{{screenImage.imageName}}</label>
                                     <br/>
                                     <label for="image">Choose a new image</label>
                                     {{#if isDefaultImage}}
@@ -99,35 +100,58 @@
 </div>
 
 <script>
+    let oldCompany = $('#company').val();
+    let oldCurrentImage = $('#currentImage').text();
+
     $('#defaultImage').change(function() {
         if ($(this).is(':checked')) {
             $('#image').prop('disabled', true);
+            $('#company').prop('disabled', true);
+            $('#company').prop('value', 'Default image');
+            $('#currentImage').text('Current image: default_image.jpg');
         } else {
             $('#image').prop('disabled', false);
+            $('#company').prop('disabled', false);
+            $('#company').prop('value', oldCompany);
+            $('#currentImage').text(oldCurrentImage);
         }
     })
 
-    $('#upload_form').submit(function(e) {
+    $('#isEnable').change(function() {
+        if ($(this).is(':checked')) {
+            $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
+        } else {
+            $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
+        }
+    })
+
+    $('#update_form').submit(function(e) {
         e.preventDefault();
 
-        var formData = new FormData($(this)[0]);
-        
-        $.ajax({
-            url: '/api/new_welcome_screen_image',
-            type: 'POST',
-            data: formData,
-            async: false,
-            contentType: false,
-            cache: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: (data) => {
-                alert('Image uploaded successfully!');
-                window.location.href = "welcome_screens_list"
-            },
-            error: () => {
-                alert('An issue has occurred!');
-            }
-        });
+        if ($('#company').val() == '') {
+            alert('Please fulfill the necessary fields!');
+        } else {
+            const imageName = $('#imageName').text();
+
+            var formData = new FormData($(this)[0]);
+            
+            $.ajax({
+                url: `/api/update_welcome_screen_image/${imageName}`,
+                type: 'PUT',
+                data: formData,
+                async: false,
+                contentType: false,
+                cache: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                success: (data) => {
+                    alert('Welcome Screen update successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred!');
+                }
+            });
+        }
     })
 </script>

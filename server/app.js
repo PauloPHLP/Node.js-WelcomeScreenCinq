@@ -255,6 +255,82 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
     }    
 });
 
+app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
+    fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
+    });
+
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb (null, 'uploads/')
+        },
+        filename: (req, file, cb) => {
+            date = moment(Date.now()).format('MM/DD/YY');
+            imageName = Date.now() + "_" + file.originalname;
+            defaultImageName = file.originalname;
+            company = req.body.company;
+            cb (null, `${imageName}`);
+        }
+    })
+
+    const upload = multer({
+        storage
+    }).single('image');
+
+    upload(req, res, function(err) {
+        req.body.defaultImage = Boolean(req.body.defaultImage);
+        req.body.isEnable = Boolean(req.body.isEnable);
+
+        for (let i = 0; i < 8; i++) {
+            guests.push(req.body['guest' + i.toString()]);
+        }
+
+        if (req.body.defaultImage == true && req.body.isEnable == true) {
+            req.body.imageName = 'default_image.jpg';
+            req.body.defaultImageName = req.body.imageName;
+            req.body.guests = guests;
+            req.body.company = 'Default image';
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Enabled';
+        } else if (req.body.defaultImage == false && req.body.isEnable == true) {
+            req.body.imageName = imageName;
+            req.body.defaultImageName = defaultImageName;
+            req.body.guests = guests;
+            req.body.company = company;
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Enabled';
+        } else if (req.body.defaultImage == true && req.body.isEnable == false) {
+            req.body.imageName = 'default_image.jpg';
+            req.body.defaultImageName = req.body.imageName;
+            req.body.guests = guests;
+            req.body.company = 'Default image';
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Disable';
+        } else {
+            req.body.imageName = imageName;
+            req.body.defaultImageName = defaultImageName;
+            req.body.guests = guests;
+            req.body.company = company;
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Disable';
+        }
+
+        ScreenImage.updateOne(req.body._id, req.body)
+        .then((screenImage) => {
+            res.status(201);
+        })
+        .catch(err => res.status(500).send(err));
+
+        if (err)
+            return res.end('An error has occurred!');
+        res.end('Welcome Screen update successfully!');
+    });
+
+    imageName = '';
+    defaultImageName = '';
+    company = '';
+    guests = [];
+});
+
 app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
     ScreenImage.findById(req.params.id, (err, screenImage) => {
         fileStream.unlink('./uploads/' + screenImage.imageName, function (err) {
@@ -370,6 +446,73 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
             }
         })
     }    
+});
+
+app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
+    fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
+    });
+
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb (null, 'uploads/')
+        },
+        filename: (req, file, cb) => {
+            date = moment(Date.now()).format('MM/DD/YY');
+            videoName = Date.now() + "_" + file.originalname;
+            defaultVideoName = file.originalname;
+            title = req.body.title;
+            cb (null, `${videoName}`);
+        }
+    })
+
+    const upload = multer({
+        storage
+    }).single('video');
+
+    upload(req, res, function(err) {
+        req.body.defaultVideo = Boolean(req.body.defaultVideo);
+        req.body.isEnable = Boolean(req.body.isEnable);
+
+        if (req.body.defaultVideo == true && req.body.isEnable == true) {
+            req.body.videoName = 'default_video.mp4';
+            req.body.defaultVideoName = req.body.videoName;
+            req.body.title = 'Default video';
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Enabled';
+        } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
+            req.body.videoName = videoName;
+            req.body.defaultVideoName = defaultVideoName;
+            req.body.title = title;
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Enabled';
+        } else if (req.body.defaultVideo == true && req.body.isEnable == false) {
+            req.body.videoName = 'default_video.mp4';
+            req.body.defaultVideoName = req.body.videoName;
+            req.body.title = 'Default video';
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Disable';
+        } else {
+            req.body.videoName = videoName;
+            req.body.defaultVideoName = defaultVideoName;
+            req.body.title = title;
+            req.body.date = moment(Date.now()).format('MM/DD/YY');
+            req.body.activated = 'Disable';
+        }
+
+        ScreenVideo.updateOne(req.body._id, req.body)
+        .then((screenVideo) => {
+            res.status(201);
+        })
+        .catch(err => res.status(500).send(err));
+
+        if (err)
+            return res.end('An error has occurred!');
+        res.end('Welcome Screen update successfully!');
+    });
+
+    videoName = '';
+    defaultVideoName = '';
+    title = '';
 });
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 

@@ -7,7 +7,7 @@
                     <h3 class="panel-title">Edit Welcome Screen</h3>
                 </div>
                 <div class="panel-body">
-                    <form id="upload_form">
+                    <form id="update_form">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group" style="float: left">
@@ -23,10 +23,10 @@
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group" style="float: left">
                                     {{#if isEnabled}}
-                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
+                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
                                         <input type="checkbox" style="float: right" name="isEnable" id="isEnable" checked>
                                     {{else}}
-                                        <label for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
+                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
                                         <input type="checkbox" style="float: right" name="isEnable" id="isEnable">
                                     {{/if}}
                                 </div>
@@ -44,10 +44,11 @@
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label for="video" id="currentVideo">Current video: {{screenVideo.defaultVideoName}}</label>
+                                    <label id="videoName" style="visibility: hidden">{{screenVideo.videoName}}</label>
                                     <br/>
                                     <label for="video">Choose a new video</label>
                                     {{#if isDefaultVideo}}
-                                        <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video" disabled>
+                                        <input type="file" name="video" value="{{screenVideo.videoName}}" id="video" class="form-control input-sm" placeholder="Video" disabled>
                                     {{else}}
                                         <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
                                     {{/if}}
@@ -65,7 +66,7 @@
 <script>
     let oldTitle = $('#title').val();
     let oldCurrentVideo = $('#currentVideo').text();
-
+    
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
             $('#video').prop('disabled', true);
@@ -80,27 +81,41 @@
         }
     })
 
-    $('#upload_form').submit(function(e) {
+    $('#isEnable').change(function() {
+        if ($(this).is(':checked')) {
+            $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
+        } else {
+            $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
+        }
+    })
+
+    $('#update_form').submit(function(e) {
         e.preventDefault();
 
-        var formData = new FormData($(this)[0]);
-        
-        $.ajax({
-            url: '/api/new_welcome_screen_video',
-            type: 'POST',
-            data: formData,
-            async: false,
-            contentType: false,
-            cache: false,
-            enctype: 'multipart/form-data',
-            processData: false,
-            success: (data) => {
-                alert('Video uploaded successfully!');
-                window.location.href = "welcome_screens_list"
-            },
-            error: () => {
-                alert('An issue has occurred!');
-            }
-        });
+        if ($('#title').val() == '') {
+            alert('Please fulfill all fields!');
+        } else {
+            const videoName = $('#videoName').text();
+
+            var formData = new FormData($(this)[0]);
+            
+            $.ajax({
+                url: `/api/update_welcome_screen_video/${videoName}`,
+                type: 'PUT',
+                data: formData,
+                async: false,
+                contentType: false,
+                cache: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                success: (data) => {
+                    alert('Welcome Screen update successfully!');
+                    window.location.href = "/welcome_screens_list"
+                },
+                error: () => {
+                    alert('An issue has occurred!');
+                }
+            });
+        }
     })
 </script>

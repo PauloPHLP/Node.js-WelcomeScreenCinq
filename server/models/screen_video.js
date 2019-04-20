@@ -32,6 +32,19 @@ screenVideoSchema.methods.deleteOne = function(id) {
     ScreenVideo.findByIdAndRemove(id);
 }
 
+screenVideoSchema.methods.updateOne = function(id, screenVideo) {
+    const updatedScreenVideo = {
+        title: screenVideo.title,
+        videoName: screenVideo.videoName,
+        defaultVideoName: screenVideo.defaultVideoName,
+        date: screenVideo.date,
+        activated: screenVideo.activated,
+        wsType: screenVideo.wsType
+    }
+
+    ScreenVideo.updateOne(id, updatedScreenVideo, {new: true});
+}
+
 const ScreenVideo = mongoose.model('ScreenVideo', screenVideoSchema);
 
 module.exports = {ScreenVideo};

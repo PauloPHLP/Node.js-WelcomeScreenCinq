@@ -34,6 +34,20 @@ screenImageSchema.methods.deleteOne = function(id) {
     ScreenImage.findByIdAndRemove(id);
 }
 
+screenImageSchema.methods.updateOne = function(id, screenImage) {
+    const updatedScreenVideo = {
+        company: screenImage.company,
+        guestsNames: screenImage.guests,
+        imageName: screenImage.imageName,
+        defaultImageName: screenImage.defaultImageName,
+        date: screenImage.date,
+        activated: screenImage.activated,
+        wsType: screenImage.wsType
+    }
+
+    ScreenVideo.updateOne(id, updatedScreenVideo, {new: true});
+}
+
 const ScreenImage = mongoose.model('ScreenImage', screenImageSchema);
 
 module.exports = {ScreenImage};
