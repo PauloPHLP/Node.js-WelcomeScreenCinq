@@ -1,5 +1,5 @@
 <div class="container">
-    <img id="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+    <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
     <div id="ws_list" class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -10,24 +10,24 @@
                 <br/><br/>
                 <div class="btn_add" class="col-sm-3">
                     <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_image'">
-                        <i class="fa fa-plus">Add new image</i>
+                        <i class="fa fa-plus btn_add">Add new image</i>
                     </button>
                 </di>
                 <div class="btn_add" class="col-sm-3">
                     <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_video'">
-                        <i class="fa fa-plus">Add new video</i>
+                        <i class="fa fa-plus btn_add">Add new video</i>
                     </button>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered text-center">
             <thead>
                 <tr>
-                    <th>Company/Title</th>
-                    <th>Last update</th>
-                    <th>Is enable?</th>
-                    <th>Type</th>
-                    <th>Actions</th>
+                    <th class="text-center">Company/Title</th>
+                    <th class="text-center">Last update</th>
+                    <th class="text-center">Is enable?</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,44 +58,4 @@
             </tbody>
         </table>
     </div>
-</div>                            
-
-<script>
-    function deleteVideo(id) {
-        let confirmation = confirm("Are you sure about this?");
-
-        if (confirmation === true) {
-            $.ajax({
-                type:'DELETE',
-                url: `/api/delete_welcome_screen_video/${id}`,
-                contentType: 'application/json',
-                success: (data) => {
-                    alert('Welcome Screen deleted successfully!');
-                    window.location.href = "/welcome_screens_list"
-                },
-                error: () => {
-                    alert('An issue has occurred!');
-                }
-            })
-        }
-    }
-
-    function deleteImage(id) {
-        let confirmation = confirm("Are you sure about this?");
-
-        if (confirmation === true) {
-            $.ajax({
-                type:'DELETE',
-                url: `/api/delete_welcome_screen_image/${id}`,
-                contentType: 'application/json',
-                success: (data) => {
-                    alert('Welcome Screen deleted successfully!');
-                    window.location.href = "/welcome_screens_list"
-                },
-                error: () => {
-                    alert('An issue has occurred!');
-                }
-            })
-        }
-    }
-</script>
+</div>        

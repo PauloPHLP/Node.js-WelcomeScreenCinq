@@ -1,22 +1,25 @@
-<div>
-    <img id="current_image" src="/images/cinq_default.jpg">
-    <ul id="guests-list" class="list-group row">
-        <li class="list-group-item col-xs-12 company-name">Banco Barigui:</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Fernando Belo</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Mônica Mendes</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Paulo Lima</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; John Mayer</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Myles Kennedy</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Sebastian Bach</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; John Wick</li>
-        <li class="list-group-item col-xs-6 text-center">&#x2022; Mike Mayers</li>
-    </ul>
+<div class="gallery">
+    {{#each images}}
+        <section>
+            <img class="current_image" src="/uploads/{{this.imageName}}"/>
+            <ul class="list-group row guests_list">
+                <li class="list-group-item col-xs-12 company_name">{{this.company}}:</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[0]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[1]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[2]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[3]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[4]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[5]}}</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[6]}}k</li>
+                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[7]}}</li>
+            </ul>
+        </section>
+    {{/each}}
+    {{#each videos}}
+        <section>
+            <video class="current_video" autoplay muted loop preload>
+                <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
+            </video>
+        </section>
+    {{/each}}
 </div>
-
-<script>
-    function timedRefresh(timeoutPeriod) {
-	    setTimeout("location.reload(true);", timeoutPeriod);
-    }
-
-    window.onload = timedRefresh(60000);
-</script>

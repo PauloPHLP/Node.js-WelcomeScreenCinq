@@ -1,5 +1,5 @@
 <div class="container">
-    <img id="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+    <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
     <div id="new_welcome_screen_form" class="row centered-form">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="panel panel-default">
@@ -10,31 +10,32 @@
                     <form id="update_form">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" style="float: left">
+                                <div class="form-group" class="flt_left">
                                     {{#if isDefaultImage}}
-                                        <label for="defaultImage" style="float: right">&nbsp Default image as Welcome Screen</label>
-                                        <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage" checked>
+                                        <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
+                                        <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
                                     {{else}}
-                                        <label for="defaultImage" style="float: right">&nbsp Default image as Welcome Screen</label>
-                                        <input type="checkbox" style="float: right" name="defaultImage" id="defaultImage">
+                                        <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
+                                        <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage">
                                     {{/if}}
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" style="float: left">
+                                <div class="form-group" class="flt_left">
                                     {{#if isEnabled}}
-                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is enabled</label>
-                                        <input type="checkbox" style="float: right" name="isEnable" id="isEnable" checked>
+                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
+                                        <input type="checkbox" class="flt_right" name="isEnable" id="isEnable" checked>
                                     {{else}}
-                                        <label id="isEnableLabel" for="isEnable" style="float: right">&nbsp This Welcome Screen is disabled</label>
-                                        <input type="checkbox" style="float: right" name="isEnable" id="isEnable">
+                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
+                                        <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
                                     {{/if}}
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
-                                    <label id="imageName" style="visibility: hidden">{{screenImage.imageName}}</label>
+                                    <label id="imageName" class="vsb_hidden">{{screenImage.imageName}}</label>
+                                    <label id="guestsNames" class="vsb_hidden"></label>
                                     <br/>
                                     <label for="image">Choose a new image</label>
                                     {{#if isDefaultImage}}

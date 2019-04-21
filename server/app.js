@@ -18,6 +18,7 @@ let imageName = '';
 let defaultImageName = '';
 let defaultVideoName = '';
 let guests = [];
+let company = '';
 let videoName = '';
 let date = '';
 
@@ -34,6 +35,7 @@ app.engine('hbs', hbs({
 app.set('view engine', 'hbs');
 app.use('/css', express.static(__dirname + './../public/css'));
 app.use('/js', express.static(__dirname + './../public/js'));
+app.use('/slick', express.static(__dirname + './../public/slick'));
 app.use('/images', express.static(__dirname + './../public/images'));
 app.use('/icons', express.static(__dirname + './../public/icons'));
 app.use('/uploads', express.static(__dirname + './../uploads'));
@@ -41,19 +43,52 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.get('/', Auth, (req, res) => {
-    res.render('home', {
-        header: false
+    ScreenImage.find().exec((err, docImage) => {
+        ScreenVideo.find().exec((err, docVideo) => {
+            if (err) 
+                return res.status(400).send(err);
+            res.render('home', {
+                images: docImage,
+                videos: docVideo,
+                header: false,
+                title: 'Welcome Screen Cinq'
+            });
+        })
     });
+});
+
+app.get('/welcome_screen_preview', Auth, (req, res) => {
+    if (!req.user) { 
+        return res.render('login', {
+            header: false,
+            title: 'Login'
+        });
+    } else {
+        ScreenImage.find().exec((err, docImage) => {
+            ScreenVideo.find().exec((err, docVideo) => {
+                if (err) 
+                    return res.status(400).send(err);
+                res.render('welcome_screen_preview', {
+                    images: docImage,
+                    videos: docVideo,
+                    header: true,
+                    title: 'Welcome Screens preview'
+                });
+            });
+        });
+    }    
 });
 
 app.get('/register', Auth, (req, res) => {
     if (req.user) { 
         return res.render('welcome_screen_preview', {
-            header: true
+            header: true,
+            title: 'Register'
         });
     } else {
         res.render('register', {
-            header: false
+            header: false,
+            title: 'Register'
         });
     }
 });
@@ -68,18 +103,20 @@ app.post('/api/register', (req, res) => {
             if(err) 
                 return res.status(400).send(err);
             res.cookie('auth', user.token).send('OK!');
-        })
-    })
+        });
+    });
 });
 
 app.get('/login', Auth, (req, res) => {
     if (req.user) { 
-        return res.render('welcome_screen_preview', {
-            header: true
+        res.render('welcome_screen_preview', {
+            header: true,
+            title: 'Login'
         });
     } else {
         res.render('login', {
-            header: false
+            header: false,
+            title: 'Login'
         });
     }
 });
@@ -99,31 +136,33 @@ app.post('/api/login', (req, res) => {
                 if(err) 
                     return res.status(400).send(err);
                 res.cookie('auth', user.token).send('OK!');
-            })
-        })
-    })
+            });
+        });
+    });
 });
 
 app.get('/logout', Auth, (req, res) => {
     req.user.deleteToken(req.token, (err, user) => {
         if(err) 
             return res.status(400).send(err);
-        res.redirect('/')
-    })
+        res.redirect('/');
+    });
 });
 
 app.get('/my_account', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
-            header: false
+            header: false,
+            title: 'Login'
         });
     } else {
         User.find({'_id': req.user._id}).exec((err, user) => {
             res.render('my_account', {
                 header: true,
-                user: req.user
+                user: req.user,
+                title: req.user.name
             });
-        })
+        });
     }    
 });
 
@@ -133,7 +172,7 @@ app.put('/api/update_user', Auth, (req, res) => {
         res.status(201).send(user);
     })
     .catch(err => res.status(500).send(err));
-})
+});
 
 app.delete('/api/delete_user', (req, res) => {
     const user = req.body;
@@ -143,16 +182,18 @@ app.delete('/api/delete_user', (req, res) => {
         res.status(200).send(user);
     })
     .catch(err => res.status(500).send(err));
-})
+});
 
 app.get('/new_welcome_screen_image', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
-            header: false
+            header: false,
+            title: 'New Welcome Screen'
         });
     } else {
         res.render('new_welcome_screen_image', {
-            header: true
+            header: true,
+            title: 'New Welcome Screen'
         });
     }    
 });
@@ -168,7 +209,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             defaultImageName = file.originalname;
             cb (null, `${imageName}`);
         }
-    })
+    });
     
     const upload = multer({
         storage
@@ -181,6 +222,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             imageName = 'default_image.jpg';
             company = 'Default image';
             defaultImageName = imageName;
+            date = moment(Date.now()).format('MM/DD/YY');
         }
         
         for (let i = 1; i < 9; i++) {
@@ -199,7 +241,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
         screenImage.save((err, doc) => {
             if (err)
                 res.status(400).send(err);
-        })
+        });
 
         if (err)
             return res.end('An error has occurred!');
@@ -227,50 +269,59 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
                     screenImage,
                     isDefaultImage: true,
                     isEnabled: true,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else if ((screenImage.defaultImageName != 'default_image.jpg') && (screenImage.activated === 'Enabled')) {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: false,
                     isEnabled: true,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else if ((screenImage.defaultImageName === 'default_image.jpg') && (screenImage.activated === 'Disable')) {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: true,
                     isEnabled: false,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: false,
                     isEnabled: false,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             }
-        })
+        });
     }    
 });
 
 app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
-    fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
-    });
+    if (req.body.oldImageName != 'default_image.jpg') {
+        fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
+        });
+    }
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb (null, 'uploads/')
         },
         filename: (req, file, cb) => {
+            for (let i = 1; i < 9; i++) {
+                guests.push(req.body['guest' + i.toString()]);
+            };
             date = moment(Date.now()).format('MM/DD/YY');
             imageName = Date.now() + "_" + file.originalname;
             defaultImageName = file.originalname;
             company = req.body.company;
             cb (null, `${imageName}`);
         }
-    })
+    });
 
     const upload = multer({
         storage
@@ -280,42 +331,37 @@ app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
         req.body.defaultImage = Boolean(req.body.defaultImage);
         req.body.isEnable = Boolean(req.body.isEnable);
 
-        for (let i = 0; i < 8; i++) {
-            guests.push(req.body['guest' + i.toString()]);
-        }
-
         if (req.body.defaultImage == true && req.body.isEnable == true) {
             req.body.imageName = 'default_image.jpg';
-            req.body.defaultImageName = req.body.imageName;
-            req.body.guests = guests;
+            req.body.defaultImage = req.body.imageName;
             req.body.company = 'Default image';
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Enabled';
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
             req.body.imageName = imageName;
-            req.body.defaultImageName = defaultImageName;
-            req.body.guests = guests;
+            req.body.defaultVideoName = defaultVideoName;
             req.body.company = company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Enabled';
         } else if (req.body.defaultImage == true && req.body.isEnable == false) {
             req.body.imageName = 'default_image.jpg';
-            req.body.defaultImageName = req.body.imageName;
-            req.body.guests = guests;
-            req.body.company = 'Default image';
+            req.body.defaultVideoName = req.body.imageName;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Disable';
         } else {
             req.body.imageName = imageName;
-            req.body.defaultImageName = defaultImageName;
-            req.body.guests = guests;
+            req.body.defaultVideoName = defaultVideoName;
             req.body.company = company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Disable';
         }
 
-        ScreenImage.updateOne(req.body._id, req.body)
-        .then((screenImage) => {
+        for (let i = 1; i < 9; i++) {
+            guests.push(req.body['guest' + i.toString()]);
+        }
+
+        ScreenImage.updateOne(req.body._id, req.body, guests)
+        .then((screenVideo) => {
             res.status(201);
         })
         .catch(err => res.status(500).send(err));
@@ -326,32 +372,36 @@ app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
     });
 
     imageName = '';
-    defaultImageName = '';
     company = '';
+    defaultImageName = '';
     guests = [];
 });
 
 app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
     ScreenImage.findById(req.params.id, (err, screenImage) => {
-        fileStream.unlink('./uploads/' + screenImage.imageName, function (err) {
-        });
+        if (screenImage.imageName != 'default_image.jpg') {
+            fileStream.unlink('./uploads/' + screenImage.imageName, function (err) {
+            });
+        }
     });
-
+    
     ScreenImage.deleteOne(req.params._id)
     .then((screenImage) => {
         res.status(200).send(screenImage);
     })
     .catch(err => res.status(500).send(err));
-})
+});
 
 app.get('/new_welcome_screen_video', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
-            header: false
+            header: false,
+            title: 'Login'
         });
     } else {
         res.render('new_welcome_screen_video', {
-            header: true
+            header: true,
+            title: 'New Welcome Screen'
         });
     }    
 });
@@ -359,7 +409,7 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 app.post('/api/new_welcome_screen_video', (req, res) => {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb (null, 'uploads/')
+            cb (null, 'uploads/');
         },
         filename: (req, file, cb) => {
             date = moment(Date.now()).format('MM/DD/YY');
@@ -378,6 +428,7 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
         req.body.defaultVideo = Boolean(req.body.defaultVideo);
 
         if (req.body.defaultVideo == true) {
+            date = moment(Date.now()).format('MM/DD/YY');
             videoName = 'default_video.mp4';
             defaultVideoName = videoName;
             title = 'Default video';
@@ -393,7 +444,7 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
         screenVideo.save((err, doc) => {
             if (err)
                 res.status(400).send(err);
-        })
+        });
 
         if (err)
             return res.end('An error has occurred!');
@@ -408,7 +459,8 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
 app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
-            header: false
+            header: false,
+            title: 'Login'
         });
     } else {
         ScreenVideo.findById(req.params.id, (err, screenVideo) => {
@@ -420,41 +472,47 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
                     screenVideo,
                     isDefaultVideo: true,
                     isEnabled: true,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else if ((screenVideo.defaultVideoName != 'default_video.mp4') && (screenVideo.activated === 'Enabled')) {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: false,
                     isEnabled: true,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else if ((screenVideo.defaultVideoName === 'default_video.mp4') && (screenVideo.activated === 'Disable')) {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: true,
                     isEnabled: false,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             } else {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: false,
                     isEnabled: false,
-                    header: true
+                    header: true,
+                    title: 'Edit Welcome Screen'
                 });
             }
-        })
+        });
     }    
 });
 
 app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
-    fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
-    });
-
+    if (req.body.oldVideoName != 'default_video.mp4') {
+        fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
+        });
+    }
+    
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb (null, 'uploads/')
+            cb (null, 'uploads/');
         },
         filename: (req, file, cb) => {
             date = moment(Date.now()).format('MM/DD/YY');
@@ -463,7 +521,7 @@ app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
             title = req.body.title;
             cb (null, `${videoName}`);
         }
-    })
+    });
 
     const upload = multer({
         storage
@@ -517,33 +575,24 @@ app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
     ScreenVideo.findById(req.params.id, (err, screenVideo) => {
-        fileStream.unlink('./uploads/' + screenVideo.videoName, function (err) {
-        });
+        if (screenVideo.videoName != 'default_video.mp4') {
+            fileStream.unlink('./uploads/' + screenVideo.videoName, function (err) {
+            });
+        }
     });
-    
+
     ScreenVideo.deleteOne(req.params._id)
     .then((screenVideo) => {
         res.status(200).send(screenVideo);
     })
     .catch(err => res.status(500).send(err));
-})
-
-app.get('/welcome_screen_preview', Auth, (req, res) => {
-    if (!req.user) { 
-        return res.render('login', {
-            header: false
-        });
-    } else {
-        res.render('welcome_screen_preview', {
-            header: true
-        });
-    }    
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
     if (!req.user) { 
         return res.render('login', {
-            header: false
+            header: false,
+            title: 'Login'
         });
     } else {
         User.find({'_id': req.user._id}).exec((err, user) => {
@@ -555,9 +604,10 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
                         header: true,
                         videos: docVideo,
                         images: docImage,
-                        user: req.user 
+                        user: req.user,
+                        title: 'Welcome Screen list'
                     });
-                })
+                });
             })
         });
     }    

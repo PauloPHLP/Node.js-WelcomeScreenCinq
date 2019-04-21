@@ -6,7 +6,9 @@ const screenImageSchema = mongoose.Schema({
         require: true,
         trim: true
     },
-    guestsNames: [],
+    guestsNames: [{
+        type: String
+    }],
     imageName: {
         type: String,
         require: true
@@ -34,10 +36,10 @@ screenImageSchema.methods.deleteOne = function(id) {
     ScreenImage.findByIdAndRemove(id);
 }
 
-screenImageSchema.methods.updateOne = function(id, screenImage) {
-    const updatedScreenVideo = {
+screenImageSchema.methods.updateOne = function(id, screenImage, guestsNames) {
+    const updatedScreenImage = {
         company: screenImage.company,
-        guestsNames: screenImage.guests,
+        guestsNames: guestsNames,
         imageName: screenImage.imageName,
         defaultImageName: screenImage.defaultImageName,
         date: screenImage.date,
@@ -45,7 +47,7 @@ screenImageSchema.methods.updateOne = function(id, screenImage) {
         wsType: screenImage.wsType
     }
 
-    ScreenVideo.updateOne(id, updatedScreenVideo, {new: true});
+    ScreenImage.updateOne(id, updatedScreenImage, {new: true});
 }
 
 const ScreenImage = mongoose.model('ScreenImage', screenImageSchema);
