@@ -47,6 +47,17 @@ userSchema.pre('save', function(next) {
     } else {
         next();
     }
+
+    // bcrypt.genSalt(SALT_I, function(err, salt) {
+    //     if(err) 
+    //         return next(err);
+    //     bcrypt.hash(user.password, salt, function(err, hash) {
+    //         if(err) 
+    //             return next(err);
+    //         user.password = hash;
+    //         next();
+    //     })
+    // })
 })
 
 userSchema.statics.findByToken = function(token, cb) {
@@ -62,18 +73,6 @@ userSchema.statics.findByToken = function(token, cb) {
 }
 
 userSchema.methods.updateOne = function(id, user) {
-    if(user.isModified('password')) {
-        bcrypt.genSalt(SALT_I, function(err, salt) {
-            if(err) 
-                return next(err);
-            bcrypt.hashSync(user.password, salt, function(err, hash) {
-                if(err) 
-                    return next(err);
-                user.password = hash;
-            })
-        })
-    } 
-
     const updatedUser = {
         name: user.name,
         login: user.login,

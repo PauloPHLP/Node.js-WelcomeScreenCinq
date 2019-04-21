@@ -10,7 +10,7 @@
                     <form id="upload_form">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group" class="flt_left">
+                                <div class="form-group flt_left">
                                     <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
                                     <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
                                 </div>
@@ -90,10 +90,7 @@
 
         var formData = new FormData($(this)[0]);
         
-        if ($('#company').val() == '') {
-            alert('Please fulfill the necessary fields!');
-        } else {
-
+        if (($('#defaultImage').is(':checked') && $('#company').val() != '') || ($('#company').val() != '' && !$('#defaultImage').is(':checked') && $('#image').get(0).files.length !== 0)) {
             $.ajax({
                 url: '/api/new_welcome_screen_image',
                 type: 'POST',
@@ -111,6 +108,8 @@
                     alert('An issue has occurred!');
                 }
             });
+        } else {
+            alert('Please fulfill the necessary fields!');
         }
     })
 </script>

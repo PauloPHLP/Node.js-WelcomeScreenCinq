@@ -10,7 +10,7 @@
                     <form id="upload_form">
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group" class="flt_right">
+                                <div class="form-group flt_left">
                                     <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
                                     <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
                                 </div>
@@ -52,7 +52,7 @@
 
         var formData = new FormData($(this)[0]);
 
-        if ($('#defaultVideo').is(':checked') || $('#title').val() != '') {
+        if (($('#defaultVideo').is(':checked') && $('#title').val() == '') || ($('#title').val() != '' && !$('#defaultVideo').is(':checked') && $('#video').get(0).files.length !== 0)) {
             $.ajax({
                 url: '/api/new_welcome_screen_video',
                 type: 'POST',

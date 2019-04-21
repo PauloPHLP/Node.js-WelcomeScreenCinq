@@ -10,7 +10,7 @@
                     <form id="update_form">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" class="flt_left">
+                                <div class="form-group flt_left">
                                     {{#if isDefaultImage}}
                                         <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
                                         <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" class="flt_left">
+                                <div class="form-group flt_left">
                                     {{#if isEnabled}}
                                         <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
                                         <input type="checkbox" class="flt_right" name="isEnable" id="isEnable" checked>
@@ -39,7 +39,7 @@
                                     <br/>
                                     <label for="image">Choose a new image</label>
                                     {{#if isDefaultImage}}
-                                        <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image" disabled>
+                                        <input type="file" name="image" value="{{screenImage.imageName}}" id="image" class="form-control input-sm" placeholder="Image" disabled>
                                     {{else}}
                                         <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image">
                                     {{/if}}
@@ -107,12 +107,10 @@
     $('#defaultImage').change(function() {
         if ($(this).is(':checked')) {
             $('#image').prop('disabled', true);
-            $('#company').prop('disabled', true);
             $('#company').prop('value', 'Default image');
             $('#currentImage').text('Current image: default_image.jpg');
         } else {
             $('#image').prop('disabled', false);
-            $('#company').prop('disabled', false);
             $('#company').prop('value', oldCompany);
             $('#currentImage').text(oldCurrentImage);
         }
@@ -129,15 +127,17 @@
     $('#update_form').submit(function(e) {
         e.preventDefault();
 
-        if ($('#company').val() == '') {
-            alert('Please fulfill the necessary fields!');
+        if ($('#company').val() == '' || ($('#company').val() == '' && $('#defaultImage').is(':checked'))) {
+            alert('Please put a company name!');
+        } else if (!$('#defaultImage').is(':checked') && $('#image').get(0).files.length === 0) {
+            alert('Please select an image!');
         } else {
             const imageName = $('#imageName').text();
 
             var formData = new FormData($(this)[0]);
             
             $.ajax({
-                url: `/api/update_welcome_screen_image/${imageName}`,
+                url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}`,
                 type: 'PUT',
                 data: formData,
                 async: false,

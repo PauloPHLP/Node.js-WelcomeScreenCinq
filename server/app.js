@@ -3,6 +3,7 @@ const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const multer = require('multer');
 const moment = require('moment');
 const fileStream = require('fs');
@@ -42,7 +43,7 @@ app.use('/uploads', express.static(__dirname + './../uploads'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.get('/', Auth, (req, res) => {
+app.get('/', (req, res) => {
     ScreenImage.find().exec((err, docImage) => {
         ScreenVideo.find().exec((err, docVideo) => {
             if (err) 
@@ -167,11 +168,20 @@ app.get('/my_account', Auth, (req, res) => {
 });
 
 app.put('/api/update_user', Auth, (req, res) => {
-    User.updateOne(req.params._id, req.body)
-    .then((user) => {
-        res.status(201).send(user);
-    })
-    .catch(err => res.status(500).send(err));
+    bcrypt.genSalt(10, function(err, salt) {
+        if(err) 
+            return next(err);
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+            if(err) 
+                return next(err);
+                req.body.password = hash;
+                User.updateOne(req.params._id, req.body)
+                .then((user) => {
+                    res.status(201).send(user);
+                })
+                .catch(err => res.status(500).send(err));
+                    })
+                })
 });
 
 app.delete('/api/delete_user', (req, res) => {
@@ -301,20 +311,17 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
     }    
 });
 
-app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
-    if (req.body.oldImageName != 'default_image.jpg') {
+app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
+    if (req.params.oldImageName != 'default_image.jpg') {
         fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
         });
     }
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
-            cb (null, 'uploads/')
+            cb (null, 'uploads/');
         },
         filename: (req, file, cb) => {
-            for (let i = 1; i < 9; i++) {
-                guests.push(req.body['guest' + i.toString()]);
-            };
             date = moment(Date.now()).format('MM/DD/YY');
             imageName = Date.now() + "_" + file.originalname;
             defaultImageName = file.originalname;
@@ -333,25 +340,26 @@ app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
 
         if (req.body.defaultImage == true && req.body.isEnable == true) {
             req.body.imageName = 'default_image.jpg';
-            req.body.defaultImage = req.body.imageName;
-            req.body.company = 'Default image';
+            req.body.defaultImageName = req.body.imageName;
+            req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Enabled';
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
             req.body.imageName = imageName;
-            req.body.defaultVideoName = defaultVideoName;
-            req.body.company = company;
+            req.body.defaultImageName = defaultImageName;
+            req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Enabled';
         } else if (req.body.defaultImage == true && req.body.isEnable == false) {
             req.body.imageName = 'default_image.jpg';
-            req.body.defaultVideoName = req.body.imageName;
+            req.body.defaultImageName = req.body.imageName;
+            req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Disable';
         } else {
             req.body.imageName = imageName;
-            req.body.defaultVideoName = defaultVideoName;
-            req.body.company = company;
+            req.body.defaultImageName = defaultImageName;
+            req.body.company = req.body.company;;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Disable';
         }
@@ -360,8 +368,11 @@ app.put('/api/update_welcome_screen_image/:oldImageName', (req, res) => {
             guests.push(req.body['guest' + i.toString()]);
         }
 
-        ScreenImage.updateOne(req.body._id, req.body, guests)
-        .then((screenVideo) => {
+        ScreenImage.updateOne({_id: req.params.id}, {$set: {guestsNames: guests}}, function(err, screenImage) {
+        });
+
+        ScreenImage.updateOne(req.body._id, req.body)
+        .then((screenImage) => {
             res.status(201);
         })
         .catch(err => res.status(500).send(err));
@@ -505,11 +516,11 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
-    if (req.body.oldVideoName != 'default_video.mp4') {
+    if (req.params.oldVideoName != 'default_video.mp4') {
         fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
         });
     }
-    
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb (null, 'uploads/');
@@ -540,7 +551,7 @@ app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
         } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
             req.body.videoName = videoName;
             req.body.defaultVideoName = defaultVideoName;
-            req.body.title = title;
+            req.body.title = req.body.title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = 'Enabled';
         } else if (req.body.defaultVideo == true && req.body.isEnable == false) {

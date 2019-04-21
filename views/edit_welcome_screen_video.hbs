@@ -10,7 +10,7 @@
                     <form id="update_form">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" class="flt_left">
+                                <div class="form-group flt_left">
                                     {{#if isDefaultVideo}}
                                         <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
                                         <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group" class="flt_left">
+                                <div class="form-group flt_left">
                                     {{#if isEnabled}}
                                         <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
                                         <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
@@ -92,8 +92,10 @@
     $('#update_form').submit(function(e) {
         e.preventDefault();
 
-        if ($('#title').val() == '') {
-            alert('Please fulfill all fields!');
+        if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
+            alert('Please put a title!');
+        } else if (!$('#defaultVideo').is(':checked') && $('#video').get(0).files.length === 0) {
+            alert('Please select a video!');
         } else {
             const videoName = $('#videoName').text();
 
