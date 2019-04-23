@@ -1,5 +1,5 @@
 const express = require('express');
-const hbs = require('express-handlebars');
+const expressHandlebars = require('express-handlebars');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -8,10 +8,19 @@ const multer = require('multer');
 const moment = require('moment');
 const fileStream = require('fs');
 const config = require('./config/config').get(process.env.NODE_ENV);
+const io = require('socket.io');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
+
+// https://hackernoon.com/using-mongodb-as-a-realtime-database-with-change-streams-213cba1dfc2a
+
+// https://blog.usejournal.com/how-to-build-a-real-time-chat-app-with-nodejs-socket-io-and-mongodb-7a4c9472edd1
+
+// https://pusher.com/tutorials/realtime-likes-nodejs
+
+// https://pusher.com/tutorials/realtime-notifications-nodejs
 
 const app = express();
 let title = '';
@@ -20,6 +29,7 @@ let defaultImageName = '';
 let defaultVideoName = '';
 let guests = [];
 let company = '';
+let activated = '';
 let videoName = '';
 let date = '';
 
@@ -27,12 +37,21 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE, {useNewUrlParser: true});
 mongoose.set('useCreateIndex', true);
 
-app.engine('hbs', hbs({
+const hbs = expressHandlebars.create({
     extname: 'hbs',
     defaultLayout: 'main',
     layoutsDir: __dirname + './../views/layouts',
-    partialsDir: __dirname + './../views/partials'
-}));
+    partialsDir: __dirname + './../views/partials',
+
+    helpers: {
+        guestList: function(guestName) {
+            if (guestName !== '') 
+                return `<li class="list-group-item col-xs-6 text-center">&#x2022; ${ guestName}</li>`;
+        }
+    }
+})
+
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.use('/css', express.static(__dirname + './../public/css'));
 app.use('/js', express.static(__dirname + './../public/js'));
@@ -607,6 +626,7 @@ app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
+    
     if (!req.user) { 
         return res.render('login', {
             header: false,

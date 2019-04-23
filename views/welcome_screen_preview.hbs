@@ -4,14 +4,10 @@
             <img class="current_image_with_nav" src="/uploads/{{this.imageName}}"/>
             <ul class="list-group row guests_list">
                 <li class="list-group-item col-xs-12 company_name">{{this.company}}:</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[0]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[1]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[2]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[3]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[4]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[5]}}</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[6]}}k</li>
-                <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[7]}}</li>
+                {{#each this.guestsNames}}
+                    {{#guestList this}}
+                    {{/guestList }}
+                {{/each}}
             </ul>
         </section>
     {{/each}}
