@@ -23,8 +23,8 @@ const screenImageSchema = mongoose.Schema({
         require: true
     },
     activated: {
-        type: String,
-        default: 'Enabled'
+        type: Boolean,
+        default: true
     },
     wsType: {
         type: String,

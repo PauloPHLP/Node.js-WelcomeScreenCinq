@@ -1,5 +1,6 @@
 <div class="gallery">
     {{#each images}}
+        {{#if this.activated}}
         <section>
             <img class="current_image" src="/uploads/{{this.imageName}}"/>
             <ul class="list-group row guests_list">
@@ -14,12 +15,15 @@
                 <li class="list-group-item col-xs-6 text-center">&#x2022; {{this.guestsNames.[7]}}</li>
             </ul>
         </section>
+        {{/if}}
     {{/each}}
     {{#each videos}}
+        {{#if this.activated}}
         <section>
             <video class="current_video" autoplay muted loop preload>
                 <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
             </video>
         </section>
+        {{/if}}
     {{/each}}
 </div>

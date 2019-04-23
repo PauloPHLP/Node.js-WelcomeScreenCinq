@@ -245,7 +245,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             imageName: imageName,
             defaultImageName: defaultImageName,
             date: date,
-            activated: 'Enabled'
+            activated: true
         });
 
         screenImage.save((err, doc) => {
@@ -274,7 +274,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
             if (err)
                 return res.status(400).send(err);
 
-            if ((screenImage.defaultImageName === 'default_image.jpg') && (screenImage.activated === 'Enabled')) {
+            if ((screenImage.defaultImageName === 'default_image.jpg') && (screenImage.activated === true)) {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: true,
@@ -282,7 +282,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
                     header: true,
                     title: 'Edit Welcome Screen'
                 });
-            } else if ((screenImage.defaultImageName != 'default_image.jpg') && (screenImage.activated === 'Enabled')) {
+            } else if ((screenImage.defaultImageName != 'default_image.jpg') && (screenImage.activated === true)) {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: false,
@@ -290,7 +290,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
                     header: true,
                     title: 'Edit Welcome Screen'
                 });
-            } else if ((screenImage.defaultImageName === 'default_image.jpg') && (screenImage.activated === 'Disable')) {
+            } else if ((screenImage.defaultImageName === 'default_image.jpg') && (screenImage.activated === false)) {
                 res.render('edit_welcome_screen_image', {
                     screenImage,
                     isDefaultImage: true,
@@ -343,25 +343,25 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
             req.body.defaultImageName = req.body.imageName;
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Enabled';
+            req.body.activated = true;
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
             req.body.imageName = imageName;
             req.body.defaultImageName = defaultImageName;
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Enabled';
+            req.body.activated = true;
         } else if (req.body.defaultImage == true && req.body.isEnable == false) {
             req.body.imageName = 'default_image.jpg';
             req.body.defaultImageName = req.body.imageName;
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Disable';
+            req.body.activated = false;
         } else {
             req.body.imageName = imageName;
             req.body.defaultImageName = defaultImageName;
             req.body.company = req.body.company;;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Disable';
+            req.body.activated = false;
         }
 
         for (let i = 1; i < 9; i++) {
@@ -478,7 +478,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
             if (err)
                 return res.status(400).send(err);
 
-            if ((screenVideo.defaultVideoName === 'default_video.mp4') && (screenVideo.activated === 'Enabled')) {
+            if ((screenVideo.defaultVideoName === 'default_video.mp4') && (screenVideo.activated === true)) {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: true,
@@ -486,7 +486,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
                     header: true,
                     title: 'Edit Welcome Screen'
                 });
-            } else if ((screenVideo.defaultVideoName != 'default_video.mp4') && (screenVideo.activated === 'Enabled')) {
+            } else if ((screenVideo.defaultVideoName != 'default_video.mp4') && (screenVideo.activated === true)) {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: false,
@@ -494,7 +494,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
                     header: true,
                     title: 'Edit Welcome Screen'
                 });
-            } else if ((screenVideo.defaultVideoName === 'default_video.mp4') && (screenVideo.activated === 'Disable')) {
+            } else if ((screenVideo.defaultVideoName === 'default_video.mp4') && (screenVideo.activated === false)) {
                 res.render('edit_welcome_screen_video', {
                     screenVideo,
                     isDefaultVideo: true,
@@ -547,25 +547,25 @@ app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
             req.body.defaultVideoName = req.body.videoName;
             req.body.title = 'Default video';
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Enabled';
+            req.body.activated = true;
         } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
             req.body.videoName = videoName;
             req.body.defaultVideoName = defaultVideoName;
             req.body.title = req.body.title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Enabled';
+            req.body.activated = true;
         } else if (req.body.defaultVideo == true && req.body.isEnable == false) {
             req.body.videoName = 'default_video.mp4';
             req.body.defaultVideoName = req.body.videoName;
             req.body.title = 'Default video';
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Disable';
+            req.body.activated = false;
         } else {
             req.body.videoName = videoName;
             req.body.defaultVideoName = defaultVideoName;
             req.body.title = title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = 'Disable';
+            req.body.activated = false;
         }
 
         ScreenVideo.updateOne(req.body._id, req.body)
