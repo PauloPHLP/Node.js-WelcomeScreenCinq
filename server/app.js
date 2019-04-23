@@ -462,6 +462,13 @@ app.post('/api/new_welcome_screen_video', (req, res) => {
         res.end('Video uploaded successfully!');
     });
 
+    ScreenImage.find().then(function(docImage) {
+        docImage.forEach(function(image) {
+            ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, function(err, screenImage) {
+            });
+        })
+    });
+
     videoName = '';
     defaultVideoName = '';
     title = '';

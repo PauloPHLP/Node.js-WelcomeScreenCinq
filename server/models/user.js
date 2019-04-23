@@ -47,17 +47,6 @@ userSchema.pre('save', function(next) {
     } else {
         next();
     }
-
-    // bcrypt.genSalt(SALT_I, function(err, salt) {
-    //     if(err) 
-    //         return next(err);
-    //     bcrypt.hash(user.password, salt, function(err, hash) {
-    //         if(err) 
-    //             return next(err);
-    //         user.password = hash;
-    //         next();
-    //     })
-    // })
 })
 
 userSchema.statics.findByToken = function(token, cb) {
