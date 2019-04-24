@@ -102,7 +102,7 @@
             var formData = new FormData($(this)[0]);
             
             $.ajax({
-                url: `/api/update_welcome_screen_video/${videoName}`,
+                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}`,
                 type: 'PUT',
                 data: formData,
                 async: false,

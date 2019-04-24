@@ -29,7 +29,7 @@ let defaultImageName = '';
 let defaultVideoName = '';
 let guests = [];
 let company = '';
-let activated = '';
+let test = '';
 let videoName = '';
 let date = '';
 
@@ -263,8 +263,14 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             guestsNames: guests,
             imageName: imageName,
             defaultImageName: defaultImageName,
-            date: date,
-            activated: true
+            date: date
+        });
+
+        ScreenVideo.find().then(function(docVideo) {
+            docVideo.forEach(function(video) {
+                ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+                });
+            })
         });
 
         screenImage.save((err, doc) => {
@@ -352,7 +358,7 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
     const upload = multer({
         storage
     }).single('image');
-
+    
     upload(req, res, function(err) {
         req.body.defaultImage = Boolean(req.body.defaultImage);
         req.body.isEnable = Boolean(req.body.isEnable);
@@ -363,12 +369,26 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            ScreenVideo.find().then(function(docVideo) {
+                docVideo.forEach(function(video) {
+                    ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+                    });
+                })
+            });
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
             req.body.imageName = imageName;
             req.body.defaultImageName = defaultImageName;
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            ScreenVideo.find().then(function(docVideo) {
+                docVideo.forEach(function(video) {
+                    ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+                    });
+                })
+            });
         } else if (req.body.defaultImage == true && req.body.isEnable == false) {
             req.body.imageName = 'default_image.jpg';
             req.body.defaultImageName = req.body.imageName;
@@ -403,6 +423,7 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
 
     imageName = '';
     company = '';
+    test = '';
     defaultImageName = '';
     guests = [];
 });
@@ -437,6 +458,13 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
+    ScreenVideo.find().then(function(docVideo) {
+        docVideo.forEach(function(video) {
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+            });
+        })
+    });
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb (null, 'uploads/');
@@ -541,7 +569,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
     }    
 });
 
-app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName', (req, res) => {
     if (req.params.oldVideoName != 'default_video.mp4') {
         fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
         });
@@ -574,12 +602,44 @@ app.put('/api/update_welcome_screen_video/:oldVideoName', (req, res) => {
             req.body.title = 'Default video';
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            ScreenImage.find().then(function(docImage) {
+                docImage.forEach(function(image) {
+                    ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, function(err, screenImage) {
+                    });
+                })
+            });
+
+            ScreenVideo.find().then(function(docVideo) {
+                docVideo.forEach(function(video) {
+                    if (video._id != req.params.idVid) {
+                        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+                        });
+                    }
+                })
+            });
         } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
             req.body.videoName = videoName;
             req.body.defaultVideoName = defaultVideoName;
             req.body.title = req.body.title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            ScreenImage.find().then(function(docImage) {
+                docImage.forEach(function(image) {
+                    ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, function(err, screenImage) {
+                    });
+                })
+            });
+
+            ScreenVideo.find().then(function(docVideo) {
+                docVideo.forEach(function(video) {
+                    if (video._id != req.params.id) {
+                        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+                        });
+                    }
+                })
+            });
         } else if (req.body.defaultVideo == true && req.body.isEnable == false) {
             req.body.videoName = 'default_video.mp4';
             req.body.defaultVideoName = req.body.videoName;
