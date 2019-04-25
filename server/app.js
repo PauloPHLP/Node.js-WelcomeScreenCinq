@@ -407,14 +407,18 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
             guests.push(req.body['guest' + i.toString()]);
         }
 
+        console.log(req.params.id);
+
         ScreenImage.updateOne({_id: req.params.id}, {$set: {guestsNames: guests}}, function(err, screenImage) {
         });
 
-        ScreenImage.updateOne(req.body._id, req.body)
-        .then((screenImage) => {
-            res.status(201);
-        })
-        .catch(err => res.status(500).send(err));
+        ScreenImage.updateOne({_id: req.params.id}, {$set: {
+            imageName: req.body.imageName,
+            defaultImageName: req.body.defaultImageName,
+            company: req.body.company,
+            date: req.body.date,
+            activated: req.body.activated
+        }}, function(err, screenImage) {});
 
         if (err)
             return res.end('An error has occurred!');
@@ -458,12 +462,12 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
-    ScreenVideo.find().then(function(docVideo) {
-        docVideo.forEach(function(video) {
-            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-            });
-        })
-    });
+    // ScreenVideo.find().then(function(docVideo) {
+    //     docVideo.forEach(function(video) {
+    //         ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+    //         });
+    //     })
+    // });
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
@@ -654,11 +658,13 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName', (req, res) => {
             req.body.activated = false;
         }
 
-        ScreenVideo.updateOne(req.body._id, req.body)
-        .then((screenVideo) => {
-            res.status(201);
-        })
-        .catch(err => res.status(500).send(err));
+        ScreenVideo.updateOne({_id: req.params.id}, {$set: {
+            videoName: req.body.videoName,
+            defaultVideoName: req.body.defaultVideoName,
+            title: req.body.title,
+            data: req.body.date,
+            activated: req.body.activated,
+        }}, function(err, screenImage) {});
 
         if (err)
             return res.end('An error has occurred!');
