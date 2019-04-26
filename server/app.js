@@ -462,12 +462,12 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
-    // ScreenVideo.find().then(function(docVideo) {
-    //     docVideo.forEach(function(video) {
-    //         ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-    //         });
-    //     })
-    // });
+    ScreenVideo.find().then(function(docVideo) {
+        docVideo.forEach(function(video) {
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
+            });
+        })
+    });
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
@@ -573,11 +573,14 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
     }    
 });
 
-app.put('/api/update_welcome_screen_video/:id/:oldVideoName', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
     if (req.params.oldVideoName != 'default_video.mp4') {
         fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
         });
     }
+
+    console.log('Old video: ' + req.params.oldVideoName);
+    console.log('Current video: ' + req.params.currentVideo);
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
@@ -616,7 +619,7 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName', (req, res) => {
 
             ScreenVideo.find().then(function(docVideo) {
                 docVideo.forEach(function(video) {
-                    if (video._id != req.params.idVid) {
+                    if (video._id != req.params.id) {
                         ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
                         });
                     }

@@ -66,7 +66,7 @@
 <script>
     let oldTitle = $('#title').val();
     let oldCurrentVideo = $('#currentVideo').text();
-    
+
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
             $('#video').prop('disabled', true);
@@ -94,15 +94,13 @@
 
         if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
             alert('Please put a title!');
-        } else if (!$('#defaultVideo').is(':checked') && $('#video').get(0).files.length === 0) {
-            alert('Please select a video!');
         } else {
             const videoName = $('#videoName').text();
 
             var formData = new FormData($(this)[0]);
             
             $.ajax({
-                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}`,
+                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/{{{screenVideo.defaultVideoName}}}`,
                 type: 'PUT',
                 data: formData,
                 async: false,
