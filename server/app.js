@@ -30,6 +30,7 @@ let defaultVideoName = '';
 let guests = [];
 let company = '';
 let test = '';
+let isNewUpload = '';
 let videoName = '';
 let date = '';
 
@@ -569,6 +570,8 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
                     title: 'Edit Welcome Screen'
                 });
             }
+
+            console.log(screenVideo);
         });
     }    
 });
@@ -622,17 +625,9 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
 
-            if (videoName == '' || defaultVideoName == '') {
-                ScreenVideo.find().then(function(docVideo) {
-                    docVideo.forEach(function(video) {
-                        if (video._id == req.params.id) {
-                            ScreenVideo.updateOne({_id: video._id}, {$set: {
-                                videoName: video.videoName,
-                                defaultVideoName: video.defaultVideoName
-                            }}, function(err, screenVideo) {});
-                        }
-                    })
-                });
+            if (videoName == "" && defaultVideoName == "") {
+                req.body.videoName = req.params.oldVideoName;
+                req.body.defaultVideoName = req.params.currentVideo;
             } else {
                 req.body.videoName = videoName;
                 req.body.defaultVideoName = defaultVideoName;
@@ -660,36 +655,29 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
         } else {
-            req.body.title = title;
+            req.body.title = req.body.title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
 
-            if (videoName == '' || defaultVideoName == '') {
-                ScreenVideo.find().then(function(docVideo) {
-                    docVideo.forEach(function(video) {
-                        if (video._id == req.params.id) {
-                            ScreenVideo.updateOne({_id: video._id}, {$set: {
-                                videoName: video.videoName,
-                                defaultVideoName: video.defaultVideoName
-                            }}, function(err, screenVideo) {});
-                        }
-                    })
-                });
+            if (videoName == "" && defaultVideoName == "") {
+                req.body.videoName = req.params.oldVideoName;
+                req.body.defaultVideoName = req.params.currentVideo;
             } else {
                 req.body.videoName = videoName;
                 req.body.defaultVideoName = defaultVideoName;
             }
+
         }
 
         ScreenVideo.updateOne({_id: req.params.id}, {$set: {
-            //videoName: req.body.videoName,
-            //defaultVideoName: req.body.defaultVideoName,
+            videoName: req.body.videoName,
+            defaultVideoName: req.body.defaultVideoName,
             title: req.body.title,
             data: req.body.date,
             activated: req.body.activated,
         }}, function(err, screenVideo) {});
 
-        if (defaultVideoName != '') {
+        if (defaultVideoName != '' || req.body.defaultVideoName == req.body.videoName) {
             if (req.params.oldVideoName != 'default_video.mp4') {
                 fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
                 });
