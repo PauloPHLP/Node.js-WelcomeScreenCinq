@@ -61,9 +61,3 @@ $(document).ready(function() {
         useTransform: false
     });
 });
-
-function timedRefresh(timeoutPeriod) {
-    setTimeout("location.reload(true);", timeoutPeriod);
-}
-
-window.onload = timedRefresh(300000);

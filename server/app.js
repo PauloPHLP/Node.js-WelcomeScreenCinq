@@ -8,19 +8,10 @@ const multer = require('multer');
 const moment = require('moment');
 const fileStream = require('fs');
 const config = require('./config/config').get(process.env.NODE_ENV);
-const io = require('socket.io');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
-
-// https://hackernoon.com/using-mongodb-as-a-realtime-database-with-change-streams-213cba1dfc2a
-
-// https://blog.usejournal.com/how-to-build-a-real-time-chat-app-with-nodejs-socket-io-and-mongodb-7a4c9472edd1
-
-// https://pusher.com/tutorials/realtime-likes-nodejs
-
-// https://pusher.com/tutorials/realtime-notifications-nodejs
 
 const app = express();
 let title = '';
@@ -30,7 +21,6 @@ let defaultVideoName = '';
 let guests = [];
 let company = '';
 let test = '';
-let isNewUpload = '';
 let videoName = '';
 let date = '';
 
