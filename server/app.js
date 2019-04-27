@@ -337,12 +337,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
     }    
 });
 
-app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
-    if (req.params.oldImageName != 'default_image.jpg') {
-        fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
-        });
-    }
-
+app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req, res) => {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb (null, 'uploads/');
@@ -378,11 +373,17 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
                 })
             });
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
-            req.body.imageName = imageName;
-            req.body.defaultImageName = defaultImageName;
             req.body.company = req.body.company;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            if (imageName == "" && defaultImageName == "") {
+                req.body.imageName = req.params.oldImageName;
+                req.body.defaultImageName = req.params.currentImage;
+            } else {
+                req.body.imageName = imageName;
+                req.body.defaultImageName = defaultImageName;
+            }
 
             ScreenVideo.find().then(function(docVideo) {
                 docVideo.forEach(function(video) {
@@ -397,8 +398,14 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
         } else {
-            req.body.imageName = imageName;
-            req.body.defaultImageName = defaultImageName;
+            if (imageName == "" && defaultImageName == "") {
+                req.body.imageName = req.params.oldImageName;
+                req.body.defaultImageName = req.params.currentImage;
+            } else {
+                req.body.imageName = imageName;
+                req.body.defaultImageName = defaultImageName;
+            }
+
             req.body.company = req.body.company;;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
@@ -408,18 +415,24 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName', (req, res) => {
             guests.push(req.body['guest' + i.toString()]);
         }
 
-        console.log(req.params.id);
-
-        ScreenImage.updateOne({_id: req.params.id}, {$set: {guestsNames: guests}}, function(err, screenImage) {
-        });
+        // ScreenImage.updateOne({_id: req.params.id}, {$set: {guestsNames: guests}}, function(err, screenImage) {
+        // });
 
         ScreenImage.updateOne({_id: req.params.id}, {$set: {
             imageName: req.body.imageName,
             defaultImageName: req.body.defaultImageName,
+            guestsNames: guests,
             company: req.body.company,
             date: req.body.date,
             activated: req.body.activated
         }}, function(err, screenImage) {});
+
+        if (defaultImageName != '' || req.body.defaultImageName == req.body.imageName) {
+            if (req.params.oldImageName != 'default_image.jpg') {
+                fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
+                });
+            }
+        }
 
         if (err)
             return res.end('An error has occurred!');

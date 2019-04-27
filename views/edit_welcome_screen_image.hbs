@@ -102,7 +102,7 @@
 
 <script>
     let oldCompany = $('#company').val();
-    let oldCurrentImage = $('#currentImage').text();
+    let currentImage = $('#currentImage').text();
 
     $('#defaultImage').change(function() {
         if ($(this).is(':checked')) {
@@ -112,8 +112,12 @@
         } else {
             $('#image').prop('disabled', false);
             $('#company').prop('value', oldCompany);
-            $('#currentImage').text(oldCurrentImage);
+            $('#currentImage').text(currentImage);
         }
+    })
+
+    $('#currentImage').change(function() {
+        currentImage = $('#currentImage').text();
     })
 
     $('#isEnable').change(function() {
@@ -129,15 +133,13 @@
 
         if ($('#company').val() == '' || ($('#company').val() == '' && $('#defaultImage').is(':checked'))) {
             alert('Please put a company name!');
-        } else if (!$('#defaultImage').is(':checked') && $('#image').get(0).files.length === 0) {
-            alert('Please select an image!');
         } else {
             const imageName = $('#imageName').text();
 
             var formData = new FormData($(this)[0]);
             
             $.ajax({
-                url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}`,
+                url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}`,
                 type: 'PUT',
                 data: formData,
                 async: false,
