@@ -574,14 +574,6 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
-    if (req.params.oldVideoName != 'default_video.mp4') {
-        fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
-        });
-    }
-
-    console.log('Old video: ' + req.params.oldVideoName);
-    console.log('Current video: ' + req.params.currentVideo);
-
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb (null, 'uploads/');
@@ -626,11 +618,25 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
                 })
             });
         } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
-            req.body.videoName = videoName;
-            req.body.defaultVideoName = defaultVideoName;
             req.body.title = req.body.title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
+
+            if (videoName == '' || defaultVideoName == '') {
+                ScreenVideo.find().then(function(docVideo) {
+                    docVideo.forEach(function(video) {
+                        if (video._id == req.params.id) {
+                            ScreenVideo.updateOne({_id: video._id}, {$set: {
+                                videoName: video.videoName,
+                                defaultVideoName: video.defaultVideoName
+                            }}, function(err, screenVideo) {});
+                        }
+                    })
+                });
+            } else {
+                req.body.videoName = videoName;
+                req.body.defaultVideoName = defaultVideoName;
+            }
 
             ScreenImage.find().then(function(docImage) {
                 docImage.forEach(function(image) {
@@ -654,20 +660,41 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
         } else {
-            req.body.videoName = videoName;
-            req.body.defaultVideoName = defaultVideoName;
             req.body.title = title;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
+
+            if (videoName == '' || defaultVideoName == '') {
+                ScreenVideo.find().then(function(docVideo) {
+                    docVideo.forEach(function(video) {
+                        if (video._id == req.params.id) {
+                            ScreenVideo.updateOne({_id: video._id}, {$set: {
+                                videoName: video.videoName,
+                                defaultVideoName: video.defaultVideoName
+                            }}, function(err, screenVideo) {});
+                        }
+                    })
+                });
+            } else {
+                req.body.videoName = videoName;
+                req.body.defaultVideoName = defaultVideoName;
+            }
         }
 
         ScreenVideo.updateOne({_id: req.params.id}, {$set: {
-            videoName: req.body.videoName,
-            defaultVideoName: req.body.defaultVideoName,
+            //videoName: req.body.videoName,
+            //defaultVideoName: req.body.defaultVideoName,
             title: req.body.title,
             data: req.body.date,
             activated: req.body.activated,
-        }}, function(err, screenImage) {});
+        }}, function(err, screenVideo) {});
+
+        if (defaultVideoName != '') {
+            if (req.params.oldVideoName != 'default_video.mp4') {
+                fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
+                });
+            }
+        }
 
         if (err)
             return res.end('An error has occurred!');

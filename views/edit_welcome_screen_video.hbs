@@ -65,7 +65,7 @@
 
 <script>
     let oldTitle = $('#title').val();
-    let oldCurrentVideo = $('#currentVideo').text();
+    let currentVideo = $('#currentVideo').text();
 
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
@@ -76,9 +76,13 @@
         } else {
             $('#video').prop('disabled', false);
             $('#title').prop('disabled', false);
-            $('#title').prop('value', oldTitle);
-            $('#currentVideo').text(oldCurrentVideo);
+            $('#title').prop('value', '');
+            $('#currentVideo').text(currentVideo);
         }
+    })
+
+    $('#currentVideo').change(function() {
+        currentVideo = $('#currentVideo').text();
     })
 
     $('#isEnable').change(function() {
@@ -91,7 +95,7 @@
 
     $('#update_form').submit(function(e) {
         e.preventDefault();
-
+        
         if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
             alert('Please put a title!');
         } else {
@@ -100,7 +104,7 @@
             var formData = new FormData($(this)[0]);
             
             $.ajax({
-                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/{{{screenVideo.defaultVideoName}}}`,
+                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}`,
                 type: 'PUT',
                 data: formData,
                 async: false,
