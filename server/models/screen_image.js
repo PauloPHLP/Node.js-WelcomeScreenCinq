@@ -32,10 +32,6 @@ const screenImageSchema = mongoose.Schema({
     }
 }, {timestamps: true});
 
-screenImageSchema.methods.deleteOne = function(id) {
-    ScreenImage.findByIdAndRemove(id);
-}
-
 const ScreenImage = mongoose.model('ScreenImage', screenImageSchema);
 
 module.exports = {ScreenImage};

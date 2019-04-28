@@ -16,7 +16,7 @@
     {{#each videos}}
         {{#if this.activated}}
         <section>
-            <video class="current_video" autoplay muted loop preload>
+            <video class="current_video" autoplay muted preload>
                 <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
             </video>
         </section>
@@ -30,4 +30,9 @@
     }
 
     window.onload = timedRefresh(300000);
+
+    document.getElementById('currentVideo').addEventListener('ended',myHandler,false);
+    function myHandler(e) {
+        location.reload();
+    }
 </script>

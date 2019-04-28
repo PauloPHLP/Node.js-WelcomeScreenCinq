@@ -405,9 +405,6 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
             guests.push(req.body['guest' + i.toString()]);
         }
 
-        // ScreenImage.updateOne({_id: req.params.id}, {$set: {guestsNames: guests}}, function(err, screenImage) {
-        // });
-
         ScreenImage.updateOne({_id: req.params.id}, {$set: {
             imageName: req.body.imageName,
             defaultImageName: req.body.defaultImageName,
@@ -444,11 +441,9 @@ app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
         }
     });
     
-    ScreenImage.deleteOne(req.params._id)
-    .then((screenImage) => {
+    ScreenImage.find({_id: req.params.id}).deleteOne().exec(function(err, screenImage) {
         res.status(200).send(screenImage);
-    })
-    .catch(err => res.status(500).send(err));
+    });
 });
 
 app.get('/new_welcome_screen_video', Auth, (req, res) => {
@@ -705,11 +700,9 @@ app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
         }
     });
 
-    ScreenVideo.deleteOne(req.params._id)
-    .then((screenVideo) => {
+    ScreenVideo.find({_id: req.params.id}).deleteOne().exec(function(err, screenVideo) {
         res.status(200).send(screenVideo);
-    })
-    .catch(err => res.status(500).send(err));
+    });
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
