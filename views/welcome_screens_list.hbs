@@ -67,3 +67,11 @@
         </table>
     </div>
 </div>        
+
+<script>
+    let socket = io();
+
+    $('.deleteVideo, .deleteImage').on('click', () => {
+        socket.emit('UpdateOnDatabase');
+    })
+</script>

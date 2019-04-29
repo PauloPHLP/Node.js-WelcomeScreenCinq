@@ -37,6 +37,8 @@
 </div>
 
 <script>
+    let socket = io();
+
     $('#defaultVideo').change(function() {
         if ($(this).is(':checked')) {
             $('#video').prop('disabled', true);
@@ -50,7 +52,7 @@
     $('#upload_form').submit(function(e) {
         e.preventDefault();
 
-        var formData = new FormData($(this)[0]);
+        let formData = new FormData($(this)[0]);
 
         if (($('#defaultVideo').is(':checked') && $('#title').val() == '') || ($('#title').val() != '' && !$('#defaultVideo').is(':checked') && $('#video').get(0).files.length !== 0)) {
             $.ajax({
@@ -73,5 +75,7 @@
         } else {
             alert('Please fulfill the necessary fields!');
         }
+
+        socket.emit('UpdateOnDatabase');
     })
 </script>

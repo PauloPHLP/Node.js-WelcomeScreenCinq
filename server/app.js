@@ -24,6 +24,9 @@ let test = '';
 let videoName = '';
 let date = '';
 
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE, {useNewUrlParser: true});
 mongoose.set('useCreateIndex', true);
@@ -52,6 +55,12 @@ app.use('/icons', express.static(__dirname + './../public/icons'));
 app.use('/uploads', express.static(__dirname + './../uploads'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+io.on('connection', function(socket){
+    socket.on('UpdateOnDatabase', function(msg){
+        socket.broadcast.emit('RefreshPage');
+    });
+});
 
 app.get('/', (req, res) => {
     ScreenImage.find().exec((err, docImage) => {
@@ -731,6 +740,6 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
     }    
 });
 
-app.listen(config.PORT, () => {
+http.listen(config.PORT, () => {
     console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
 });

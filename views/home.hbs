@@ -25,13 +25,8 @@
 </div>
 
 <script>
-    document.getElementById('current_video').addEventListener('ended', refreshPage, false);
-   
-    function timedRefresh(timeoutPeriod) {
-        setTimeout("location.reload(true);", timeoutPeriod);
-    }
-
-    function refreshPage(e) {
+    var socket = io.connect('http://localhost:3000');
+    socket.on('RefreshPage', function (data) {
         location.reload();
-    }
+    });
 </script>

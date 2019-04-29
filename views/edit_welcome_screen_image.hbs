@@ -101,6 +101,7 @@
 </div>
 
 <script>
+    let socket = io();
     let oldCompany = $('#company').val();
     let currentImage = $('#currentImage').text();
 
@@ -156,5 +157,7 @@
                 }
             });
         }
+
+        socket.emit('UpdateOnDatabase');
     })
 </script>

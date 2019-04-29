@@ -64,6 +64,7 @@
 </div>
 
 <script>
+    let socket = io();
     let oldTitle = $('#title').val();
     let currentVideo = $('#currentVideo').text();
 
@@ -121,5 +122,7 @@
                 }
             });
         }
+
+        socket.emit('UpdateOnDatabase');
     })
 </script>

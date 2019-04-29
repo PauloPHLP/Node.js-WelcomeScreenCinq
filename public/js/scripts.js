@@ -20,20 +20,6 @@ $(document).ready(function() {
         variableWidth: true,
         useTransform: false
     });
-
-    $('.gallery').on('beforeChange', function(event, slick, currentSlide) {
-        if (slick.$slides.length - 1 == currentSlide) {
-            refreshPage();
-        } 
-    });
-
-    if ($('.gallery .current_image').length == 1) {
-        timedRefresh(15000);
-    }
-
-    if ($('#current_video').length === 0 && $('#current_image').length === 0) {
-        timedRefresh(1000);
-    }
 });
 
 function deleteVideo(id) {
