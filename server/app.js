@@ -23,6 +23,8 @@ let company = '';
 let test = '';
 let videoName = '';
 let date = '';
+let authVideo = false;
+let authImage = false;
 
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -435,6 +437,15 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
         res.end('Welcome Screen update successfully!');
     });
 
+    ScreenVideo.find({'activated': true}).then(function (video) {
+        ScreenImage.find({'activated': true}).then(function (image) {
+            if (image == '' && video == '') {
+                ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {
+                });
+            }
+        });
+    });
+
     imageName = '';
     company = '';
     test = '';
@@ -577,8 +588,6 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
                     title: 'Edit Welcome Screen'
                 });
             }
-
-            console.log(screenVideo);
         });
     }    
 });
@@ -694,6 +703,15 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
         if (err)
             return res.end('An error has occurred!');
         res.end('Welcome Screen update successfully!');
+    });
+
+    ScreenVideo.find({'activated': true}).then(function (video) {
+        ScreenImage.find({'activated': true}).then(function (image) {
+            if (image == '' && video == '') {
+                ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {
+                });
+            }
+        });
     });
 
     videoName = '';
