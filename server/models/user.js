@@ -61,20 +61,20 @@ userSchema.statics.findByToken = function(token, cb) {
     })
 }
 
-userSchema.methods.updateOne = function(id, user) {
-    const updatedUser = {
-        name: user.name,
-        login: user.login,
-        email: user.email,
-        password: user.password
-    }
+// userSchema.methods.updateOne = function(id, user) {
+//     const updatedUser = {
+//         name: user.name,
+//         login: user.login,
+//         email: user.email,
+//         password: user.password
+//     }
 
-    User.findByIdAndUpdate(id, updatedUser, {new: true});
-}
+//     User.findByIdAndUpdate(id, updatedUser, {new: true});
+// }
 
-userSchema.methods.deleteOne = function(id) {
-    User.findByIdAndRemove(id);
-}
+// userSchema.methods.deleteOne = function(id) {
+//     User.findByIdAndRemove(id);
+// }
 
 userSchema.methods.generateToken = function(cb) {
     var user = this;

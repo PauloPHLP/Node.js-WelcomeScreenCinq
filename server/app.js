@@ -188,31 +188,33 @@ app.get('/my_account', Auth, (req, res) => {
     }    
 });
 
-app.put('/api/update_user', Auth, (req, res) => {
+app.put('/api/update_user/:id', Auth, (req, res) => {
     bcrypt.genSalt(10, function(err, salt) {
         if(err) 
             return next(err);
         bcrypt.hash(req.body.password, salt, function(err, hash) {
             if(err) 
                 return next(err);
+
                 req.body.password = hash;
-                User.updateOne(req.params._id, req.body)
-                .then((user) => {
-                    res.status(201).send(user);
-                })
-                .catch(err => res.status(500).send(err));
-                    })
-                })
+
+                User.updateOne({'_id': req.params.id}, {$set: {
+                        name: req.body.name,
+                        login: req.body.login,
+                        email: req.body.email,
+                        password: req.body.password
+                    }}, function(err, user) {
+                        res.status(200).send(user);
+                    
+                });
+        })
+    })
 });
 
-app.delete('/api/delete_user', (req, res) => {
-    const user = req.body;
-
-    User.deleteOne(req.params._id)
-    .then((user) => {
+app.delete('/api/delete_user/:id', (req, res) => {
+    User.remove({"_id": req.params.id}, function(err, user) {
         res.status(200).send(user);
-    })
-    .catch(err => res.status(500).send(err));
+    });
 });
 
 app.get('/new_welcome_screen_image', Auth, (req, res) => {
