@@ -59,7 +59,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 io.on('connection', function(socket){
-    socket.on('UpdateOnDatabase', function(msg){
+    socket.on('UpdateOnDatabase', () => {
         socket.broadcast.emit('RefreshPage');
     });
 });
