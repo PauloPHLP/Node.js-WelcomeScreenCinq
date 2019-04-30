@@ -760,6 +760,6 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
     }    
 });
 
-http.listen(config.PORT, () => {
+http.listen(config.PORT, '0.0.0.0', () => {
     console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
 });

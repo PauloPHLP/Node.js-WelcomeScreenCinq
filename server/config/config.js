@@ -7,7 +7,7 @@ const config = {
     default: {
         SECRET: 'SLDKF0DF8AD8GSC343434',
         DATABASE: 'mongodb://localhost:27017/welcomescreencinq',
-        PORT: 3000
+        PORT: '3000' 
     }
 } 
 

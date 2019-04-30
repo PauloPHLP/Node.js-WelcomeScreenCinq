@@ -16,7 +16,7 @@
     {{#each videos}}
         {{#if this.activated}}
         <section>
-            <video class="current_video" id="current_video" autoplay muted preload>
+            <video class="current_video" id="current_video" autoplay loop muted preload>
                 <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
             </video>
         </section>
@@ -25,7 +25,7 @@
 </div>
 
 <script>
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('http://kiosk:3000');
     socket.on('RefreshPage', function (data) {
         location.reload();
     });
