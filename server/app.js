@@ -43,6 +43,9 @@ const hbs = expressHandlebars.create({
         guestList: function(guestName) {
             if (guestName !== '') 
                 return `<li class="list-group-item col-xs-6 text-center">&#x2022; ${ guestName}</li>`;
+            else if (guestName === '') {
+                return `<li class="list-group-item col-xs-6 text-center">&nbsp</li>`;
+            }
         }
     }
 })

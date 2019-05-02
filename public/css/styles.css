@@ -257,11 +257,11 @@ table.table td .add {
 .guests_list {
     position: fixed;
     top: 40%;
-    bottom: 5vw;
     left: 10;
     right: 10;
     width: 100%;
     margin: 0 auto;
+    padding: 0;
 }
 
 .current_video, .current_video_with_nav {
