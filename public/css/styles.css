@@ -255,13 +255,20 @@ table.table td .add {
 }
 
 .guests_list {
+    padding: 0;
     position: fixed;
+    text-align: left;
+
     top: 40%;
     left: 10;
     right: 10;
     width: 100%;
     margin: 0 auto;
-    padding: 0;
+}
+
+.guest-item {
+    text-align: left;
+    padding-left: 140px;
 }
 
 .current_video, .current_video_with_nav {
