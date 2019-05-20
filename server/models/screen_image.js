@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 const screenImageSchema = mongoose.Schema({
-    company: {
+    company1: {
+        type: String,
+        require: true,
+        trim: true
+    },
+    company2: {
         type: String,
         require: true,
         trim: true

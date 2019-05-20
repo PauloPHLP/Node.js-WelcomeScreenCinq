@@ -4,7 +4,13 @@
         <section>
             <img class="current_image" id="current_image" src="/uploads/{{this.imageName}}"/>
             <ul class="list-group row guests_list">
-                <li class="list-group-item col-xs-12 company_name">{{this.company}}:</li>
+
+                {{#companyList this.company1}}
+                {{/companyList}}
+
+                {{#companyList this.company2}}
+                {{/companyList}}
+
                 {{#each this.guestsNames}}
                     {{#guestList this}}
                     {{/guestList }}

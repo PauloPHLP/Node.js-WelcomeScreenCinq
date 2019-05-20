@@ -42,9 +42,16 @@ const hbs = expressHandlebars.create({
     helpers: {
         guestList: function(guestName) {
             if (guestName !== '') 
-                return `<li class="guest-item list-group-item col-xs-6 text-center">&#x2022; ${ guestName}</li>`;
+                return `<li class="guest-item list-group-item col-xs-6 ">&#x2022; ${guestName}</li>`;
             else if (guestName === '') {
-                return `<li class="guest-item list-group-item col-xs-6 text-center">&nbsp</li>`;
+                return `<li class="guest-item list-group-item col-xs-6 ">&nbsp</li>`;
+            }
+        },
+        companyList: function(companyName) {
+            if (companyName !== '') 
+                return `<li class="company_name list-group-item col-xs-6 "> ${companyName}</li>`;
+            else if (companyName === '') {
+                return `<li class="company_name list-group-item col-xs-6 ">&nbsp</li>`;
             }
         }
     }
@@ -266,7 +273,8 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
         }
 
         const screenImage = new ScreenImage({
-            company: req.body.company,
+            company1: req.body.company1,
+            company2: req.body.company2,
             guestsNames: guests,
             imageName: imageName,
             defaultImageName: defaultImageName,
@@ -291,7 +299,8 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
     });
 
     imageName = '';
-    company = '';
+    company1 = '';
+    company2 = '';
     defaultImageName = '';
     guests = [];
 });
@@ -352,7 +361,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
             date = moment(Date.now()).format('MM/DD/YY');
             imageName = Date.now() + "_" + file.originalname;
             defaultImageName = file.originalname;
-            company = req.body.company;
+            company1 = req.body.company1;
+            company2 = req.body.company2;
             cb (null, `${imageName}`);
         }
     });
@@ -368,7 +378,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
         if (req.body.defaultImage == true && req.body.isEnable == true) {
             req.body.imageName = 'default_image.jpg';
             req.body.defaultImageName = req.body.imageName;
-            req.body.company = req.body.company;
+            req.body.company1 = req.body.company1;
+            req.body.company2 = req.body.company2;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
 
@@ -379,7 +390,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
                 })
             });
         } else if (req.body.defaultImage == false && req.body.isEnable == true) {
-            req.body.company = req.body.company;
+            req.body.company1 = req.body.company1;
+            req.body.company2 = req.body.company2;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = true;
 
@@ -400,7 +412,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
         } else if (req.body.defaultImage == true && req.body.isEnable == false) {
             req.body.imageName = 'default_image.jpg';
             req.body.defaultImageName = req.body.imageName;
-            req.body.company = req.body.company;
+            req.body.company1 = req.body.company1;
+            req.body.company2 = req.body.company2;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
         } else {
@@ -412,7 +425,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
                 req.body.defaultImageName = defaultImageName;
             }
 
-            req.body.company = req.body.company;;
+            req.body.company1 = req.body.company1;
+            req.body.company2 = req.body.company2;
             req.body.date = moment(Date.now()).format('MM/DD/YY');
             req.body.activated = false;
         }
@@ -425,7 +439,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
             imageName: req.body.imageName,
             defaultImageName: req.body.defaultImageName,
             guestsNames: guests,
-            company: req.body.company,
+            company1: req.body.company1,
+            company2: req.body.company2,
             date: req.body.date,
             activated: req.body.activated
         }}, function(err, screenImage) {});
@@ -452,7 +467,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
     });
 
     imageName = '';
-    company = '';
+    company1 = '';
+    company2 = '';
     test = '';
     defaultImageName = '';
     guests = [];

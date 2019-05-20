@@ -1,0 +1,462 @@
+[33m[nodemon] 1.18.11[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+[33m[nodemon] 1.18.11[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node server/app.js`[39m
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+Error: Parse error on line 8:
+...{{#if this.company1 != ''}}:{{/if}}    
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{{#if this.company1 <> ''}}:{{/if}}    
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{{#if this.company1 <> ""}}:{{/if}}    
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{{#if this.company1 <> ""}}:{{/if}}    
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{#if (this.company1 <> "")}}:{{/if}}   
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{#if (this.company1 != "")}}:{{/if}}   
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{#if (this.company1 != "")}}:{{/if}}   
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{#if (this.company1 != "")}}:{{/if}}   
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+Error: Parse error on line 8:
+...{{#if this.company1 != ''}}:{{/if}}    
+-----------------------^
+Expecting 'CLOSE_RAW_BLOCK', 'CLOSE', 'CLOSE_UNESCAPED', 'OPEN_SEXPR', 'CLOSE_SEXPR', 'ID', 'OPEN_BLOCK_PARAMS', 'STRING', 'NUMBER', 'BOOLEAN', 'UNDEFINED', 'NULL', 'DATA', 'SEP', got 'INVALID'
+    at Parser.parseError (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:267:19)
+    at Parser.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/parser.js:336:30)
+    at HandlebarsEnvironment.parse (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/base.js:46:43)
+    at compileInput (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:515:19)
+    at ret (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/handlebars/dist/cjs/handlebars/compiler/compiler.js:524:18)
+    at ExpressHandlebars._renderTemplate (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:250:12)
+    at ExpressHandlebars.<anonymous> (/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/node_modules/express-handlebars/lib/express-handlebars.js:173:21)
+    at <anonymous>
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[33m[nodemon] 1.18.11[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching: *.*[39m
+[32m[nodemon] starting `node server/app.js`[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:50
+        companyList: function(companyName) {
+        ^^^^^^^^^^^
+
+SyntaxError: Unexpected identifier
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:49
+        };
+         ^
+
+SyntaxError: Unexpected token ;
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:49
+        };
+         ^
+
+SyntaxError: Unexpected token ;
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+/home/cinq/WelcomeScreenCinq/WelcomeScreenCinq/server/app.js:49
+        };
+         ^
+
+SyntaxError: Unexpected token ;
+    at createScript (vm.js:80:10)
+    at Object.runInThisContext (vm.js:139:10)
+    at Module._compile (module.js:616:28)
+    at Object.Module._extensions..js (module.js:663:10)
+    at Module.load (module.js:565:32)
+    at tryModuleLoad (module.js:505:12)
+    at Function.Module._load (module.js:497:3)
+    at Function.Module.runMain (module.js:693:10)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server/app.js`[39m
+[32m[nodemon] starting `node server/app.js`[39m
+Welcome Screen Cinq running on port 3000
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+events.js:183
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3000
+    at Object._errnoException (util.js:1022:11)
+    at _exceptionWithHostPort (util.js:1044:20)
+    at Server.setupListenHandle [as _listen2] (net.js:1367:14)
+    at listenInCluster (net.js:1408:12)
+    at doListen (net.js:1517:7)
+    at _combinedTickCallback (internal/process/next_tick.js:141:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+    at Function.Module.runMain (module.js:695:11)
+    at startup (bootstrap_node.js:188:16)
+    at bootstrap_node.js:609:3
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
