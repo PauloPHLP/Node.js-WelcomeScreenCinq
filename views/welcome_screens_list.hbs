@@ -49,7 +49,8 @@
                 {{/each}}
                 {{#each images}}
                     <tr>
-                        <td>{{this.company1}} - {{this.company2}}</td>
+                        {{#showCompanies this.companies}}
+                        {{/showCompanies}}
                         <td>{{this.date}}</td>
                         {{#if this.activated}}
                             <td>Enabled</td>

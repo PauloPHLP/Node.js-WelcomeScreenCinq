@@ -19,6 +19,7 @@ let imageName = '';
 let defaultImageName = '';
 let defaultVideoName = '';
 let guests = [];
+let companies = [];
 let company = '';
 let test = '';
 let videoName = '';
@@ -53,6 +54,17 @@ const hbs = expressHandlebars.create({
             else if (companyName === '') {
                 return `<li class="company_name list-group-item col-xs-6 ">&nbsp</li>`;
             }
+        },
+        showCompanies: function(companies) {
+            if ((companies[0] !== '' && companies[1] === '') || (companies[0] !== ' ' && companies[1] === ' ')) {
+                return `<td>${companies[0]}</td>`;
+            } else if ((companies[0] === '' && companies[1] !== '') || (companies[0] === ' ' && companies[1] !== ' ')) {
+                return `<td>${companies[1]}</td>`;
+            } else if ((companies[0] !== '' && companies[1] !== '') && (companies[0] !== ' ' && companies[1] !== ' ')) {
+                return `<td>${companies[0]} - ${companies[1]}</td>`;
+            } else {
+                return `<td></td>`;
+            }
         }
     }
 })
@@ -83,7 +95,8 @@ app.get('/', (req, res) => {
                 images: docImage,
                 videos: docVideo,
                 header: false,
-                title: 'Welcome Screen Cinq'
+                title: 'Welcome Screen Cinq',
+                host: config.HOST
             });
         })
     });
@@ -104,7 +117,8 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
                     images: docImage,
                     videos: docVideo,
                     header: true,
-                    title: 'Welcome Screens preview'
+                    title: 'Welcome Screens preview',
+                    host: config.HOST
                 });
             });
         });
@@ -272,9 +286,12 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
             guests.push(req.body['guest' + i.toString()]);
         }
 
+        for (let i = 1; i < 3; i++) {
+            companies.push(req.body['company' + i.toString()]);
+        }
+
         const screenImage = new ScreenImage({
-            company1: req.body.company1,
-            company2: req.body.company2,
+            companies: companies,
             guestsNames: guests,
             imageName: imageName,
             defaultImageName: defaultImageName,
@@ -299,8 +316,7 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
     });
 
     imageName = '';
-    company1 = '';
-    company2 = '';
+    companies = [];
     defaultImageName = '';
     guests = [];
 });
@@ -361,8 +377,9 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
             date = moment(Date.now()).format('MM/DD/YY');
             imageName = Date.now() + "_" + file.originalname;
             defaultImageName = file.originalname;
-            company1 = req.body.company1;
-            company2 = req.body.company2;
+            for (let i = 1; i < 3; i++) {
+                companies.push(req.body['company' + i.toString()]);
+            }
             cb (null, `${imageName}`);
         }
     });
@@ -435,12 +452,15 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
             guests.push(req.body['guest' + i.toString()]);
         }
 
+        for (let i = 1; i < 3; i++) {
+            companies.push(req.body['company' + i.toString()]);
+        }
+
         ScreenImage.updateOne({_id: req.params.id}, {$set: {
             imageName: req.body.imageName,
             defaultImageName: req.body.defaultImageName,
             guestsNames: guests,
-            company1: req.body.company1,
-            company2: req.body.company2,
+            companies: companies,
             date: req.body.date,
             activated: req.body.activated
         }}, function(err, screenImage) {});
@@ -467,8 +487,7 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
     });
 
     imageName = '';
-    company1 = '';
-    company2 = '';
+    companies = [];
     test = '';
     defaultImageName = '';
     guests = [];
