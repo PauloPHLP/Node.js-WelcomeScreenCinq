@@ -1,3 +1,4 @@
+const moment = require('moment');
 const {ScreenVideo} = require('./../server/models/screen_video');
 const {ScreenImage} = require('./../server/models/screen_image');
 
@@ -5,25 +6,33 @@ let isDefault = false;
 let isEnabled = false;
 
 module.exports = {
-  DisableImagesAndVideos: () => {
-    module.exports.DisableImages();
-    module.exports.DisableVideos();
+  EnableDisableImagesAndVideos: (enable) => {
+    module.exports.EnableDisableImages(enable);
+    module.exports.EnableDisableVideos(enable);
   },
 
-  DisableImages: () => {
+  EnableDisableImages: isActivated => {
     ScreenImage.find().then(docImage => {
       docImage.forEach(image => {
-        ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, (err, screenImage) => {
-        });
+        ScreenImage.updateOne({_id: image._id}, {$set: {activated: isActivated}}, (err, screenImage) => {});
       });
     });
   },
 
-  DisableVideos: () => {
+  EnableDisableVideos: isActivated => {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, (err, screenVideo) => {
-        });
+        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
+      });
+    });
+  },
+
+  DisableActiveMidia: () => {
+    ScreenVideo.find({'activated': true}).then(function (video) {
+      ScreenImage.find({'activated': true}).then(function (image) {
+        if (image == '' && video == '') {
+          ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {});
+        }
       });
     });
   },
@@ -47,5 +56,9 @@ module.exports = {
       isDefault: this.isDefault,
       isEnabled: this.isEnabled
     };
+  },
+
+  GetDate: () => {
+    return date = moment(Date.now()).format('MM/DD/YY');
   }
 }

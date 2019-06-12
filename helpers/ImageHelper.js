@@ -1,12 +1,19 @@
 const moment = require('moment');
 const multer = require('multer');
+const fileStream = require('fs');
+const GlobalHelpers = require('./GlobalHelpers');
 const {ScreenImage} = require('./../server/models/screen_image');
 
 let date = '';
 let imageName = '';
 let defaultImageName = '';
+let defaultImage = '';
 let companies = [];
+let companiesList = [];
 let guests = [];
+let isEnable = false;
+let isDefault = false;
+let newImage = '';
 
 module.exports = {
   SetStorage: () => {
@@ -49,8 +56,72 @@ module.exports = {
       return screenImage = new ScreenImage({
         date: this.date,
         imageName: this.imageName,
-        defaultImage: this.defaultImage
+        defaultImageName: this.defaultImage
       });
+    }
+  },
+
+  DeleteImage: (currentImage, oldImageName) => {
+    if (currentImage != '' || currentImage == oldImageName) {
+      if (oldImageName != 'default_image.jpg') {
+        fileStream.unlink('./uploads/' + oldImageName, function (err) {});
+      }
+    }
+  },
+
+  UpdateImage: req => {
+    this.isDefault = Boolean(req.body.defaultImage);
+    this.isEnable = Boolean(req.body.isEnable);
+    this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
+    this.date = GlobalHelpers.GetDate();
+
+    module.exports.DeleteImage(req.params.currentImage, req.params.oldImageName);
+
+    if (this.isDefault == true && this.isEnable == true) {
+      module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);
+      GlobalHelpers.EnableDisableVideos(false);
+
+      return this.newImage;
+    } else if (this.isDefault == false && this.isEnable == true) {
+      module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true);
+      GlobalHelpers.EnableDisableVideos(false);
+
+      return this.newImage;
+    } else if (this.isDefault == true && this.isEnable == false) {
+      module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false);
+      GlobalHelpers.EnableDisableVideos(false);
+
+      return this.newImage;
+    } else {
+      module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false);
+      GlobalHelpers.EnableDisableVideos(false);
+
+      return this.newImage;
+    }
+  },
+
+  SetImage: (imgName, defaultImgName, comp, dataUpd, isActivated) => {
+    this.newImage = {
+      imageName: imgName,
+      defaultImageName: defaultImgName,
+      companies: comp,
+      date: dataUpd,
+      activated: isActivated 
+    }
+  },
+
+  SetNotDefaultImage: (imgName, defImgName, comp, dataUpd, isActivated) => {
+    if (this.imageName == "" && this.defaultImage == "") {
+      this.imageName = imgName;
+      this.defaultImage = defImgName;
+    } 
+
+    module.exports.SetImage(this.imageName, this.defaultImage, comp, dataUpd, isActivated);
+  },
+
+  SetCompanies: () => {
+    for (let i = 0; i < arguments.length; i++) {
+      this.companies = arguments[i];
     }
   }
 }

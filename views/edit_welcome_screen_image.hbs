@@ -108,17 +108,15 @@
 
 <script>
     let socket = io();
-    let oldCompany = $('#company').val();
+    let oldCompany = $('#company1').val();
     let currentImage = $('#currentImage').text();
 
     $('#defaultImage').change(function() {
         if ($(this).is(':checked')) {
             $('#image').prop('disabled', true);
-            $('#company').prop('value', 'Default image');
             $('#currentImage').text('Current image: default_image.jpg');
         } else {
             $('#image').prop('disabled', false);
-            $('#company').prop('value', oldCompany);
             $('#currentImage').text(currentImage);
         }
     })
@@ -144,7 +142,6 @@
             const imageName = $('#imageName').text();
 
             var formData = new FormData($(this)[0]);
-            
             $.ajax({
                 url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}`,
                 type: 'PUT',
@@ -155,7 +152,7 @@
                 enctype: 'multipart/form-data',
                 processData: false,
                 success: (data) => {
-                    alert('Welcome Screen update successfully!');
+                    alert('Welcome Screen updated successfully!');
                     window.location.href = "/welcome_screens_list"
                 },
                 error: () => {

@@ -18,8 +18,6 @@ const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
 
-//803 lines
-
 const app = express();
 let title = '';
 let imageName = '';
@@ -244,7 +242,7 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_image', (req, res) => {
-  GlobalHelpers.DisableVideos();
+  GlobalHelpers.EnableDisableVideos(false);
   const upload = ImageHelper.StoreImage();
   
   upload(req, res, function(err) {
@@ -284,7 +282,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
       if (err)
         return res.status(400).send(err);
       const renderSettings = GlobalHelpers.RenderSettings(screenImage.defaultImageName, screenImage.activated);
-      
+
       res.render('edit_welcome_screen_image', {
         screenImage,
         isDefaultImage: renderSettings.isDefault,
@@ -297,128 +295,37 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req, res) => {
-    const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb (null, 'uploads/');
-        },
-        filename: (req, file, cb) => {
-            date = moment(Date.now()).format('MM/DD/YY');
-            imageName = Date.now() + "_" + file.originalname;
-            defaultImageName = file.originalname;
-            for (let i = 1; i < 3; i++) {
-                companies.push(req.body['company' + i.toString()]);
-            }
-            cb (null, `${imageName}`);
-        }
-    });
+  const upload = ImageHelper.StoreImage();
 
-    const upload = multer({
-        storage
-    }).single('image');
+  upload(req, res, function(err) {
+    const screenImage = ImageHelper.UpdateImage(req);
     
-    upload(req, res, function(err) {
-        req.body.defaultImage = Boolean(req.body.defaultImage);
-        req.body.isEnable = Boolean(req.body.isEnable);
+    for (let i = 1; i < 9; i++) {
+      guests.push(req.body['guest' + i.toString()]);
+    }
 
-        if (req.body.defaultImage == true && req.body.isEnable == true) {
-            req.body.imageName = 'default_image.jpg';
-            req.body.defaultImageName = req.body.imageName;
-            req.body.company1 = req.body.company1;
-            req.body.company2 = req.body.company2;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = true;
+    for (let i = 1; i < 3; i++) {
+      companies.push(req.body['company' + i.toString()]);
+    }
 
-            ScreenVideo.find().then(function(docVideo) {
-                docVideo.forEach(function(video) {
-                    ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-                    });
-                })
-            });
-        } else if (req.body.defaultImage == false && req.body.isEnable == true) {
-            req.body.company1 = req.body.company1;
-            req.body.company2 = req.body.company2;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = true;
+    ScreenImage.updateOne({_id: req.params.id}, {$set: {
+      imageName: screenImage.imageName,
+      defaultImageName: screenImage.defaultImageName,
+      guestsNames: guests,
+      companies: companies,
+      date: screenImage.date,
+      activated: screenImage.activated
+    }}, function(err, screenImage) {});
 
-            if (imageName == "" && defaultImageName == "") {
-                req.body.imageName = req.params.oldImageName;
-                req.body.defaultImageName = req.params.currentImage;
-            } else {
-                req.body.imageName = imageName;
-                req.body.defaultImageName = defaultImageName;
-            }
+    if (err)
+      return res.end('An error has occurred!');
+    res.end('Welcome Screen update successfully!');
+  });
 
-            ScreenVideo.find().then(function(docVideo) {
-                docVideo.forEach(function(video) {
-                    ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-                    });
-                })
-            });
-        } else if (req.body.defaultImage == true && req.body.isEnable == false) {
-            req.body.imageName = 'default_image.jpg';
-            req.body.defaultImageName = req.body.imageName;
-            req.body.company1 = req.body.company1;
-            req.body.company2 = req.body.company2;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = false;
-        } else {
-            if (imageName == "" && defaultImageName == "") {
-                req.body.imageName = req.params.oldImageName;
-                req.body.defaultImageName = req.params.currentImage;
-            } else {
-                req.body.imageName = imageName;
-                req.body.defaultImageName = defaultImageName;
-            }
+  GlobalHelpers.DisableActiveMidia();
 
-            req.body.company1 = req.body.company1;
-            req.body.company2 = req.body.company2;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = false;
-        }
-
-        for (let i = 1; i < 9; i++) {
-            guests.push(req.body['guest' + i.toString()]);
-        }
-
-        for (let i = 1; i < 3; i++) {
-            companies.push(req.body['company' + i.toString()]);
-        }
-
-        ScreenImage.updateOne({_id: req.params.id}, {$set: {
-            imageName: req.body.imageName,
-            defaultImageName: req.body.defaultImageName,
-            guestsNames: guests,
-            companies: companies,
-            date: req.body.date,
-            activated: req.body.activated
-        }}, function(err, screenImage) {});
-
-        if (defaultImageName != '' || req.body.defaultImageName == req.body.imageName) {
-            if (req.params.oldImageName != 'default_image.jpg') {
-                fileStream.unlink('./uploads/' + req.params.oldImageName, function (err) {
-                });
-            }
-        }
-
-        if (err)
-            return res.end('An error has occurred!');
-        res.end('Welcome Screen update successfully!');
-    });
-
-    ScreenVideo.find({'activated': true}).then(function (video) {
-        ScreenImage.find({'activated': true}).then(function (image) {
-            if (image == '' && video == '') {
-                ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {
-                });
-            }
-        });
-    });
-
-    imageName = '';
-    companies = [];
-    test = '';
-    defaultImageName = '';
-    guests = [];
+  companies = [];
+  guests = [];
 });
 
 app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
@@ -448,7 +355,7 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
-  GlobalHelpers.DisableImagesAndVideos();
+  GlobalHelpers.EnableDisableImagesAndVideos(false);
   const upload = VideoHelper.StoreVideo();
   
   upload(req, res, function(err) {
@@ -489,130 +396,25 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
-    const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb (null, 'uploads/');
-        },
-        filename: (req, file, cb) => {
-            date = moment(Date.now()).format('MM/DD/YY');
-            videoName = Date.now() + "_" + file.originalname;
-            defaultVideoName = file.originalname;
-            title = req.body.title;
-            cb (null, `${videoName}`);
-        }
-    });
+  const upload = VideoHelper.StoreVideo();
 
-    const upload = multer({
-        storage
-    }).single('video');
+  upload(req, res, function(err) {
+    const screenVideo = VideoHelper.UpdateVideo(req);
+    
+    ScreenVideo.updateOne({_id: req.params.id}, {$set: {
+      videoName: screenVideo.videoName,
+      defaultVideoName: screenVideo.defaultVideoName,
+      title: screenVideo.title,
+      date: screenVideo.date,
+      activated: screenVideo.activated
+    }}, function(err, screenVideo) {});
 
-    upload(req, res, function(err) {
-        req.body.defaultVideo = Boolean(req.body.defaultVideo);
-        req.body.isEnable = Boolean(req.body.isEnable);
+    if (err)
+      return res.end('An error has occurred!');
+    res.end('Welcome Screen update successfully!');
+  });
 
-        if (req.body.defaultVideo == true && req.body.isEnable == true) {
-            req.body.videoName = 'default_video.mp4';
-            req.body.defaultVideoName = req.body.videoName;
-            req.body.title = 'Default video';
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = true;
-
-            ScreenImage.find().then(function(docImage) {
-                docImage.forEach(function(image) {
-                    ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, function(err, screenImage) {
-                    });
-                })
-            });
-
-            ScreenVideo.find().then(function(docVideo) {
-                docVideo.forEach(function(video) {
-                    if (video._id != req.params.id) {
-                        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-                        });
-                    }
-                })
-            });
-        } else if (req.body.defaultVideo == false && req.body.isEnable == true) {
-            req.body.title = req.body.title;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = true;
-
-            if (videoName == "" && defaultVideoName == "") {
-                req.body.videoName = req.params.oldVideoName;
-                req.body.defaultVideoName = req.params.currentVideo;
-            } else {
-                req.body.videoName = videoName;
-                req.body.defaultVideoName = defaultVideoName;
-            }
-
-            ScreenImage.find().then(function(docImage) {
-                docImage.forEach(function(image) {
-                    ScreenImage.updateOne({_id: image._id}, {$set: {activated: false}}, function(err, screenImage) {
-                    });
-                })
-            });
-
-            ScreenVideo.find().then(function(docVideo) {
-                docVideo.forEach(function(video) {
-                    if (video._id != req.params.id) {
-                        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, function(err, screenVideo) {
-                        });
-                    }
-                })
-            });
-        } else if (req.body.defaultVideo == true && req.body.isEnable == false) {
-            req.body.videoName = 'default_video.mp4';
-            req.body.defaultVideoName = req.body.videoName;
-            req.body.title = 'Default video';
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = false;
-        } else {
-            req.body.title = req.body.title;
-            req.body.date = moment(Date.now()).format('MM/DD/YY');
-            req.body.activated = false;
-
-            if (videoName == "" && defaultVideoName == "") {
-                req.body.videoName = req.params.oldVideoName;
-                req.body.defaultVideoName = req.params.currentVideo;
-            } else {
-                req.body.videoName = videoName;
-                req.body.defaultVideoName = defaultVideoName;
-            }
-
-        }
-
-        ScreenVideo.updateOne({_id: req.params.id}, {$set: {
-            videoName: req.body.videoName,
-            defaultVideoName: req.body.defaultVideoName,
-            title: req.body.title,
-            data: req.body.date,
-            activated: req.body.activated,
-        }}, function(err, screenVideo) {});
-
-        if (defaultVideoName != '' || req.body.defaultVideoName == req.body.videoName) {
-            if (req.params.oldVideoName != 'default_video.mp4') {
-                fileStream.unlink('./uploads/' + req.params.oldVideoName, function (err) {
-                });
-            }
-        }
-
-        if (err)
-            return res.end('An error has occurred!');
-        res.end('Welcome Screen update successfully!');
-    });
-
-    ScreenVideo.find({'activated': true}).then(function (video) {
-        ScreenImage.find({'activated': true}).then(function (image) {
-            if (image == '' && video == '') {
-                ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {
-                });
-            }
-        });
-    });
-
-    videoName = '';
-    defaultVideoName = '';
-    title = '';
+  GlobalHelpers.DisableActiveMidia();
 });
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
