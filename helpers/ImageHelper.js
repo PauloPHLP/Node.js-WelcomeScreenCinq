@@ -25,7 +25,6 @@ module.exports = {
         date = moment(Date.now()).format('MM/DD/YY');
         imageName = Date.now() + "_" + file.originalname;
         defaultImageName = file.originalname;
-
         this.date = date;
         this.imageName = imageName;
         this.defaultImage = defaultImageName;
@@ -61,21 +60,18 @@ module.exports = {
     }
   },
 
-  DeleteImage: (currentImage, oldImageName) => {
-    if (currentImage != '' || currentImage == oldImageName) {
-      if (oldImageName != 'default_image.jpg') {
-        fileStream.unlink('./uploads/' + oldImageName, function (err) {});
-      }
+  DeleteImage: (oldImgName) => {
+    if ((oldImgName !== 'default_image.jpg') && (this.imageName !== oldImgName) || (this.isDefault === true && oldImgName !== 'default_image.jpg')) {
+      fileStream.unlink('./uploads/' + oldImgName, function (err) {});
     }
   },
 
   UpdateImage: req => {
     this.isDefault = Boolean(req.body.defaultImage);
     this.isEnable = Boolean(req.body.isEnable);
+    module.exports.DeleteImage(req.params.oldImageName);
     this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
     this.date = GlobalHelpers.GetDate();
-
-    module.exports.DeleteImage(req.params.currentImage, req.params.oldImageName);
 
     if (this.isDefault == true && this.isEnable == true) {
       module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);

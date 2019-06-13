@@ -1,78 +1,78 @@
 <div class="container">
-    <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
-    <div id="ws_list" class="table-wrapper">
-        <div class="table-title">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h2>{{user.name}}</h2>
-                    <h3>Welcome Screen list</h3>
-                </div>
-                <br/><br/>
-                <div class="btn_add">
-                    <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_image'">
-                        <i class="fa fa-plus btn_add">Add new image</i>
-                    </button>
-                </di>
-                <div class="btn_add">
-                    <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_video'">
-                        <i class="fa fa-plus btn_add">Add new video</i>
-                    </button>
-                </div>
-            </div>
+  <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+  <div id="ws_list" class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>{{user.name}}</h2>
+          <h3>Welcome Screen list</h3>
         </div>
-        <table class="table table-bordered text-center">
-            <thead>
-                <tr>
-                    <th class="text-center">Company/Title</th>
-                    <th class="text-center">Last update</th>
-                    <th class="text-center">Is enable?</th>
-                    <th class="text-center">Type</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each videos}}
-                    <tr>
-                        <td>{{this.title}}</td>
-                        <td>{{this.date}}</td>
-                        {{#if this.activated}}
-                            <td>Enabled</td>
-                        {{else}}
-                            <td>Disabled</td>
-                        {{/if}}
-                        <td>{{this.wsType}}</td>
-                        <td>
-                            <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                {{/each}}
-                {{#each images}}
-                    <tr>
-                        {{#showCompanies this.companies}}
-                        {{/showCompanies}}
-                        <td>{{this.date}}</td>
-                        {{#if this.activated}}
-                            <td>Enabled</td>
-                        {{else}}
-                            <td>Disabled</td>
-                        {{/if}}
-                        <td>{{this.wsType}}</td>
-                        <td>
-                            <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="deleteImage('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
+        <br/><br/>
+        <div class="btn_add">
+          <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_image'">
+            <i class="fa fa-plus btn_add">Add new image</i>
+          </button>
+        </di>
+        <div class="btn_add">
+          <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_video'">
+            <i class="fa fa-plus btn_add">Add new video</i>
+          </button>
+        </div>
+      </div>
     </div>
+    <table class="table table-bordered text-center">
+      <thead>
+        <tr>
+          <th class="text-center">Company/Title</th>
+          <th class="text-center">Last update</th>
+          <th class="text-center">Is enable?</th>
+          <th class="text-center">Type</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each videos}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.date}}</td>
+                {{#if this.activated}}
+                    <td>Enabled</td>
+                {{else}}
+                    <td>Disabled</td>
+                {{/if}}
+                <td>{{this.wsType}}</td>
+                <td>
+                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                    <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+        {{/each}}
+        {{#each images}}
+          <tr>
+            {{#showCompanies this.companies}}
+            {{/showCompanies}}
+              <td>{{this.date}}</td>
+            {{#if this.activated}}
+              <td>Enabled</td>
+            {{else}}
+              <td>Disabled</td>
+            {{/if}}
+            <td>{{this.wsType}}</td>
+            <td>
+              <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+              <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="deleteImage('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </div>        
 
 <script>
-    let socket = io();
+  let socket = io();
 
-    $('.deleteVideo, .deleteImage').on('click', () => {
-        socket.emit('UpdateOnDatabase');
-    })
+  $('.deleteVideo, .deleteImage').on('click', () => {
+    socket.emit('UpdateOnDatabase');
+  });
 </script>

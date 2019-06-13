@@ -1,128 +1,128 @@
 <div class="container">
-    <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
-    <div id="new_welcome_screen_form" class="row centered-form">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Edit Welcome Screen</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="update_form">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group flt_left">
-                                    {{#if isDefaultVideo}}
-                                        <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                                        <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
-                                    {{else}}
-                                        <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                                        <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group flt_left">
-                                    {{#if isEnabled}}
-                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
-                                        <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
-                                    {{else}}
-                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
-                                        <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="title">Current video title</label>
-                                    {{#if isDefaultVideo}}
-                                        <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}" disabled>
-                                    {{else}}
-                                        <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="video" id="currentVideo">Current video: {{screenVideo.defaultVideoName}}</label>
-                                    <label id="videoName" class="vsb_hidden">{{screenVideo.videoName}}</label>
-                                    <br/>
-                                    <label for="video">Choose a new video</label>
-                                    {{#if isDefaultVideo}}
-                                        <input type="file" name="video" value="{{screenVideo.videoName}}" id="video" class="form-control input-sm" placeholder="Video" disabled>
-                                    {{else}}
-                                        <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
-                                    {{/if}}
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    </form>
-                </div>
-            </div>
+  <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+  <div id="new_welcome_screen_form" class="row centered-form">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Welcome Screen</h3>
         </div>
+        <div class="panel-body">
+          <form id="update_form">
+            <div class="row">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_left">
+                  {{#if isDefaultVideo}}
+                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
+                  {{else}}
+                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_left">
+                  {{#if isEnabled}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
+                    <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
+                  {{else}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
+                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label for="title">Current video title</label>
+                  {{#if isDefaultVideo}}
+                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}" disabled>
+                  {{else}}
+                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label for="video" id="currentVideo">Current video: {{screenVideo.defaultVideoName}}</label>
+                  <label id="videoName" class="vsb_hidden">{{screenVideo.videoName}}</label>
+                  <br/>
+                  <label for="video">Choose a new video</label>
+                  {{#if isDefaultVideo}}
+                    <input type="file" name="video" value="{{screenVideo.videoName}}" id="video" class="form-control input-sm" placeholder="Video" disabled>
+                  {{else}}
+                    <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+            <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-    let socket = io();
-    let oldTitle = $('#title').val();
-    let currentVideo = $('#currentVideo').text();
+  let socket = io();
+  let oldTitle = $('#title').val();
+  let currentVideo = $('#currentVideo').text();
 
-    $('#defaultVideo').change(function() {
-        if ($(this).is(':checked')) {
-            $('#video').prop('disabled', true);
-            $('#title').prop('disabled', true);
-            $('#title').prop('value', 'Default video');
-            $('#currentVideo').text('Current video: default_video.mp4');
-        } else {
-            $('#video').prop('disabled', false);
-            $('#title').prop('disabled', false);
-            $('#title').prop('value', '');
-            $('#currentVideo').text(currentVideo);
+  $('#defaultVideo').change(function() {
+    if ($(this).is(':checked')) {
+      $('#video').prop('disabled', true);
+      $('#title').prop('disabled', true);
+      $('#title').prop('value', 'Default video');
+      $('#currentVideo').text('Current video: default_video.mp4');
+    } else {
+      $('#video').prop('disabled', false);
+      $('#title').prop('disabled', false);
+      $('#title').prop('value', '');
+      $('#currentVideo').text(currentVideo);
+    }
+  });
+
+  $('#currentVideo').change(function() {
+    currentVideo = $('#currentVideo').text();
+  });
+
+  $('#isEnable').change(function() {
+    if ($(this).is(':checked')) {
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
+    } else {
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
+    }
+  });
+
+  $('#update_form').submit(function(e) {
+    e.preventDefault();
+    
+    if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
+      alert('Please put a title!');
+    } else {
+      const videoName = $('#videoName').text();
+
+      var formData = new FormData($(this)[0]);
+      
+      $.ajax({
+        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}`,
+        type: 'PUT',
+        data: formData,
+        async: false,
+        contentType: false,
+        cache: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        success: (data) => {
+          alert('Welcome Screen update successfully!');
+          window.location.href = "/welcome_screens_list"
+        },
+        error: () => {
+          alert('An issue has occurred!');
         }
-    })
+      });
+    }
 
-    $('#currentVideo').change(function() {
-        currentVideo = $('#currentVideo').text();
-    })
-
-    $('#isEnable').change(function() {
-        if ($(this).is(':checked')) {
-            $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
-        } else {
-            $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
-        }
-    })
-
-    $('#update_form').submit(function(e) {
-        e.preventDefault();
-        
-        if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
-            alert('Please put a title!');
-        } else {
-            const videoName = $('#videoName').text();
-
-            var formData = new FormData($(this)[0]);
-            
-            $.ajax({
-                url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}`,
-                type: 'PUT',
-                data: formData,
-                async: false,
-                contentType: false,
-                cache: false,
-                enctype: 'multipart/form-data',
-                processData: false,
-                success: (data) => {
-                    alert('Welcome Screen update successfully!');
-                    window.location.href = "/welcome_screens_list"
-                },
-                error: () => {
-                    alert('An issue has occurred!');
-                }
-            });
-        }
-
-        socket.emit('UpdateOnDatabase');
-    })
+    socket.emit('UpdateOnDatabase');
+  });
 </script>

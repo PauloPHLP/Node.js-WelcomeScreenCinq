@@ -395,12 +395,14 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
   }    
 });
 
-app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:title', (req, res) => {
   const upload = VideoHelper.StoreVideo();
+
+  console.log(req.params.title);
 
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UpdateVideo(req);
-    
+
     ScreenVideo.updateOne({_id: req.params.id}, {$set: {
       videoName: screenVideo.videoName,
       defaultVideoName: screenVideo.defaultVideoName,
@@ -408,7 +410,7 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
       date: screenVideo.date,
       activated: screenVideo.activated
     }}, function(err, screenVideo) {});
-
+    
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');

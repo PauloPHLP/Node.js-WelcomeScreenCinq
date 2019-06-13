@@ -1,166 +1,166 @@
 <div class="container">
-    <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
-    <div id="new_welcome_screen_form" class="row centered-form">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Edit Welcome Screen</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="update_form">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group flt_left">
-                                    {{#if isDefaultImage}}
-                                        <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
-                                        <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
-                                    {{else}}
-                                        <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
-                                        <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group flt_left">
-                                    {{#if isEnabled}}
-                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
-                                        <input type="checkbox" class="flt_right" name="isEnable" id="isEnable" checked>
-                                    {{else}}
-                                        <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
-                                        <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
-                                    <label id="imageName" class="vsb_hidden">{{screenImage.imageName}}</label>
-                                    <label id="guestsNames" class="vsb_hidden"></label>
-                                    <br/>
-                                    <label for="image">Choose a new image</label>
-                                    {{#if isDefaultImage}}
-                                        <input type="file" name="image" value="{{screenImage.imageName}}" id="image" class="form-control input-sm" placeholder="Image" disabled>
-                                    {{else}}
-                                        <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image">
-                                    {{/if}}
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <label for="company">First company name</label>
-                                    <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1" value="{{screenImage.companies.[0]}}">
-                                </div>
-                            </div>
-			                <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <label for="company">Second company name</label>
-                                    <input type="text" name="company2" id="company2" class="form-control input-sm" placeholder="Company 2" value="{{screenImage.companies.[1]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest1" id="guest1" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[0]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest2" id="guest2" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[1]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest3" id="guest3" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[2]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest4" id="guest4" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[3]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest5" id="guest5" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[4]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest6" id="guest6" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[5]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest7" id="guest7" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[6]}}">
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" name="guest8" id="guest8" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[7]}}">
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    </form>
-                </div>
-            </div>
+  <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+  <div id="new_welcome_screen_form" class="row centered-form">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Welcome Screen</h3>
         </div>
+        <div class="panel-body">
+          <form id="update_form">
+            <div class="row">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_left">
+                  {{#if isDefaultImage}}
+                    <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
+                    <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
+                  {{else}}
+                    <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
+                    <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_left">
+                  {{#if isEnabled}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
+                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable" checked>
+                  {{else}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
+                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
+                  <label id="imageName" class="vsb_hidden">{{screenImage.imageName}}</label>
+                  <label id="guestsNames" class="vsb_hidden"></label>
+                  <br/>
+                  <label for="image">Choose a new image</label>
+                  {{#if isDefaultImage}}
+                    <input type="file" name="image" value="{{screenImage.imageName}}" id="image" class="form-control input-sm" placeholder="Image" disabled>
+                  {{else}}
+                    <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image">
+                  {{/if}}
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <label for="company">First company name</label>
+                  <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1" value="{{screenImage.companies.[0]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <label for="company">Second company name</label>
+                  <input type="text" name="company2" id="company2" class="form-control input-sm" placeholder="Company 2" value="{{screenImage.companies.[1]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest1" id="guest1" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[0]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest2" id="guest2" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[1]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest3" id="guest3" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[2]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest4" id="guest4" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[3]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest5" id="guest5" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[4]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest6" id="guest6" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[5]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest7" id="guest7" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[6]}}">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest8" id="guest8" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[7]}}">
+                </div>
+              </div>
+            </div>
+            <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-    let socket = io();
-    let oldCompany = $('#company1').val();
-    let currentImage = $('#currentImage').text();
+  let socket = io();
+  let oldCompany = $('#company1').val();
+  let currentImage = $('#currentImage').text();
 
-    $('#defaultImage').change(function() {
-        if ($(this).is(':checked')) {
-            $('#image').prop('disabled', true);
-            $('#currentImage').text('Current image: default_image.jpg');
-        } else {
-            $('#image').prop('disabled', false);
-            $('#currentImage').text(currentImage);
+  $('#defaultImage').change(function() {
+    if ($(this).is(':checked')) {
+      $('#image').prop('disabled', true);
+      $('#currentImage').text('Current image: default_image.jpg');
+    } else {
+      $('#image').prop('disabled', false);
+      $('#currentImage').text(currentImage);
+    }
+  });
+
+  $('#currentImage').change(function() {
+    currentImage = $('#currentImage').text();
+  });
+
+  $('#isEnable').change(function() {
+    if ($(this).is(':checked')) {
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
+    } else {
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
+    }
+  });
+
+  $('#update_form').submit(function(e) {
+    e.preventDefault();
+
+    if ($('#company1').val() == '' || $('#company2').val() == '' || ($('#company1').val() == '' && $('#company2').val() == '' && $('#defaultImage').is(':checked'))) {
+      alert('Please put a company name!');
+    } else {
+      const imageName = $('#imageName').text();
+
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+        url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}`,
+        type: 'PUT',
+        data: formData,
+        async: false,
+        contentType: false,
+        cache: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        success: (data) => {
+          alert('Welcome Screen updated successfully!');
+          window.location.href = "/welcome_screens_list"
+        },
+        error: () => {
+          alert('An issue has occurred!');
         }
-    })
+      });
+    }
 
-    $('#currentImage').change(function() {
-        currentImage = $('#currentImage').text();
-    })
-
-    $('#isEnable').change(function() {
-        if ($(this).is(':checked')) {
-            $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
-        } else {
-            $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
-        }
-    })
-
-    $('#update_form').submit(function(e) {
-        e.preventDefault();
-
-        if ($('#company1').val() == '' || $('#company2').val() == '' || ($('#company1').val() == '' && $('#company2').val() == '' && $('#defaultImage').is(':checked'))) {
-            alert('Please put a company name!');
-        } else {
-            const imageName = $('#imageName').text();
-
-            var formData = new FormData($(this)[0]);
-            $.ajax({
-                url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}`,
-                type: 'PUT',
-                data: formData,
-                async: false,
-                contentType: false,
-                cache: false,
-                enctype: 'multipart/form-data',
-                processData: false,
-                success: (data) => {
-                    alert('Welcome Screen updated successfully!');
-                    window.location.href = "/welcome_screens_list"
-                },
-                error: () => {
-                    alert('An issue has occurred!');
-                }
-            });
-        }
-
-        socket.emit('UpdateOnDatabase');
-    })
+    socket.emit('UpdateOnDatabase');
+  });
 </script>

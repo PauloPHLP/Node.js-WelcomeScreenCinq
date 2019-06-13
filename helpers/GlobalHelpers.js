@@ -6,9 +6,14 @@ let isDefault = false;
 let isEnabled = false;
 
 module.exports = {
-  EnableDisableImagesAndVideos: (enable) => {
-    module.exports.EnableDisableImages(enable);
-    module.exports.EnableDisableVideos(enable);
+  EnableDisableImagesAndVideos: isEnabled => {
+    module.exports.EnableDisableImages(isEnabled);
+    module.exports.EnableDisableVideos(isEnabled);
+  },
+
+  NewVideoDisableEverything: (currentVideoId, isActivated) => {
+    module.exports.EnableDisableImages(false);
+    module.exports.DisableAllVideosButCurrent(currentVideoId, isActivated);
   },
 
   EnableDisableImages: isActivated => {
@@ -24,6 +29,16 @@ module.exports = {
       docVideo.forEach(video => {
         ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
       });
+    });
+  },
+
+  DisableEnableAllVideosButCurrent: (currentVideoId, isActivated) => {
+    ScreenVideo.find().then(function(docVideo) {
+      docVideo.forEach(function(video) {
+          if (video._id != currentVideoId) {
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, function(err, screenVideo) {});
+          }
+      })
     });
   },
 
