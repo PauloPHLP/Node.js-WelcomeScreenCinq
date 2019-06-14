@@ -64,6 +64,13 @@
 </div>
 
 <script>
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+  });
+
   let socket = io();
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
@@ -98,7 +105,10 @@
     e.preventDefault();
     
     if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
-      alert('Please put a title!');
+      Toast.fire({
+        type: 'warning',
+        title: 'Please put a title!'
+      });
     } else {
       const videoName = $('#videoName').text();
 
@@ -114,11 +124,22 @@
         enctype: 'multipart/form-data',
         processData: false,
         success: (data) => {
-          alert('Welcome Screen update successfully!');
-          window.location.href = "/welcome_screens_list"
+          Swal.fire({
+            title: 'Success',
+            text: 'Welcome Screen updated successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            window.location.href = "/welcome_screens_list"
+          });
         },
         error: () => {
-          alert('An issue has occurred!');
+          Swal.fire(
+            'Sorry',
+            'An issue has occurred :(',
+            'error'
+          );
         }
       });
     }

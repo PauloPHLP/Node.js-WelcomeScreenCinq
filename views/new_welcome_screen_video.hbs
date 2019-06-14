@@ -64,16 +64,31 @@
           cache: false,
           enctype: 'multipart/form-data',
           processData: false,
-          success: (data) => {
-            alert('Video uploaded successfully!');
-            window.location.href = "welcome_screens_list"
+          success: data => {
+            Swal.fire({
+              title: 'Success!',
+              text: 'Video uploaded successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              window.location.href = "/welcome_screens_list"
+            });
           },
           error: () => {
-            alert('An issue has occurred!');
+            Swal.fire(
+              'Sorry',
+              'An issue has occurred :(',
+              'error'
+            );
           }
         });
     } else {
-      alert('Please fulfill the necessary fields!');
+      Swal.fire(
+        'Empty fields',
+        'Please fulfill the necessary fields!',
+        'warning'
+      );
     }
 
     socket.emit('UpdateOnDatabase');

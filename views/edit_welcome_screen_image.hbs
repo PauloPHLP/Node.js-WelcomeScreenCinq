@@ -107,6 +107,13 @@
 </div>
 
 <script>
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+  });
+
   let socket = io();
   let oldCompany = $('#company1').val();
   let currentImage = $('#currentImage').text();
@@ -137,7 +144,10 @@
     e.preventDefault();
 
     if ($('#company1').val() == '' || $('#company2').val() == '' || ($('#company1').val() == '' && $('#company2').val() == '' && $('#defaultImage').is(':checked'))) {
-      alert('Please put a company name!');
+      Toast.fire({
+        type: 'warning',
+        title: 'Please put a company name!'
+      });
     } else {
       const imageName = $('#imageName').text();
 
@@ -151,12 +161,23 @@
         cache: false,
         enctype: 'multipart/form-data',
         processData: false,
-        success: (data) => {
-          alert('Welcome Screen updated successfully!');
-          window.location.href = "/welcome_screens_list"
+        success: data => {
+          Swal.fire({
+            title: 'Success',
+            text: 'Welcome Screen updated successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            window.location.href = "/welcome_screens_list"
+          });
         },
         error: () => {
-          alert('An issue has occurred!');
+          Swal.fire(
+            'Sorry',
+            'An issue has occurred :(',
+            'error'
+          );
         }
       });
     }

@@ -33,6 +33,8 @@ module.exports = {
   },
 
   StoreVideo: () => {
+    GlobalHelpers.EnableDisableImagesAndVideos(false);
+
     const storage = module.exports.SetStorage();
 
     return upload = multer({
@@ -66,35 +68,41 @@ module.exports = {
     }
   },
 
+  DeleteSingleWSVideo: (req, res) => {
+    ScreenVideo.findById(req.params.id, (err, screenVideo) => {
+      if (screenVideo.videoName != 'default_video.mp4') {
+        fileStream.unlink('./uploads/' + screenVideo.videoName, err => {});
+      }
+    });
+  
+    ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
+      res.status(200).send(screenVideo);
+    });
+  },
+
   UpdateVideo: req => {
     this.isDefault = Boolean(req.body.defaultVideo);
     this.isEnable = Boolean(req.body.isEnable);
     module.exports.DeleteVideo(req.params.oldVideoName);
     this.date = GlobalHelpers.GetDate();
+    GlobalHelpers.DisableActiveMidia();
 
     if (this.isDefault == true && this.isEnable == true) {
-      module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true);
-      GlobalHelpers.DisableEnableAllVideosButCurrent(req.params.id, false);
-      
-      return this.newVideo;
+      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true, req, false);
     } else if (this.isDefault == false && this.isEnable == true) {
-      module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, true);
-      GlobalHelpers.DisableEnableAllVideosButCurrent(req.params.id, false);
-
-      return this.newVideo;
+      return module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, true, req, false);
     } else if (this.isDefault == true && this.isEnable == false) {
-      module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, false);
-
-      return this.newVideo;
+      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, false, req, true);
     } else {
-      module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, false);
-      
-      return this.newVideo;
+      return module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, false, req, true);
     }
   },
 
-  SetVideo: (vidName, defaultVidName, tit, dataUpd, isActivated) => {
-    this.newVideo = {
+  SetVideo: (vidName, defaultVidName, tit, dataUpd, isActivated, req, enableVideos) => {
+    if (enableVideos === false) 
+      GlobalHelpers.DisableEnableAllVideosButCurrent(req.params.id, enableVideos);
+
+    return this.newVideo = {
       videoName: vidName,
       defaultVideoName: defaultVidName,
       title: tit,
@@ -103,12 +111,12 @@ module.exports = {
     }
   },
 
-  SetNotDefaultVideo: (vidName, defaultVidName, tit, dataUpd, isActivated) => {
+  SetNotDefaultVideo: (vidName, defaultVidName, tit, dataUpd, isActivated, req, enableVideos) => {
     if (this.videoName == "" && this.defaultVideoName == "") {
       this.videoName = vidName;
       this.defaultVideoName = defaultVidName;
     } 
 
-    module.exports.SetVideo(this.videoName, this.defaultVideoName, tit, dataUpd, isActivated);
+    return module.exports.SetVideo(this.videoName, this.defaultVideoName, tit, dataUpd, isActivated, req, enableVideos);
   },
 }

@@ -33,20 +33,20 @@ module.exports = {
   },
 
   DisableEnableAllVideosButCurrent: (currentVideoId, isActivated) => {
-    ScreenVideo.find().then(function(docVideo) {
-      docVideo.forEach(function(video) {
+    ScreenVideo.find().then(docVideo => {
+      docVideo.forEach(video => {
           if (video._id != currentVideoId) {
-            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, function(err, screenVideo) {});
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
           }
-      })
+      });
     });
   },
 
   DisableActiveMidia: () => {
-    ScreenVideo.find({'activated': true}).then(function (video) {
-      ScreenImage.find({'activated': true}).then(function (image) {
+    ScreenVideo.find({'activated': true}).then(video => {
+      ScreenImage.find({'activated': true}).then(image => {
         if (image == '' && video == '') {
-          ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, function(err, screenVideo) {});
+          ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, (err, screenVideo) => {});
         }
       });
     });

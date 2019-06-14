@@ -31,12 +31,18 @@
       url: '/api/login',
       data: JSON.stringify(user),
       contentType: 'application/json',
-      success: (date) => {
+      success: data => {
         window.location.href = "/welcome_screens_list"
       },
       error: () => {
-        alert('Something went wrong. Please check you e-mail and password.');
-        window.location.reload();
+        Swal.fire({
+          title: 'Something went wrong!',
+          text: 'Please check you e-mail or password and try again :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        }).then(result => {
+          window.location.reload();
+        });
       }
     });
   });

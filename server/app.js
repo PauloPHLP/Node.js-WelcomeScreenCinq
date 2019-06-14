@@ -4,41 +4,18 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
-const multer = require('multer');
-const moment = require('moment');
-const fileStream = require('fs');
 const config = require('./config/config').get(process.env.NODE_ENV);
 const GlobalHelpers = require('../helpers/GlobalHelpers');
 const HBSHelpers = require('./../helpers/HBSHelpers');
-const UserHelper = require('./../helpers/UserHelper');
 const ImageHelper = require('./../helpers/ImageHelper');
 const VideoHelper = require('./../helpers/VideoHelper');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
-
 const app = express();
-let title = '';
-let imageName = '';
-let defaultImageName = '';
-let defaultVideoName = '';
-let guests = [];
-let companies = [];
-let company = '';
-let test = '';
-let videoName = '';
-let date = '';
-let authVideo = false;
-let authImage = false;
-
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-
-mongoose.Promise = global.Promise;
-mongoose.connect(config.DATABASE, {useNewUrlParser: true});
-mongoose.set('useCreateIndex', true);
-
 const hbs = expressHandlebars.create({
   extname: 'hbs',
   defaultLayout: 'main',
@@ -56,6 +33,13 @@ const hbs = expressHandlebars.create({
     }
   }
 });
+
+let guests = [];
+let companies = [];
+
+mongoose.Promise = global.Promise;
+mongoose.connect(config.DATABASE, {useNewUrlParser: true});
+mongoose.set('useCreateIndex', true);
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -88,29 +72,6 @@ app.get('/', (req, res) => {
       });
     });
   });
-});
-
-app.get('/welcome_screen_preview', Auth, (req, res) => {
-  if (!req.user) { 
-    return res.render('login', {
-      header: false,
-      title: 'Login'
-    });
-  } else {
-    ScreenImage.find().exec((err, docImage) => {
-      ScreenVideo.find().exec((err, docVideo) => {
-        if (err) 
-          return res.status(400).send(err);
-        res.render('welcome_screen_preview', {
-          images: docImage,
-          videos: docVideo,
-          header: true,
-          title: 'Welcome Screens preview',
-          host: config.HOST
-        });
-      });
-    });
-  }    
 });
 
 app.get('/register', Auth, (req, res) => {
@@ -200,10 +161,10 @@ app.get('/my_account', Auth, (req, res) => {
 });
 
 app.put('/api/update_user/:id', Auth, (req, res) => {
-  bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.genSalt(10, (err, salt) => {
     if(err) 
       return next(err);
-    bcrypt.hash(req.body.password, salt, function(err, hash) {
+    bcrypt.hash(req.body.password, salt, (err, hash) => {
       if(err) 
         return next(err);
 
@@ -214,7 +175,7 @@ app.put('/api/update_user/:id', Auth, (req, res) => {
         login: req.body.login,
         email: req.body.email,
         password: req.body.password
-      }}, function(err, user) {
+      }}, (err, user) => {
         res.status(200).send(user);
       });
     });
@@ -225,6 +186,54 @@ app.delete('/api/delete_user/:id', (req, res) => {
   User.remove({"_id": req.params.id}, (err, user) => {
     res.status(200).send(user);
   });
+});
+
+app.get('/welcome_screen_preview', Auth, (req, res) => {
+  if (!req.user) { 
+    return res.render('login', {
+      header: false,
+      title: 'Login'
+    });
+  } else {
+    ScreenImage.find().exec((err, docImage) => {
+      ScreenVideo.find().exec((err, docVideo) => {
+        if (err) 
+          return res.status(400).send(err);
+        res.render('welcome_screen_preview', {
+          images: docImage,
+          videos: docVideo,
+          header: true,
+          title: 'Welcome Screens preview',
+          host: config.HOST
+        });
+      });
+    });
+  }    
+});
+
+app.get('/welcome_screens_list', Auth, (req, res) => {
+  if (!req.user) { 
+    return res.render('login', {
+      header: false,
+      title: 'Login'
+    });
+  } else {
+    User.find({'_id': req.user._id}).exec((err, user) => {
+      ScreenVideo.find().exec((err, docVideo) => {
+        ScreenImage.find().exec((err, docImage) => {
+          if (err) 
+            return res.status(400).send(err);
+          res.render('welcome_screens_list', {
+            header: true,
+            videos: docVideo,
+            images: docImage,
+            user: req.user,
+            title: 'Welcome Screen list'
+          });
+        });
+      });
+    });
+  }    
 });
 
 app.get('/new_welcome_screen_image', Auth, (req, res) => {
@@ -242,7 +251,6 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_image', (req, res) => {
-  GlobalHelpers.EnableDisableVideos(false);
   const upload = ImageHelper.StoreImage();
   
   upload(req, res, function(err) {
@@ -297,7 +305,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
 app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req, res) => {
   const upload = ImageHelper.StoreImage();
 
-  upload(req, res, function(err) {
+  upload(req, res, err => {
     const screenImage = ImageHelper.UpdateImage(req);
     
     for (let i = 1; i < 9; i++) {
@@ -315,29 +323,19 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
       companies: companies,
       date: screenImage.date,
       activated: screenImage.activated
-    }}, function(err, screenImage) {});
+    }}, (err, screenImage) => {});
 
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
   });
 
-  GlobalHelpers.DisableActiveMidia();
-
   companies = [];
   guests = [];
 });
 
 app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
-  ScreenImage.findById(req.params.id, (err, screenImage) => {
-    if (screenImage.imageName != 'default_image.jpg') {
-      fileStream.unlink('./uploads/' + screenImage.imageName, err => {});
-    }
-  });
-
-  ScreenImage.find({_id: req.params.id}).deleteOne().exec((err, screenImage) => {
-    res.status(200).send(screenImage);
-  });
+  ImageHelper.DeleteSingleWSImage(req, res);
 });
 
 app.get('/new_welcome_screen_video', Auth, (req, res) => {
@@ -355,7 +353,6 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
-  GlobalHelpers.EnableDisableImagesAndVideos(false);
   const upload = VideoHelper.StoreVideo();
   
   upload(req, res, function(err) {
@@ -398,8 +395,6 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:title', (req, res) => {
   const upload = VideoHelper.StoreVideo();
 
-  console.log(req.params.title);
-
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UpdateVideo(req);
 
@@ -409,51 +404,16 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:title
       title: screenVideo.title,
       date: screenVideo.date,
       activated: screenVideo.activated
-    }}, function(err, screenVideo) {});
+    }}, (err, screenVideo) => {});
     
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
   });
-
-  GlobalHelpers.DisableActiveMidia();
 });
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
-  ScreenVideo.findById(req.params.id, (err, screenVideo) => {
-    if (screenVideo.videoName != 'default_video.mp4') {
-      fileStream.unlink('./uploads/' + screenVideo.videoName, err => {});
-    }
-  });
-
-  ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
-    res.status(200).send(screenVideo);
-  });
-});
-
-app.get('/welcome_screens_list', Auth, (req, res) => {
-  if (!req.user) { 
-    return res.render('login', {
-      header: false,
-      title: 'Login'
-    });
-  } else {
-    User.find({'_id': req.user._id}).exec((err, user) => {
-      ScreenVideo.find().exec((err, docVideo) => {
-        ScreenImage.find().exec((err, docImage) => {
-          if (err) 
-            return res.status(400).send(err);
-          res.render('welcome_screens_list', {
-            header: true,
-            videos: docVideo,
-            images: docImage,
-            user: req.user,
-            title: 'Welcome Screen list'
-          });
-        });
-      });
-    });
-  }    
+  VideoHelper.DeleteSingleWSVideo(req, res);
 });
 
 http.listen(config.PORT, '0.0.0.0', () => {

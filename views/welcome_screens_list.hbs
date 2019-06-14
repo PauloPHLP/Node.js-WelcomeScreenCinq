@@ -36,14 +36,14 @@
                 <td>{{this.title}}</td>
                 <td>{{this.date}}</td>
                 {{#if this.activated}}
-                    <td>Enabled</td>
+                  <td>Enabled</td>
                 {{else}}
-                    <td>Disabled</td>
+                  <td>Disabled</td>
                 {{/if}}
                 <td>{{this.wsType}}</td>
                 <td>
-                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                    <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+                  <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                  <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
                 </td>
             </tr>
         {{/each}}

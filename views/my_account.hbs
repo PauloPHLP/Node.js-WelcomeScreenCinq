@@ -32,7 +32,12 @@
     }
 
     if (user.password != $('#confirmPassword').val()) {
-      alert('Those passwords don\'t match!');
+      Swal.fire({
+        title: 'Check your passwords',
+        text: 'They don\'t match!',
+        type: 'error',
+        confirmButtonColor: '#EE9658'
+      });
 
       $('#confirmPassword').addClass('passesDontMatch');
       $('#password').addClass('passesDontMatch');
@@ -47,12 +52,24 @@
         url: '/api/update_user/{{{user._id}}}',
         data: JSON.stringify(user),
         contentType: 'application/json',
-        success: (data) => {
-          alert('User updated successfully!');
-          window.location.href = "/welcome_screens_list"
+        success: data => {
+           Swal.fire({
+            title: 'Success!',
+            text: 'User updated successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            window.location.href = "/welcome_screens_list"
+          });
         },
         error: () => {
-          alert('An issue has occurred! Try a different e-mail or login.');
+          Swal.fire({
+            title: 'Something went wrong!',
+            text: 'Try a different e-mail or login.',
+            type: 'error',
+            confirmButtonColor: '#EE9658'
+          });
         }
       });
     }
@@ -61,21 +78,48 @@
   $('#btn_delete').click((e) => {
     e.preventDefault();
 
-    let confirmation = confirm("Are you sure about this?");
-
-    if (confirmation === true) {
-      $.ajax({
-        type:'DELETE',
-        url: `/api/delete_user/{{{user._id}}}`,
-        contentType: 'application/json',
-        success: (data) => {
-          alert('User deleted successfully!');
-          window.location.href = "/welcome_screens_list"
-        },
-        error: () => {
-          alert('An issue has occurred!');
-        }
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure about this?',
+      text: 'You will not be able to recover your data!',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete my account!',
+      confirmButtonColor: '#EE9658',
+      cancelButtonText: 'No, keep it!',
+      cancelButtonColor: '#F50000'
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          type:'DELETE',
+          url: `/api/delete_user/{{{user._id}}}`,
+          contentType: 'application/json',
+          success: data => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'User deleted successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              window.location.href = "/"
+            });
+          },
+          error: () => {
+            Swal.fire(
+              'Sorry',
+              'An issue has occurred :(',
+              'error'
+            );
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'Your account is safe :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        });
+      }
+    });
   });
 </script>

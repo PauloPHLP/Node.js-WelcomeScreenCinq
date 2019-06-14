@@ -17,14 +17,14 @@
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <label for="video">Choose a new image</label>
-                    <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image" disabled>
+                  <label for="video">Choose a new image</label>
+                  <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image" disabled>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                    <label for="company">Put the first company name</label>
-                    <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1">
+                  <label for="company">Put the first company name</label>
+                  <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
@@ -108,16 +108,31 @@
         cache: false,
         enctype: 'multipart/form-data',
         processData: false,
-        success: (data) => {
-          alert('Image uploaded successfully!');
-          window.location.href = "welcome_screens_list"
+        success: data => {
+           Swal.fire({
+            title: 'Success!',
+            text: 'Image uploaded successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            window.location.href = "/welcome_screens_list"
+          });
         },
         error: () => {
-          alert('An issue has occurred!');
+          Swal.fire(
+            'Sorry',
+            'An issue has occurred :(',
+            'error'
+          );
         }
       });
     } else {
-      alert('Please fulfill the necessary fields!');
+      Swal.fire(
+        'Empty fields',
+        'Please fulfill the necessary fields!',
+        'warning'
+      );
     }
 
     socket.emit('UpdateOnDatabase');
