@@ -16,6 +16,11 @@
             <li class="nav-item">
               <a class="nav-link" href="/my_account">MY ACCOUNT</a>
             </li>   
+            {{#if isAdmin}}
+            <li class="nav-item">
+              <a class="nav-link" href="/register">REGISTER</a>
+            </li>  
+            {{/if}}
             <li class="nav-item">
               <a class="nav-link" href="/logout">LOGOUT</a>
             </li> 

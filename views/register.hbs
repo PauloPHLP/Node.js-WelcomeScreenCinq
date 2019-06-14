@@ -12,6 +12,10 @@
           <input required name="email" id="email" type="email" class="form-control" placeholder="E-mail" maxlength="100">
           <input required id="password" name="password" type="password" class="form-control" placeholder="Password" maxlength="100">
           <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Confirm password" maxlength="100">
+          <div class="form-group flt_left">
+            <label for="adminUser" class="flt_right">&nbsp Give administrator privileges for this user</label>
+            <input type="checkbox" class="flt_right" name="adminUser" id="adminUser">
+          </div>
           <button type="submit" class="btn btn-info btn-block">Create account</button>
         </fieldset>
       </form>
@@ -20,6 +24,22 @@
 </div>
 
 <script>
+  $(document).ready(function(){
+    {{#if isAdmin}}
+      
+    {{else}}
+      Swal.fire({
+        title: 'Administrator only',
+        text: 'Sorry, you need administrator previleges!',
+        type: 'error',
+        confirmButtonText: 'Continue',
+        confirmButtonColor: '#EE9658'
+      }).then(result => {
+        window.location.href = "/welcome_screens_list"
+      });
+    {{/if}}
+  });
+
   $('#register_form').submit((e) => {
     e.preventDefault();
 
@@ -27,7 +47,8 @@
       name: $('#name').val(),
       login: $('#login').val(),
       email: $('#email').val(),
-      password: $('#password').val()
+      password: $('#password').val(),
+      isAdmin: $('#adminUser').is(':checked')
     }
 
     if (user.password != $('#confirmPassword').val()) {

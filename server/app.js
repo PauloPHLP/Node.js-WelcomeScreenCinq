@@ -11,6 +11,7 @@ const ImageHelper = require('./../helpers/ImageHelper');
 const VideoHelper = require('./../helpers/VideoHelper');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
+const {UserHelper} = require('./../helpers/UserHelper');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
 const app = express();
@@ -75,38 +76,50 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', Auth, (req, res) => {
-  if (req.user) { 
-    return res.render('welcome_screen_preview', {
-      header: true,
-      title: 'Register'
-    });
+  if (req.user && req.user.isAdmin === false) {
+    res.redirect('back');
   } else {
-    res.render('register', {
-      header: false,
-      title: 'Register'
-    });
-  }
+    if (req.user) { 
+      return res.render('register', {
+        header: true,
+        title: 'Register',
+        isAdmin: req.user.isAdmin
+      });
+    } else {
+      res.render('login', {
+        header: false,
+        title: 'login'
+      });
+    }
+  }  
 });
 
 app.post('/api/register', (req, res) => {
-  const user = new User(req.body);
+  console.log(req.body.name);
+  const user = UserHelper.CreateUser(req);
   
   user.save((err, doc) => {
-    if(err) 
-      return res.status(400).send(err);
-    user.generateToken((err, user) => {
-      if(err) 
-        return res.status(400).send(err);
-      res.cookie('auth', user.token).send('OK!');
-    });
+    if (err)
+      res.status(400).send(err);
   });
+
+  // user.save((err, doc) => {
+  //   if(err) 
+  //     return res.status(400).send(err);
+  //   user.generateToken((err, user) => {
+  //     if(err) 
+  //       return res.status(400).send(err);
+  //     res.cookie('auth', user.token).send('OK!');
+  //   });
+  // });
 });
 
 app.get('/login', Auth, (req, res) => {
   if (req.user) { 
-    res.render('welcome_screen_preview', {
+    res.render('welcome_screens_list', {
       header: true,
-      title: 'Login'
+      title: 'Login',
+      isAdmin: req.user.isAdmin
     });
   } else {
     res.render('login', {
@@ -154,7 +167,8 @@ app.get('/my_account', Auth, (req, res) => {
       res.render('my_account', {
         header: true,
         user: req.user,
-        title: req.user.name
+        title: req.user.name,
+        isAdmin: req.user.isAdmin
       });
     });
   }    
@@ -203,6 +217,7 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
           images: docImage,
           videos: docVideo,
           header: true,
+          isAdmin: req.user.isAdmin,
           title: 'Welcome Screens preview',
           host: config.HOST
         });
@@ -225,6 +240,7 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
             return res.status(400).send(err);
           res.render('welcome_screens_list', {
             header: true,
+            isAdmin: req.user.isAdmin,
             videos: docVideo,
             images: docImage,
             user: req.user,
@@ -245,6 +261,7 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
   } else {
     res.render('new_welcome_screen_image', {
       header: true,
+      isAdmin: req.user.isAdmin,
       title: 'New Welcome Screen'
     });
   }    
@@ -296,6 +313,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
         isDefaultImage: renderSettings.isDefault,
         isEnabled: renderSettings.isEnabled,
         header: true,
+        isAdmin: req.user.isAdmin,
         title: 'Edit Welcome Screen'
       });
     });
@@ -347,6 +365,7 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
   } else {
     res.render('new_welcome_screen_video', {
       header: true,
+      isAdmin: req.user.isAdmin,
       title: 'New Welcome Screen'
     });
   }    
@@ -386,6 +405,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
         isDefaultVideo: renderSettings.isDefault,
         isEnabled: renderSettings.isEnabled,
         header: true,
+        isAdmin: req.user.isAdmin,
         title: 'Edit Welcome Screen'
       });
     });
