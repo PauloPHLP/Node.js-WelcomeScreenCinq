@@ -75,6 +75,26 @@
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
 
+  $("#title").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#title").addClass('emptyFields');
+      $("#title").removeClass('fulfilledFields');
+    } else {
+      $("#title").addClass('fulfilledFields');
+      $("#title").removeClass('emptyFields');
+    }
+  });
+
+  $("#video").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#video").addClass('emptyFields');
+      $("#video").removeClass('fulfilledFields');
+    } else {
+      $("#video").addClass('fulfilledFields');
+      $("#video").removeClass('emptyFields');
+    }
+  });
+
   $('#defaultVideo').change(function() {
     if ($(this).is(':checked')) {
       $('#video').prop('disabled', true);
@@ -104,12 +124,10 @@
   $('#update_form').submit(function(e) {
     e.preventDefault();
     
-    if ($('#title').val() == '' || ($('#title').val() == '' && $('#defaultVideo').is(':checked'))) {
-      Toast.fire({
-        type: 'warning',
-        title: 'Please put a title!'
-      });
-    } else {
+    if ($('#defaultVideo').is(':checked') || (!$('#defaultVideo').is(':checked') && $('#currentVideo').val() !== 'Current video: default_video.mp4' && $('#video').get(0).files.length !== 0) || ($('#currentVideo').val() !== 'Current video: default_video.mp4' && $('#video').get(0).files.length === 0) && (!$('#defaultVideo').is(':checked') && $('#title').val() !== '' && $('#title').val() !== ' ')) {
+      $("#title").addClass('fulfilledFields');
+      $("#video").addClass('fulfilledFields');
+
       const videoName = $('#videoName').text();
 
       var formData = new FormData($(this)[0]);
@@ -141,6 +159,16 @@
             'error'
           );
         }
+      });
+    } else {
+      $("#title").addClass('emptyFields');
+      $("#video").addClass('emptyFields');
+
+      Swal.fire({
+        title: 'Empty fields',
+        text: 'Please fulfill the necessary fields!',
+        type: 'warning',
+        confirmButtonColor: '#EE9658'
       });
     }
 

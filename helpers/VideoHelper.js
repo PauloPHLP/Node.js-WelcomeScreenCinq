@@ -33,8 +33,6 @@ module.exports = {
   },
 
   StoreVideo: () => {
-    GlobalHelpers.EnableDisableImagesAndVideos(false);
-
     const storage = module.exports.SetStorage();
 
     return upload = multer({
@@ -85,23 +83,19 @@ module.exports = {
     this.isEnable = Boolean(req.body.isEnable);
     module.exports.DeleteVideo(req.params.oldVideoName);
     this.date = GlobalHelpers.GetDate();
-    GlobalHelpers.DisableActiveMidia();
 
-    if (this.isDefault == true && this.isEnable == true) {
-      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true, req, false);
-    } else if (this.isDefault == false && this.isEnable == true) {
-      return module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, true, req, false);
-    } else if (this.isDefault == true && this.isEnable == false) {
-      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, false, req, true);
+    if (this.isDefault === true && this.isEnable === true) {
+      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true);
+    } else if (this.isDefault === true && this.isEnable === false) {
+      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, false);
+    } else if (this.isDefault === false && this.isEnable === true) {
+      return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, true);
     } else {
-      return module.exports.SetNotDefaultVideo(req.params.oldVideoName, req.params.currentVideo, this.title, this.date, false, req, true);
+      return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, false);
     }
   },
 
-  SetVideo: (vidName, defaultVidName, tit, dataUpd, isActivated, req, enableVideos) => {
-    if (enableVideos === false) 
-      GlobalHelpers.DisableEnableAllVideosButCurrent(req.params.id, enableVideos);
-
+  SetVideo: (vidName, defaultVidName, tit, dataUpd, isActivated) => {
     return this.newVideo = {
       videoName: vidName,
       defaultVideoName: defaultVidName,
@@ -111,12 +105,12 @@ module.exports = {
     }
   },
 
-  SetNotDefaultVideo: (vidName, defaultVidName, tit, dataUpd, isActivated, req, enableVideos) => {
+  SetNotDefaultVideo: (vidName, defaultVidName, tit, dataUpd, isActivated) => {
     if (this.videoName == "" && this.defaultVideoName == "") {
       this.videoName = vidName;
       this.defaultVideoName = defaultVidName;
     } 
 
-    return module.exports.SetVideo(this.videoName, this.defaultVideoName, tit, dataUpd, isActivated, req, enableVideos);
-  },
+    return module.exports.SetVideo(this.videoName, this.defaultVideoName, tit, dataUpd, isActivated);
+  }
 }

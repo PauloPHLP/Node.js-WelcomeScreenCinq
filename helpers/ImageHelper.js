@@ -89,10 +89,10 @@ module.exports = {
 
     if (this.isDefault == true && this.isEnable == true) {
       return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true, false);
-    } else if (this.isDefault == false && this.isEnable == true) {
-      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true, false);
     } else if (this.isDefault == true && this.isEnable == false) {
       return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false, false);
+    } else if (this.isDefault == false && this.isEnable == true) {
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true, false);
     } else {
       return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false, false);
     }

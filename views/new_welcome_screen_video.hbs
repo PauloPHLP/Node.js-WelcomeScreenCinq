@@ -39,6 +39,26 @@
 <script>
   let socket = io();
 
+  $("#title").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#title").addClass('emptyFields');
+      $("#title").removeClass('fulfilledFields');
+    } else {
+      $("#title").addClass('fulfilledFields');
+      $("#title").removeClass('emptyFields');
+    }
+  });
+
+  $("#video").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#video").addClass('emptyFields');
+      $("#video").removeClass('fulfilledFields');
+    } else {
+      $("#video").addClass('fulfilledFields');
+      $("#video").removeClass('emptyFields');
+    }
+  });
+
   $('#defaultVideo').change(function() {
     if ($(this).is(':checked')) {
       $('#video').prop('disabled', true);
@@ -54,41 +74,48 @@
 
     let formData = new FormData($(this)[0]);
 
-    if (($('#defaultVideo').is(':checked') && $('#title').val() == '') || ($('#title').val() != '' && !$('#defaultVideo').is(':checked') && $('#video').get(0).files.length !== 0)) {
-        $.ajax({
-          url: '/api/new_welcome_screen_video',
-          type: 'POST',
-          data: formData,
-          async: false,
-          contentType: false,
-          cache: false,
-          enctype: 'multipart/form-data',
-          processData: false,
-          success: data => {
-            Swal.fire({
-              title: 'Success!',
-              text: 'Video uploaded successfully!',
-              type: 'success',
-              confirmButtonText: 'OK, keep going!',
-              confirmButtonColor: '#EE9658'
-            }).then(result => {
-              window.location.href = "/welcome_screens_list"
-            });
-          },
-          error: () => {
-            Swal.fire(
-              'Sorry',
-              'An issue has occurred :(',
-              'error'
-            );
-          }
-        });
+    if (($('#defaultVideo').is(':checked') && $('#title').val() === '') || (($('#title').val() !== '' && $('#title').val() !== ' ') && !$('#defaultVideo').is(':checked') && $('#video').get(0).files.length !== 0)) {
+      $("#title").addClass('fulfilledFields');
+      $("#video").addClass('fulfilledFields');
+
+      $.ajax({
+        url: '/api/new_welcome_screen_video',
+        type: 'POST',
+        data: formData,
+        async: false,
+        contentType: false,
+        cache: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        success: data => {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Video uploaded successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            window.location.href = "/welcome_screens_list"
+          });
+        },
+        error: () => {
+          Swal.fire(
+            'Sorry',
+            'An issue has occurred :(',
+            'error'
+          );
+        }
+      });
     } else {
-      Swal.fire(
-        'Empty fields',
-        'Please fulfill the necessary fields!',
-        'warning'
-      );
+      $("#title").addClass('emptyFields');
+      $("#video").addClass('emptyFields');
+
+      Swal.fire({
+        title: 'Empty fields',
+        text: 'Please fulfill the necessary fields!',
+        type: 'warning',
+        confirmButtonColor: '#EE9658'
+      });
     }
 
     socket.emit('UpdateOnDatabase');

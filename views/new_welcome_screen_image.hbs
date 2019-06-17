@@ -85,6 +85,26 @@
 <script>
   let socket = io();
 
+  $("#company1").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#company1").addClass('emptyFields');
+      $("#company1").removeClass('fulfilledFields');
+    } else {
+      $("#company1").addClass('fulfilledFields');
+      $("#company1").removeClass('emptyFields');
+    }
+  });
+
+  $("#image").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#image").addClass('emptyFields');
+      $("#image").removeClass('fulfilledFields');
+    } else {
+      $("#image").addClass('fulfilledFields');
+      $("#image").removeClass('emptyFields');
+    }
+  });
+
   $('#defaultImage').change(function() {
     if ($(this).is(':checked')) {
       $('#image').prop('disabled', true);
@@ -98,7 +118,10 @@
 
     let formData = new FormData($(this)[0]);
     
-    if (($('#defaultImage').is(':checked') && $('#company1').val() != '' || $('#company2').val() != '') || ($('#company1').val() != '' && $('#company2').val() != '' && !$('#defaultImage').is(':checked') && $('#image').get(0).files.length !== 0)) {
+    if (($('#defaultImage').is(':checked') && ($('#company1').val() != '' && $('#company1').val() != ' ')) || (($('#company1').val() != '' && $('#company1').val() != ' ') && !$('#defaultImage').is(':checked') && $('#image').get(0).files.length !== 0)) {
+      $("#company1").addClass('fulfilledFields');
+      $('#image').addClass('fulfilledFields');
+      
       $.ajax({
         url: '/api/new_welcome_screen_image',
         type: 'POST',
@@ -128,11 +151,17 @@
         }
       });
     } else {
-      Swal.fire(
-        'Empty fields',
-        'Please fulfill the necessary fields!',
-        'warning'
-      );
+      if (!$('#defaultImage').is(':checked') && $('#image').get(0).files.length === 0) {
+        $("#image").addClass('emptyFields');
+      }
+      $("#company1").addClass('emptyFields');
+
+      Swal.fire({
+        title: 'Empty fields',
+        text: 'Please fulfill the necessary fields!',
+        type: 'warning',
+        confirmButtonColor: '#EE9658'
+      });
     }
 
     socket.emit('UpdateOnDatabase');

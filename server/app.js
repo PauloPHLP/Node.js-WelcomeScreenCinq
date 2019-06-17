@@ -1,3 +1,4 @@
+/* #region Imports */
 const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const mongoose = require('mongoose');
@@ -11,7 +12,6 @@ const ImageHelper = require('./../helpers/ImageHelper');
 const VideoHelper = require('./../helpers/VideoHelper');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
-const {UserHelper} = require('./../helpers/UserHelper');
 const {User} = require('./models/user');
 const {Auth} = require('./middleware/auth');
 const app = express();
@@ -34,14 +34,20 @@ const hbs = expressHandlebars.create({
     }
   }
 });
+/* #endregion */
 
+/* #region Variables */
 let guests = [];
 let companies = [];
+/* #endregion */
 
+/* #region Mongoose settings */
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DATABASE, {useNewUrlParser: true});
 mongoose.set('useCreateIndex', true);
+/* #endregion */
 
+/* #region App settings */
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.use('/css', express.static(__dirname + './../public/css'));
@@ -52,13 +58,17 @@ app.use('/icons', express.static(__dirname + './../public/icons'));
 app.use('/uploads', express.static(__dirname + './../uploads'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+/* #endregion */
 
+/* #region IO settings */
 io.on('connection', socket => {
   socket.on('UpdateOnDatabase', () => {
     socket.broadcast.emit('RefreshPage');
   });
 });
+/* #endregion */
 
+/* #region HTTP methods */
 app.get('/', (req, res) => {
   ScreenImage.find().exec((err, docImage) => {
     ScreenVideo.find().exec((err, docVideo) => {
@@ -95,23 +105,19 @@ app.get('/register', Auth, (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  console.log(req.body.name);
-  const user = UserHelper.CreateUser(req);
-  
+  const user = new User({
+    isAdmin: req.body.isAdmin,
+    name: req.body.name,
+    login: req.body.login,
+    email: req.body.email,
+    password: req.body.password
+  });
+
   user.save((err, doc) => {
     if (err)
       res.status(400).send(err);
+    res.end('User created successfully!');
   });
-
-  // user.save((err, doc) => {
-  //   if(err) 
-  //     return res.status(400).send(err);
-  //   user.generateToken((err, user) => {
-  //     if(err) 
-  //       return res.status(400).send(err);
-  //     res.cookie('auth', user.token).send('OK!');
-  //   });
-  // });
 });
 
 app.get('/login', Auth, (req, res) => {
@@ -412,7 +418,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
   }    
 });
 
-app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:title', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
   const upload = VideoHelper.StoreVideo();
 
   upload(req, res, function(err) {
@@ -435,7 +441,10 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:title
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
   VideoHelper.DeleteSingleWSVideo(req, res);
 });
+/* #endregion */
 
+/* #region PORT listener */
 http.listen(config.PORT, '0.0.0.0', () => {
   console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
 });
+/* #endregion */

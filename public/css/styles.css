@@ -69,6 +69,14 @@ table.table td .add {
   display: none;
 }
 
+.emptyFields {
+  border: 1px solid red;
+}
+
+.fulfilledFields {
+  border: 1px solid greenyellow;
+}
+
 .swal2-popup {
   font-family: 'Raleway Black';
 }
