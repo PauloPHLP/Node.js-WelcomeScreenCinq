@@ -41,6 +41,8 @@ module.exports = {
   },
 
   UploadVideo: req => {
+    GlobalHelpers.EnableDisableImagesAndVideos(false);
+
     req.body.defaultVideo = Boolean(req.body.defaultVideo);
     
     if (req.body.defaultVideo == true) {
@@ -66,12 +68,17 @@ module.exports = {
     }
   },
 
-  DeleteSingleWSVideo: (req, res) => {
+  DeleteSingleVideo: (req) => {
     ScreenVideo.findById(req.params.id, (err, screenVideo) => {
       if (screenVideo.videoName != 'default_video.mp4') {
         fileStream.unlink('./uploads/' + screenVideo.videoName, err => {});
       }
     });
+  },
+
+  DeleteSingleWSVideo: (req, res) => {
+    module.exports.DeleteSingleVideo(req);
+    GlobalHelpers.CheckLastVideo();
   
     ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
       res.status(200).send(screenVideo);

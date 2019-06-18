@@ -11,11 +11,6 @@ module.exports = {
     module.exports.EnableDisableVideos(isEnabled);
   },
 
-  NewVideoDisableEverything: (currentVideoId, isActivated) => {
-    module.exports.EnableDisableImages(false);
-    module.exports.DisableAllVideosButCurrent(currentVideoId, isActivated);
-  },
-
   EnableDisableImages: isActivated => {
     ScreenImage.find().then(docImage => {
       docImage.forEach(image => {
@@ -32,22 +27,20 @@ module.exports = {
     });
   },
 
-  DisableEnableAllVideosButCurrent: (currentVideoId, isActivated) => {
-    ScreenVideo.find().then(docVideo => {
-      docVideo.forEach(video => {
-          if (video._id != currentVideoId) {
-            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
-          }
-      });
-    });
-  },
-
   DisableActiveMidia: () => {
     ScreenVideo.find({'activated': true}).then(video => {
       ScreenImage.find({'activated': true}).then(image => {
         if (image == '' && video == '') {
           ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, (err, screenVideo) => {});
         }
+      });
+    });
+  },
+
+  CheckEnableOrDeleted: () => {
+    ScreenVideo.find().then(video => {
+      ScreenImage.find().then(image => {
+        console.log(image.activated)
       });
     });
   },

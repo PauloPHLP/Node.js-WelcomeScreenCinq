@@ -68,12 +68,17 @@ module.exports = {
     }
   },
 
-  DeleteSingleWSImage: (req, res) => {
+  DeleteSingleImage: req => {
     ScreenImage.findById(req.params.id, (err, screenImage) => {
       if (screenImage.imageName != 'default_image.jpg') {
         fileStream.unlink('./uploads/' + screenImage.imageName, err => {});
       }
     });
+  },
+
+  DeleteSingleWSImage: (req, res) => {
+    module.exports.DeleteSingleImage(req);
+    GlobalHelpers.CheckLastImage();
   
     ScreenImage.find({_id: req.params.id}).deleteOne().exec((err, screenImage) => {
       res.status(200).send(screenImage);

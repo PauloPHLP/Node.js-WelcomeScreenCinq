@@ -239,6 +239,7 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
       title: 'Login'
     });
   } else {
+    GlobalHelpers.CheckEnableOrDeleted();
     User.find({'_id': req.user._id}).exec((err, user) => {
       ScreenVideo.find().exec((err, docVideo) => {
         ScreenImage.find().exec((err, docImage) => {
