@@ -74,7 +74,12 @@
 
     let formData = new FormData($(this)[0]);
 
-    if (($('#defaultVideo').is(':checked') && $('#title').val() === '') || (($('#title').val() !== '' && $('#title').val() !== ' ') && !$('#defaultVideo').is(':checked') && $('#video').get(0).files.length !== 0)) {
+    const isDefault = $('#defaultVideo').is(':checked');
+    const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
+    const titleEmpty = $('#title').val() === ''; 
+    const videoEmpty = $('#video').get(0).files.length !== 0;
+
+    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty)) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 

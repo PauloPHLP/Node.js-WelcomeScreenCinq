@@ -117,8 +117,12 @@
     e.preventDefault();
 
     let formData = new FormData($(this)[0]);
+
+    const isDefault = $('#defaultImage').is(':checked');
+    const companyEmpty = $('#company1').val() != '' && $('#company1').val() != ' ';
+    const imageEmpty = $('#image').get(0).files.length !== 0;
     
-    if (($('#defaultImage').is(':checked') && ($('#company1').val() != '' && $('#company1').val() != ' ')) || (($('#company1').val() != '' && $('#company1').val() != ' ') && !$('#defaultImage').is(':checked') && $('#image').get(0).files.length !== 0)) {
+    if ((isDefault && companyEmpty) || (companyEmpty && !isDefault && imageEmpty)) {
       $("#company1").addClass('fulfilledFields');
       $('#image').addClass('fulfilledFields');
       

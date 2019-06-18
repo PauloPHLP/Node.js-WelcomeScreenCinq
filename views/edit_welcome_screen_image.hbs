@@ -118,6 +118,26 @@
   let oldCompany = $('#company1').val();
   let currentImage = $('#currentImage').text();
 
+  $("#company1").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#company1").addClass('emptyFields');
+      $("#company1").removeClass('fulfilledFields');
+    } else {
+      $("#company1").addClass('fulfilledFields');
+      $("#company1").removeClass('emptyFields');
+    }
+  });
+
+  $("#image").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#image").addClass('emptyFields');
+      $("#image").removeClass('fulfilledFields');
+    } else {
+      $("#image").addClass('fulfilledFields');
+      $("#image").removeClass('emptyFields');
+    }
+  });
+
   $('#defaultImage').change(function() {
     if ($(this).is(':checked')) {
       $('#image').prop('disabled', true);
@@ -143,12 +163,18 @@
   $('#update_form').submit(function(e) {
     e.preventDefault();
 
-    if ($('#company1').val() == '' || $('#company2').val() == '' || ($('#company1').val() == '' && $('#company2').val() == '' && $('#defaultImage').is(':checked'))) {
-      Toast.fire({
-        type: 'warning',
-        title: 'Please put a company name!'
-      });
-    } else {
+    const defaultText = 'Current image: default_image.jpg';
+    const imageSize = $('#image').get(0).files.length;
+    const isDefaultImage = $('#defaultImage').is(':checked');
+    const companyNotEmpty = $('#company1').val() != '' && $('#company1').val() != ' ';
+    const defaultImage = currentImage === defaultText && imageSize !== 0;
+    const notDefaultImage = currentImage !== defaultText && imageSize === 0;
+    const newImage = currentImage !== defaultText && imageSize !== 0;
+
+    if (companyNotEmpty && (isDefaultImage || defaultImage || notDefaultImage || newImage)) {
+      $("#company1").addClass('fulfilledFields');
+      $('#image').addClass('fulfilledFields');
+
       const imageName = $('#imageName').text();
 
       var formData = new FormData($(this)[0]);
@@ -179,6 +205,21 @@
             'error'
           );
         }
+      });
+    } else {
+      if (companyNotEmpty === false && defaultImage === false) {
+        $("#company1").addClass('emptyFields');
+      }
+
+      if (defaultImage === false && companyNotEmpty === true) {
+        $("#image").addClass('emptyFields');
+      }
+      
+      Swal.fire({
+        title: 'Empty fields',
+        text: 'Please fulfill the necessary fields!',
+        type: 'warning',
+        confirmButtonColor: '#EE9658'
       });
     }
 

@@ -123,8 +123,16 @@
 
   $('#update_form').submit(function(e) {
     e.preventDefault();
-    
-    if ($('#defaultVideo').is(':checked') || (!$('#defaultVideo').is(':checked') && $('#currentVideo').val() !== 'Current video: default_video.mp4' && $('#video').get(0).files.length !== 0) || ($('#currentVideo').val() !== 'Current video: default_video.mp4' && $('#video').get(0).files.length === 0) && (!$('#defaultVideo').is(':checked') && $('#title').val() !== '' && $('#title').val() !== ' ')) {
+
+    const defaultText = 'Current video: default_video.mp4';
+    const videoSize = $('#video').get(0).files.length;
+    const isDefaultVideo = $('#defaultVideo').is(':checked');
+    const titleNotEmpty = $('#title').val() != '' && $('#title').val() != ' ';
+    const defaultVideo = currentVideo === defaultText && videoSize !== 0;
+    const notDefaultVideo = currentVideo !== defaultText && videoSize === 0;
+    const newVideo = currentVideo !== defaultText && videoSize !== 0;
+
+    if (titleNotEmpty && (isDefaultVideo || defaultVideo || notDefaultVideo || newVideo)) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 
@@ -161,8 +169,17 @@
         }
       });
     } else {
-      $("#title").addClass('emptyFields');
-      $("#video").addClass('emptyFields');
+      console.log(titleNotEmpty + ' ' + notDefaultVideo);
+
+      if (titleNotEmpty === false && notDefaultVideo === true) {
+        $("#title").addClass('emptyFields');
+      }
+      
+      if (titleNotEmpty === false && notDefaultVideo === false) {
+        $("#title").addClass('emptyFields');
+        $("#video").addClass('emptyFields');
+      }
+
 
       Swal.fire({
         title: 'Empty fields',
