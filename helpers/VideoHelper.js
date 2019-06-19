@@ -89,7 +89,6 @@ module.exports = {
     module.exports.DeleteVideo(req.params.oldVideoName);
     this.date = GlobalHelpers.GetDate();
 
-    
     if (this.isDefault === true && this.isEnable === true) {
       GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true);

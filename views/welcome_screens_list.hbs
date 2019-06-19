@@ -42,8 +42,12 @@
                 {{/if}}
                 <td>{{this.wsType}}</td>
                 <td>
-                  <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                  <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+                  {{#if this.isDefaultVideo}}
+                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                  {{else}}
+                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                    <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+                  {{/if}}
                 </td>
             </tr>
         {{/each}}

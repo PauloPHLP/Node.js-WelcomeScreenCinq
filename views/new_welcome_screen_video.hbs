@@ -9,25 +9,25 @@
         <div class="panel-body">
           <form id="upload_form">
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
+                {{!-- <div class="col-xs-12 col-sm-12 col-md-12">
                   <div class="form-group flt_left">
                     <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
                     <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
                   </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                  <div class="form-group">
-                    <label for="title">Choose a title for the video</label>
-                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" disabled>
-                  </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                  <div class="form-group">
-                    <label for="video">Choose a new video</label>
-                    <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video" disabled>
-                  </div>
+                </div> --}}
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label for="title">Choose a title for the video</label>
+                  <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title">
                 </div>
               </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label for="video">Choose a new video</label>
+                  <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
+                </div>
+              </div>
+            </div>
             <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
         </div>
@@ -59,7 +59,7 @@
     }
   });
 
-  $('#defaultVideo').change(function() {
+  {{!-- $('#defaultVideo').change(function() {
     if ($(this).is(':checked')) {
       $('#video').prop('disabled', true);
       $('#title').prop('disabled', true);
@@ -67,7 +67,7 @@
       $('#video').prop('disabled', false);
       $('#title').prop('disabled', false);
     }
-  })
+  }) --}}
 
   $('#upload_form').submit(function(e) {
     e.preventDefault();
