@@ -41,8 +41,6 @@ module.exports = {
   },
 
   UploadVideo: req => {
-    GlobalHelpers.EnableDisableImagesAndVideos(false);
-
     req.body.defaultVideo = Boolean(req.body.defaultVideo);
     
     if (req.body.defaultVideo == true) {
@@ -78,7 +76,6 @@ module.exports = {
 
   DeleteSingleWSVideo: (req, res) => {
     module.exports.DeleteSingleVideo(req);
-    GlobalHelpers.CheckLastVideo();
   
     ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
       res.status(200).send(screenVideo);
@@ -90,6 +87,8 @@ module.exports = {
     this.isEnable = Boolean(req.body.isEnable);
     module.exports.DeleteVideo(req.params.oldVideoName);
     this.date = GlobalHelpers.GetDate();
+
+    GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
 
     if (this.isDefault === true && this.isEnable === true) {
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true);

@@ -27,20 +27,50 @@ module.exports = {
     });
   },
 
-  DisableActiveMidia: () => {
-    ScreenVideo.find({'activated': true}).then(video => {
-      ScreenImage.find({'activated': true}).then(image => {
-        if (image == '' && video == '') {
-          ScreenVideo.updateOne({'title': 'Default video'}, {$set: {activated: true}}, (err, screenVideo) => {});
+  EnableDisableDefaultVideo: isActivated => {
+    ScreenVideo.updateOne({isDefaultVideo: 'true'}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
+  },
+
+  EnableDefaultVideoIfNoImages: () => {
+    ScreenImage.countDocuments({activated: 'true'}, function(err, count) {
+      if (count === 0) {
+        module.exports.EnableDisableDefaultVideo(true);
+      }
+      if (count > 0) {
+        module.exports.EnableDisableVideos(false);
+      }
+    });
+  },
+
+  EnableDefaultVideoIfNoVideos: () => {
+    ScreenVideo.countDocuments({activated: 'true'}, function(err, count) {
+      if (count === 0) {
+        module.exports.EnableDisableDefaultVideo(true);
+      }
+      if (count > 0) {
+        module.exports.EnableDisableVideos(false);
+      }
+    });
+  },
+
+  EnableDefaultVideoIfNoMedia: () => {
+    ScreenImage.countDocuments({activated: 'true'}, function(err, imgCount) {
+      ScreenVideo.countDocuments({activated: 'true'}, function(err, vidCount) {
+        if (imgCount === 0 || vidCount ===  0) {
+          // module.exports.EnableDisableDefaultVideo(true);
+          // console.log('got something');
         }
       });
     });
   },
 
-  CheckEnableOrDeleted: () => {
-    ScreenVideo.find().then(video => {
-      ScreenImage.find().then(image => {
-        console.log(image.activated)
+  DisableEverythingButCurrentVideo: id => {
+    module.exports.EnableDisableImages(false);
+    ScreenVideo.find().then(docVideo => {
+      docVideo.forEach(video => {
+        if (video._id != id) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, (err, screenVideo) => {});
+        }
       });
     });
   },

@@ -239,7 +239,6 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
       title: 'Login'
     });
   } else {
-    GlobalHelpers.CheckEnableOrDeleted();
     User.find({'_id': req.user._id}).exec((err, user) => {
       ScreenVideo.find().exec((err, docVideo) => {
         ScreenImage.find().exec((err, docImage) => {
@@ -350,6 +349,8 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
       activated: screenImage.activated
     }}, (err, screenImage) => {});
 
+    GlobalHelpers.EnableDefaultVideoIfNoImages();
+
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
@@ -379,6 +380,7 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_video', (req, res) => {
+  GlobalHelpers.EnableDisableImagesAndVideos(false);
   const upload = VideoHelper.StoreVideo();
   
   upload(req, res, function(err) {
@@ -433,6 +435,8 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
       activated: screenVideo.activated
     }}, (err, screenVideo) => {});
     
+    GlobalHelpers.EnableDefaultVideoIfNoMedia();
+
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');

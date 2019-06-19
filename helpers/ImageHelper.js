@@ -33,8 +33,6 @@ module.exports = {
   },
 
   StoreImage: () => {
-    GlobalHelpers.EnableDisableVideos(false);
-
     const storage = module.exports.SetStorage();
 
     return upload = multer({
@@ -44,7 +42,7 @@ module.exports = {
 
   UploadImage: req => {
     req.body.defaultImage = Boolean(req.body.defaultImage);
-    GlobalHelpers.DisableActiveMidia();
+    GlobalHelpers.EnableDisableVideos(false);
     
     if (req.body.defaultImage == true) {
       return screenImage = new ScreenImage({
@@ -78,10 +76,10 @@ module.exports = {
 
   DeleteSingleWSImage: (req, res) => {
     module.exports.DeleteSingleImage(req);
-    GlobalHelpers.CheckLastImage();
-  
+    
     ScreenImage.find({_id: req.params.id}).deleteOne().exec((err, screenImage) => {
       res.status(200).send(screenImage);
+      GlobalHelpers.EnableDefaultVideoIfNoImages();
     });
   },
 
@@ -91,21 +89,21 @@ module.exports = {
     module.exports.DeleteImage(req.params.oldImageName);
     this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
     this.date = GlobalHelpers.GetDate();
-
+    
     if (this.isDefault == true && this.isEnable == true) {
-      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true, false);
+      GlobalHelpers.EnableDisableVideos(false);
+      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);
     } else if (this.isDefault == true && this.isEnable == false) {
-      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false, false);
+      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false);
     } else if (this.isDefault == false && this.isEnable == true) {
-      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true, false);
+      GlobalHelpers.EnableDisableVideos(false);
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true);
     } else {
-      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false, false);
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false);
     }
   },
 
-  SetImage: (imgName, defaultImgName, comp, dataUpd, isActivated, enableVideo) => {
-    GlobalHelpers.EnableDisableVideos(enableVideo);
-    
+  SetImage: (imgName, defaultImgName, comp, dataUpd, isActivated) => {
     return this.newImage = {
       imageName: imgName,
       defaultImageName: defaultImgName,
@@ -115,13 +113,11 @@ module.exports = {
     }
   },
 
-  SetNotDefaultImage: (imgName, defImgName, comp, dataUpd, isActivated, enableVideo) => {
+  SetNotDefaultImage: (imgName, defImgName, comp, dataUpd, isActivated) => {
     if (this.imageName == "" && this.defaultImage == "") {
       this.imageName = imgName;
       this.defaultImage = defImgName;
     } 
-
-    GlobalHelpers.EnableDisableVideos(enableVideo);
 
     return module.exports.SetImage(this.imageName, this.defaultImage, comp, dataUpd, isActivated);
   },

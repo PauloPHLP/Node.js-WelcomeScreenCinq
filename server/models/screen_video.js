@@ -22,6 +22,10 @@ const screenVideoSchema = mongoose.Schema({
     type: Boolean,
     default: true
   },
+  isDefaultVideo: {
+    type: Boolean,
+    default: false
+  },
   wsType: {
     type: String,
     default: 'Video'
