@@ -434,9 +434,9 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
       date: screenVideo.date,
       activated: screenVideo.activated
     }}, (err, screenVideo) => {});
-    
-    GlobalHelpers.EnableDefaultVideoIfNoMedia();
 
+    GlobalHelpers.EnableDefaultVideoIfNoVideos();
+    
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');

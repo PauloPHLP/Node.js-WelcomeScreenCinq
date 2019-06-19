@@ -47,20 +47,6 @@ module.exports = {
       if (count === 0) {
         module.exports.EnableDisableDefaultVideo(true);
       }
-      if (count > 0) {
-        module.exports.EnableDisableVideos(false);
-      }
-    });
-  },
-
-  EnableDefaultVideoIfNoMedia: () => {
-    ScreenImage.countDocuments({activated: 'true'}, function(err, imgCount) {
-      ScreenVideo.countDocuments({activated: 'true'}, function(err, vidCount) {
-        if (imgCount === 0 || vidCount ===  0) {
-          // module.exports.EnableDisableDefaultVideo(true);
-          // console.log('got something');
-        }
-      });
     });
   },
 

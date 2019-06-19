@@ -79,6 +79,7 @@ module.exports = {
   
     ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
       res.status(200).send(screenVideo);
+      GlobalHelpers.EnableDefaultVideoIfNoVideos();
     });
   },
 
@@ -88,13 +89,14 @@ module.exports = {
     module.exports.DeleteVideo(req.params.oldVideoName);
     this.date = GlobalHelpers.GetDate();
 
-    GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
-
+    
     if (this.isDefault === true && this.isEnable === true) {
+      GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, true);
     } else if (this.isDefault === true && this.isEnable === false) {
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, false);
     } else if (this.isDefault === false && this.isEnable === true) {
+      GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
       return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, true);
     } else {
       return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, false);
