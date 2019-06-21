@@ -9,12 +9,12 @@
         <div class="panel-body">
           <form id="upload_form">
             <div class="row">
-                {{!-- <div class="col-xs-12 col-sm-12 col-md-12">
-                  <div class="form-group flt_left">
-                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
-                  </div>
-                </div> --}}
+              {{!-- <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group flt_left">
+                  <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
+                  <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
+                </div>
+              </div> --}}
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label for="title">Choose a title for the video</label>
@@ -27,6 +27,13 @@
                   <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
                 </div>
               </div>
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group flt_center">
+                  <input type="checkbox" name="scheduleWs" id="scheduleWs">
+                  <label for="scheduleWs">I want to schedule this WS to:</label>
+                  <input type='text' name="clock" id="clock" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule Welcome Screen" disabled/>
+                </div>
+              </div>
             </div>
             <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
@@ -37,9 +44,16 @@
 </div>
 
 <script>
+  const dateNow = new Date();
+  const formatedDate = moment().format('DD/MM/YYYY - HH:mm');
   let socket = io();
+  let scheduleDate = '';
 
-  $("#title").on("paste keyup change", function() {
+  $(document).ready(() => {
+    $("#clock").val(formatedDate);
+  });
+
+  $("#title").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#title").addClass('emptyFields');
       $("#title").removeClass('fulfilledFields');
@@ -49,13 +63,44 @@
     }
   });
 
-  $("#video").on("paste keyup change", function() {
+  $("#video").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#video").addClass('emptyFields');
       $("#video").removeClass('fulfilledFields');
     } else {
       $("#video").addClass('fulfilledFields');
       $("#video").removeClass('emptyFields');
+    }
+  });
+
+  $("#clock").on("paste keyup change focusout", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#clock").addClass('emptyFields');
+      $("#clock").removeClass('fulfilledFields');
+    } else {
+      $("#clock").addClass('fulfilledFields');
+      $("#clock").removeClass('emptyFields');
+    }
+  });
+
+  $('#scheduleWs').change(function() {
+    if ($(this).is(':checked')) {
+      $('#clock').prop('disabled', false);
+    } else {
+      $('#clock').prop('disabled', true);
+      $("#clock").val(formatedDate);
+    }
+  });
+
+  $('#clock').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateNow,
+    minHours: dateNow,
+    onSelect: function(fd, d, picker) {
+      let year = d.getYear().toString().substring(1);
+      this.scheduleDate = (d.getDate() + '-' + d.getMonth() + '-' + year + ' ' + d.getHours() + ':' + d.getMinutes());
+      console.log(this.scheduleDate);
     }
   });
 
@@ -78,10 +123,13 @@
     const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
     const titleEmpty = $('#title').val() === ''; 
     const videoEmpty = $('#video').get(0).files.length !== 0;
+    const scheduledTime = $("#scheduleWs").is(':checked') && ($("#clock").val() !== '' && $("#clock").val() !== ' ');
+    const unscheduledTime = !$("#scheduleWs").is(':checked');
 
-    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty)) {
+    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && (scheduledTime || unscheduledTime))) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
+      $("#clock").addClass('fulfilledFields');
 
       $.ajax({
         url: '/api/new_welcome_screen_video',
@@ -115,6 +163,9 @@
     } else {
       $("#title").addClass('emptyFields');
       $("#video").addClass('emptyFields');
+      
+      if (!unscheduledTime)
+        $("#clock").addClass('emptyFields');
 
       Swal.fire({
         title: 'Empty fields',

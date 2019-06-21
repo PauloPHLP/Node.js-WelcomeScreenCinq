@@ -75,7 +75,7 @@
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
 
-  $("#title").on("paste keyup change", function() {
+  $("#title").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#title").addClass('emptyFields');
       $("#title").removeClass('fulfilledFields');
@@ -85,7 +85,7 @@
     }
   });
 
-  $("#video").on("paste keyup change", function() {
+  $("#video").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#video").addClass('emptyFields');
       $("#video").removeClass('fulfilledFields');

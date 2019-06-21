@@ -34,6 +34,7 @@ const hbs = expressHandlebars.create({
     }
   }
 });
+
 /* #endregion */
 
 /* #region Variables */
@@ -371,6 +372,8 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
       title: 'Login'
     });
   } else {
+    // const day = '12-05-30 21:30';
+    // console.log(moment(day, 'MM/DD/YYYY HH:mm').format('YYYY-MM-DD HH:mm'));
     res.render('new_welcome_screen_video', {
       header: true,
       isAdmin: req.user.isAdmin,
