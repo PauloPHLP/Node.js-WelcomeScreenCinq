@@ -9,12 +9,6 @@
         <div class="panel-body">
           <form id="upload_form">
             <div class="row">
-              {{!-- <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group flt_left">
-                  <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                  <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
-                </div>
-              </div> --}}
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label for="title">Choose a title for the video</label>
@@ -27,11 +21,18 @@
                   <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
                 </div>
               </div>
-              <div class="col-xs-12 col-sm-12 col-md-12">
+              <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
-                  <input type="checkbox" name="scheduleWs" id="scheduleWs">
-                  <label for="scheduleWs">I want to schedule this WS to:</label>
-                  <input type='text' name="clock" id="clock" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule Welcome Screen" disabled/>
+                  <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
+                  <label for="startScheduleWs">I want to schedule this WS from:</label>
+                  <input type='text' name="clockStart" id="clockStart" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule start date and time" disabled/>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_center">
+                  <input type="checkbox" class="vsb_hidden">
+                  <label for="finishScheduleWs">To:</label>
+                  <input type='text' name="clockFinish" id="clockFinish" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule finish date and time" disabled/>
                 </div>
               </div>
             </div>
@@ -45,12 +46,22 @@
 
 <script>
   const dateNow = new Date();
-  const formatedDate = moment().format('DD/MM/YYYY - HH:mm');
+  const dateTomorrow = new Date(dateNow.getFullYear(), dateNow.getMonth(), (dateNow.getDate() + 1), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
+  let formatedDate = moment(dateNow).format('DD/MM/YYYY - HH:mm');
+  let expirationDate = moment(dateTomorrow).format('DD/MM/YYYY - HH:mm');
   let socket = io();
-  let scheduleDate = '';
+  let startDate = formatedDate;
+  let finishDate = expirationDate;
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000
+  });
 
   $(document).ready(() => {
-    $("#clock").val(formatedDate);
+    $("#clockStart").val(formatedDate);
+    $("#clockFinish").val(expirationDate);
   });
 
   $("#title").on("paste keyup change focusout", function() {
@@ -73,46 +84,76 @@
     }
   });
 
-  $("#clock").on("paste keyup change focusout", function() {
+  $("#clockStart").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#clock").addClass('emptyFields');
-      $("#clock").removeClass('fulfilledFields');
+      $("#clockStart").addClass('emptyFields');
+      $("#clockStart").removeClass('fulfilledFields');
     } else {
-      $("#clock").addClass('fulfilledFields');
-      $("#clock").removeClass('emptyFields');
+      $("#clockStart").addClass('fulfilledFields');
+      $("#clockStart").removeClass('emptyFields');
     }
   });
 
-  $('#scheduleWs').change(function() {
+  $("#clockFinish").on("paste keyup change focusout", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#clockFinish").addClass('emptyFields');
+      $("#clockFinish").removeClass('fulfilledFields');
+    } else {
+      $("#clockFinish").addClass('fulfilledFields');
+      $("#clockFinish").removeClass('emptyFields');
+    }
+  });
+
+  $('#startScheduleWs').change(function() {
     if ($(this).is(':checked')) {
-      $('#clock').prop('disabled', false);
+      $('#clockStart, #clockFinish').prop('disabled', false);
     } else {
-      $('#clock').prop('disabled', true);
-      $("#clock").val(formatedDate);
+      $('#clockStart, #clockFinish').prop('disabled', true);
+      $("#clockStart").val(formatedDate);
+      $("#clockStart").addClass('fulfilledFields');
+      $("#clockFinish").addClass('fulfilledFields');
     }
   });
 
-  $('#clock').datepicker({
+  $('#clockStart').datepicker({
     dateTimeSeparator: " - ",
     clearButton: true,
     minDate: dateNow,
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
-      let year = d.getYear().toString().substring(1);
-      this.scheduleDate = (d.getDate() + '-' + d.getMonth() + '-' + year + ' ' + d.getHours() + ':' + d.getMinutes());
-      console.log(this.scheduleDate);
+      let yearStart = d.getYear().toString().substring(1);
+      startDate = (d.getDate() + '-' + d.getMonth() + '-' + yearStart + ' ' + d.getHours() + ':' + d.getMinutes());
     }
   });
 
-  {{!-- $('#defaultVideo').change(function() {
-    if ($(this).is(':checked')) {
-      $('#video').prop('disabled', true);
-      $('#title').prop('disabled', true);
-    } else {
-      $('#video').prop('disabled', false);
-      $('#title').prop('disabled', false);
+  $('#clockFinish').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateTomorrow,
+    minHours: dateTomorrow,
+    onSelect: function(fd, d, picker) {
+      let yearFinish = d.getYear().toString().substring(1);
+      finishDate = (d.getDate() + '-' + d.getMonth() + '-' + yearFinish + ' ' + d.getHours() + ':' + d.getMinutes());
     }
-  }) --}}
+  });
+
+  $('#clockStart, #clockFinish').on("change focusout", function() {
+    if (startDate > finishDate || startDate == finishDate) {
+      $("#clockStart").removeClass('fulfilledFields');
+      $("#clockStart").addClass('emptyFields');
+      $("#clockFinish").removeClass('fulfilledFields');
+      $("#clockFinish").addClass('emptyFields');
+      Toast.fire({
+        type: 'warning',
+        title: 'End date should be greater than start date!'
+      })
+    } else {
+      $("#clockStart").removeClass('emptyFields');
+      $("#clockStart").addClass('fulfilledFields');
+      $("#clockFinish").removeClass('emptyFields');
+      $("#clockFinish").addClass('fulfilledFields');
+    }
+  });
 
   $('#upload_form').submit(function(e) {
     e.preventDefault();
@@ -123,13 +164,17 @@
     const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
     const titleEmpty = $('#title').val() === ''; 
     const videoEmpty = $('#video').get(0).files.length !== 0;
-    const scheduledTime = $("#scheduleWs").is(':checked') && ($("#clock").val() !== '' && $("#clock").val() !== ' ');
-    const unscheduledTime = !$("#scheduleWs").is(':checked');
+    const scheduledTime = $("#startScheduleWs").is(':checked') && ($("#clockStart").val() !== '' && $("#clockStart").val() !== ' ');
+    const scheduledTimeFinish = $("#startScheduleWs").is(':checked') && ($("#clockFinish").val() !== '' && $("#clockFinish").val() !== ' ');
+    const unscheduledTime = !$("#startScheduleWs").is(':checked');
+    const finishTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#clockFinish").val() === '' || $("#clockFinish").val() === ' ');
+    const dateTime = startDate < finishDate;
 
-    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && (scheduledTime || unscheduledTime))) {
+    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || unscheduledTime)) && dateTime) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
-      $("#clock").addClass('fulfilledFields');
+      $("#clockStart").addClass('fulfilledFields');
+      $("#clockFinish").addClass('fulfilledFields');
 
       $.ajax({
         url: '/api/new_welcome_screen_video',
@@ -164,12 +209,12 @@
       $("#title").addClass('emptyFields');
       $("#video").addClass('emptyFields');
       
-      if (!unscheduledTime)
-        $("#clock").addClass('emptyFields');
+      if (finishTimeEmpty)
+        $("#clockFinish").addClass('emptyFields');
 
       Swal.fire({
-        title: 'Empty fields',
-        text: 'Please fulfill the necessary fields!',
+        title: 'Attention',
+        text: 'Please check the fields!',
         type: 'warning',
         confirmButtonColor: '#EE9658'
       });

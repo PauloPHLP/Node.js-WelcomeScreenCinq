@@ -18,7 +18,12 @@ const screenVideoSchema = mongoose.Schema({
     default: Date.now,
     require: true
   },
-  scheduledTo: {
+  startDate: {
+    type: String,
+    default: Date.now,
+    require: true
+  },
+  endDate: {
     type: String,
     default: Date.now,
     require: true
