@@ -20,17 +20,15 @@ const screenVideoSchema = mongoose.Schema({
   },
   startDate: {
     type: String,
-    default: Date.now,
     require: true
   },
   endDate: {
     type: String,
-    default: Date.now,
     require: true
   },
   activated: {
-    type: Boolean,
-    default: true
+    type: String,
+    default: "true"
   },
   isDefaultVideo: {
     type: Boolean,

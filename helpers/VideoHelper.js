@@ -8,6 +8,8 @@ let date = '';
 let videoName = '';
 let defaultVideoName = '';
 let title = '';
+let startDate = '';
+let endDate = '';
 let isEnable = false;
 let isDefault = false;
 let newVideo = '';
@@ -19,14 +21,19 @@ module.exports = {
         cb (null, 'uploads/');
       },
       filename: (req, file, cb) => {
-        date = moment(Date.now()).format('MM/DD/YY');
+        date = GlobalHelpers.GetDate();
         videoName = Date.now() + "_" + file.originalname;
         defaultVideoName = file.originalname;
         title = req.body.title;
+        startDate = req.params.startDate;
+        endDate = req.params.endDate;
         this.date = date;
         this.videoName = videoName;
         this.defaultVideoName = defaultVideoName;
         this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+
         cb (null, `${videoName}`);
       }
     });
@@ -48,14 +55,18 @@ module.exports = {
         title: 'Default video',
         videoName: 'default_video.mp4',
         defaultVideoName: 'default_video.mp4',
-        date: moment(Date.now()).format('MM/DD/YY')
+        date: moment(Date.now()).format('MM/DD/YY'),
+        startDate: null,
+        endDate: null
       });
     } else {
       return screenVideo = new ScreenVideo({
         title: this.title,
         videoName: this.videoName,
         defaultVideoName: this.defaultVideoName,
-        date: this.date
+        date: this.date,
+        startDate: this.startDate,
+        endDate: this.endDate
       });
     }
   },

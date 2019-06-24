@@ -113,3 +113,45 @@ function deleteImage(id) {
     }
   });
 }
+
+function checkTime() {
+  let equality = checkEqualDate(startDateFormatted, expirationDateFormatted);
+  startDateFormatted = configureDate(startDateFormatted);
+  expirationDateFormatted = configureDate(expirationDateFormatted);
+
+  if (startDateFormatted > expirationDateFormatted || equality === true) {
+    $("#startDate").removeClass('fulfilledFields');
+    $("#startDate").addClass('emptyFields');
+    $("#endDate").removeClass('fulfilledFields');
+    $("#endDate").addClass('emptyFields');
+    Toast.fire({
+      type: 'warning',
+      title: 'End date should be greater than start date!'
+    });
+    return false;
+  } else {
+    $("#startDate").removeClass('emptyFields');
+    $("#startDate").addClass('fulfilledFields');
+    $("#endDate").removeClass('emptyFields');
+    $("#endDate").addClass('fulfilledFields');
+    return true;
+  };
+}
+
+function checkEqualDate(start, finish) {
+  start = start.getDate() + start.getMonth() + start.getYear();
+  finish = finish.getDate() + finish.getMonth() + finish.getYear();
+
+  if (start === finish) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function configureDate(date) {
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  return date;
+}

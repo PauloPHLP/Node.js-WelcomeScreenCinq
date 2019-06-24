@@ -25,18 +25,18 @@
                 <div class="form-group flt_center">
                   <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
                   <label for="startScheduleWs">I want to schedule this WS from:</label>
-                  <input type='text' name="clockStart" id="clockStart" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule start date and time" disabled/>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule start date and time" disabled/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
                   <input type="checkbox" class="vsb_hidden">
                   <label for="finishScheduleWs">To:</label>
-                  <input type='text' name="clockFinish" id="clockFinish" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule finish date and time" disabled/>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule finish date and time" disabled/>
                 </div>
               </div>
             </div>
-            <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <input type="submit" id="confirm" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
         </div>
       </div>
@@ -49,9 +49,11 @@
   const dateTomorrow = new Date(dateNow.getFullYear(), dateNow.getMonth(), (dateNow.getDate() + 1), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
   let formatedDate = moment(dateNow).format('DD/MM/YYYY - HH:mm');
   let expirationDate = moment(dateTomorrow).format('DD/MM/YYYY - HH:mm');
+  let startDateFormatted = new Date();
+  let expirationDateFormatted = dateTomorrow;
   let socket = io();
-  let startDate = formatedDate;
-  let finishDate = expirationDate;
+  let startDate = moment(dateNow).format('DD-M-YY H:m');
+  let finishDate = moment(dateTomorrow).format('DD-M-YY H:m');
   const Toast = Swal.mixin({
     toast: true,
     position: 'top',
@@ -60,8 +62,8 @@
   });
 
   $(document).ready(() => {
-    $("#clockStart").val(formatedDate);
-    $("#clockFinish").val(expirationDate);
+    $("#startDate").val(formatedDate);
+    $("#endDate").val(expirationDate);
   });
 
   $("#title").on("paste keyup change focusout", function() {
@@ -84,74 +86,62 @@
     }
   });
 
-  $("#clockStart").on("paste keyup change focusout", function() {
+  $("#startDate").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#clockStart").addClass('emptyFields');
-      $("#clockStart").removeClass('fulfilledFields');
+      $("#startDate").addClass('emptyFields');
+      $("#startDate").removeClass('fulfilledFields');
     } else {
-      $("#clockStart").addClass('fulfilledFields');
-      $("#clockStart").removeClass('emptyFields');
+      $("#startDate").addClass('fulfilledFields');
+      $("#startDate").removeClass('emptyFields');
     }
   });
 
-  $("#clockFinish").on("paste keyup change focusout", function() {
+  $("#endDate").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#clockFinish").addClass('emptyFields');
-      $("#clockFinish").removeClass('fulfilledFields');
+      $("#endDate").addClass('emptyFields');
+      $("#endDate").removeClass('fulfilledFields');
     } else {
-      $("#clockFinish").addClass('fulfilledFields');
-      $("#clockFinish").removeClass('emptyFields');
+      $("#endDate").addClass('fulfilledFields');
+      $("#endDate").removeClass('emptyFields');
     }
   });
 
   $('#startScheduleWs').change(function() {
     if ($(this).is(':checked')) {
-      $('#clockStart, #clockFinish').prop('disabled', false);
+      $('#startDate, #endDate').prop('disabled', false);
     } else {
-      $('#clockStart, #clockFinish').prop('disabled', true);
-      $("#clockStart").val(formatedDate);
-      $("#clockStart").addClass('fulfilledFields');
-      $("#clockFinish").addClass('fulfilledFields');
+      $('#startDate, #endDate').prop('disabled', true);
+      $("#startDate").val(formatedDate);
+      $("#startDate").addClass('fulfilledFields');
+      $("#endDate").addClass('fulfilledFields');
     }
   });
 
-  $('#clockStart').datepicker({
+  $('#startDate').datepicker({
     dateTimeSeparator: " - ",
     clearButton: true,
     minDate: dateNow,
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
       let yearStart = d.getYear().toString().substring(1);
-      startDate = (d.getDate() + '-' + d.getMonth() + '-' + yearStart + ' ' + d.getHours() + ':' + d.getMinutes());
+      let correctMonth = d.getMonth() + 1;
+      startDate = d.getDate() + '-' + correctMonth + '-' + yearStart + ' ' + d.getHours() + ':' + d.getMinutes();
+      startDateFormatted = d;
+      checkTime();
     }
   });
 
-  $('#clockFinish').datepicker({
+  $('#endDate').datepicker({
     dateTimeSeparator: " - ",
     clearButton: true,
     minDate: dateTomorrow,
     minHours: dateTomorrow,
     onSelect: function(fd, d, picker) {
       let yearFinish = d.getYear().toString().substring(1);
-      finishDate = (d.getDate() + '-' + d.getMonth() + '-' + yearFinish + ' ' + d.getHours() + ':' + d.getMinutes());
-    }
-  });
-
-  $('#clockStart, #clockFinish').on("change focusout", function() {
-    if (startDate > finishDate || startDate == finishDate) {
-      $("#clockStart").removeClass('fulfilledFields');
-      $("#clockStart").addClass('emptyFields');
-      $("#clockFinish").removeClass('fulfilledFields');
-      $("#clockFinish").addClass('emptyFields');
-      Toast.fire({
-        type: 'warning',
-        title: 'End date should be greater than start date!'
-      })
-    } else {
-      $("#clockStart").removeClass('emptyFields');
-      $("#clockStart").addClass('fulfilledFields');
-      $("#clockFinish").removeClass('emptyFields');
-      $("#clockFinish").addClass('fulfilledFields');
+      let correctMonth = d.getMonth() + 1;
+      finishDate = d.getDate() + '-' + correctMonth + '-' + yearFinish + ' ' + d.getHours() + ':' + d.getMinutes();
+      expirationDateFormatted = d;
+      checkTime();
     }
   });
 
@@ -164,20 +154,21 @@
     const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
     const titleEmpty = $('#title').val() === ''; 
     const videoEmpty = $('#video').get(0).files.length !== 0;
-    const scheduledTime = $("#startScheduleWs").is(':checked') && ($("#clockStart").val() !== '' && $("#clockStart").val() !== ' ');
-    const scheduledTimeFinish = $("#startScheduleWs").is(':checked') && ($("#clockFinish").val() !== '' && $("#clockFinish").val() !== ' ');
+    const scheduledTime = $("#startScheduleWs").is(':checked') && ($("#startDate").val() !== '' && $("#startDate").val() !== ' ');
+    const scheduledTimeFinish = $("#startScheduleWs").is(':checked') && ($("#endDate").val() !== '' && $("#endDate").val() !== ' ');
     const unscheduledTime = !$("#startScheduleWs").is(':checked');
-    const finishTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#clockFinish").val() === '' || $("#clockFinish").val() === ' ');
-    const dateTime = startDate < finishDate;
+    const startTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#startDate").val() === '' || $("#startDate").val() === ' ');
+    const finishTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#endDate").val() === '' || $("#endDate").val() === ' ');
+    const dateTime = checkTime();
 
     if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || unscheduledTime)) && dateTime) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
-      $("#clockStart").addClass('fulfilledFields');
-      $("#clockFinish").addClass('fulfilledFields');
+      $("#startDate").addClass('fulfilledFields');
+      $("#endDate").addClass('fulfilledFields');
 
       $.ajax({
-        url: '/api/new_welcome_screen_video',
+        url: `/api/new_welcome_screen_video/${startDate}/${finishDate}`,
         type: 'POST',
         data: formData,
         async: false,
@@ -209,8 +200,16 @@
       $("#title").addClass('emptyFields');
       $("#video").addClass('emptyFields');
       
-      if (finishTimeEmpty)
-        $("#clockFinish").addClass('emptyFields');
+      if (finishTimeEmpty === true) {
+        $("#endDate").addClass('emptyFields');
+      } else {
+        $("#endDate").addClass('fulfilledFields');
+      }
+      if (startTimeEmpty === true) {
+        $("#startDate").addClass('emptyFields');
+      } else {
+        $("#startDate").addClass('fulfilledFields');
+      }
 
       Swal.fire({
         title: 'Attention',
