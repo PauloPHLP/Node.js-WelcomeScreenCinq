@@ -1,4 +1,5 @@
 const GlobalHelpers = require('./GlobalHelpers');
+const TemplateHelpers = require('./TemplateHelpers');
 
 module.exports = {
   guestList: guestName => {
@@ -36,6 +37,14 @@ module.exports = {
       return `<td>Disabled</td>`;
     } else if (video.activated === 'programmed') {
       return `<td>Programmed to ${GlobalHelpers.FormatDate(video.startDate)}</td>`;
+    }
+  },
+
+  checkIsProgrammed: video => {
+    if (video.activated === 'programmed') {
+      return TemplateHelpers.ProgrammedWelcomeScreen(video);
+    } else if (video.activated === 'true') {
+      return TemplateHelpers.ActivetedWelcomeScreen(video);
     }
   }
 }

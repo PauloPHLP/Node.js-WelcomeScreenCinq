@@ -22,13 +22,15 @@
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  {{#if isEnabled}}
+                  {{!-- {{#if isEnabled}}
                     <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
                     <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
                   {{else}}
                     <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
                     <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
-                  {{/if}}
+                  {{/if}} --}}
+                  <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
+                  <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -54,7 +56,8 @@
                   {{/if}}
                 </div>
               </div>
-            </div>
+              {{#checkIsProgrammed screenVideo}}
+              {{/checkIsProgrammed}} 
             <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
         </div>
@@ -64,28 +67,50 @@
 </div>
 
 <script>
-  let socket = io();
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000
+  });
+  const socket = io();
+  const dateNow = new Date();
+  const dateTomorrow = getTomorrowsDate(dateNow);
+  const initialStartDate = `{{{screenVideo.startDate}}}`;
+  const initialEndDate = `{{{screenVideo.endDate}}}`;
+  let startDateFormatted = dateNow;
+  let expirationDateFormatted = dateTomorrow;
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
 
-  $("#title").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#title").addClass('emptyFields');
-      $("#title").removeClass('fulfilledFields');
-    } else {
-      $("#title").addClass('fulfilledFields');
-      $("#title").removeClass('emptyFields');
+  $(document).ready(() => {
+    if (`{{{isEnabled}}}` === 'programmed') {
+      checkBoxCheck('programmed', initialStartDate, initialEndDate);
     }
   });
 
+  $("#title").on("paste keyup change focusout", function() {
+    addAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
+  });
+
   $("#video").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#video").addClass('emptyFields');
-      $("#video").removeClass('fulfilledFields');
-    } else {
-      $("#video").addClass('fulfilledFields');
-      $("#video").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
+  });
+
+  $("#startDate").on("paste keyup change focusout", function() {
+    addAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+  });
+
+  $("#endDate").on("paste keyup change focusout", function() {
+    addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+  });
+
+  $('#isEnable').change(function() {
+    changeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
+  });
+
+  $('#currentVideo').change(function() {
+    currentVideo = $('#currentVideo').text();
   });
 
   $('#defaultVideo').change(function() {
@@ -102,30 +127,72 @@
     }
   });
 
-  $('#currentVideo').change(function() {
-    currentVideo = $('#currentVideo').text();
+  $("#isEnable").on("change", function() {
+    if ($(this).is(':checked')) {
+      unableDisableSchedule('disabled');
+    } else {
+      unableDisableSchedule('enabled');
+    }
   });
 
-  $('#isEnable').change(function() {
+  $("#startScheduleWs").on("change", function() {
     if ($(this).is(':checked')) {
-      $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
+      unableDisableSchedule('programmed');
     } else {
-      $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
+      unableDisableSchedule('disabled');
+    }
+  });
+
+  $('#startDate').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateNow,
+    minHours: dateNow,
+    onSelect: function(fd, d, picker) {
+      monthStart = getCorrectMonth(d);
+      yearStart = formatYear(d);
+      startDate = formatDateToEnroll(d, monthStart, yearStart);
+      startDateFormatted = d;
+      checkTime();
+    }
+  });
+
+  $('#endDate').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateTomorrow,
+    minHours: dateTomorrow,
+    onSelect: function(fd, d, picker) {
+      monthFinish = getCorrectMonth(d);
+      yearFinish = formatYear(d);
+      finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
+      expirationDateFormatted = d;
+      checkTime();
     }
   });
 
   $('#update_form').submit(function(e) {
     e.preventDefault();
 
+    const isScheduled = $("#startScheduleWs").is(':checked');
     const defaultText = 'Current video: default_video.mp4';
     const videoSize = $('#video').get(0).files.length;
     const isDefaultVideo = $('#defaultVideo').is(':checked');
     const titleNotEmpty = $('#title').val() != '' && $('#title').val() != ' ';
+    const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
+    const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
+    const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
+    const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
     const defaultVideo = currentVideo === defaultText && videoSize !== 0;
     const notDefaultVideo = currentVideo !== defaultText && videoSize === 0;
     const newVideo = currentVideo !== defaultText && videoSize !== 0;
+    const scheduledTime = isScheduled && startDateEmptyOrNull;
+    const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
+    const startTimeEmpty = isScheduled && startDateInvalid;
+    const finishTimeEmpty = isScheduled && endDateInvalid;
+    const dateTime = checkTime();
 
-    if (titleNotEmpty && (isDefaultVideo || defaultVideo || notDefaultVideo || newVideo)) {
+    if (titleNotEmpty && (isDefaultVideo || defaultVideo || notDefaultVideo || newVideo || dateTime) && scheduledTime && scheduledTimeFinish && dateTime) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 
@@ -170,6 +237,13 @@
       if (titleNotEmpty === false && notDefaultVideo === false) {
         $("#title").addClass('emptyFields');
         $("#video").addClass('emptyFields');
+      }
+
+      if (startTimeEmpty) {
+        addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
+      }
+      if (finishTimeEmpty) {
+        addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
       }
 
       Swal.fire({

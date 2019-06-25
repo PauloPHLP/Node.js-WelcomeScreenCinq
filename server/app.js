@@ -34,10 +34,12 @@ const hbs = expressHandlebars.create({
     },
     checkAvailability: video => {
       return HBSHelpers.checkAvailability(video);
+    },
+    checkIsProgrammed: video => {
+      return HBSHelpers.checkIsProgrammed(video);
     }
   }
 });
-
 /* #endregion */
 
 /* #region Variables */
@@ -414,7 +416,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
       if (err)
         return res.status(400).send(err);
       const renderSettings = GlobalHelpers.RenderSettings(screenVideo.defaultVideoName, screenVideo.activated);
-
+      
       res.render('edit_welcome_screen_video', {
         screenVideo,
         isDefaultVideo: renderSettings.isDefault,

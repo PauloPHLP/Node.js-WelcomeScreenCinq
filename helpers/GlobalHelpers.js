@@ -64,18 +64,24 @@ module.exports = {
   },
 
   RenderSettings: (defaultName, activated) => {
-    if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === true)) {
+    if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === "true")) {
       this.isDefault = true;
-      this.isEnabled = true;
-    } else if (((defaultName !== 'default_video.mp4') && (defaultName !== 'default_image.jpg')) && (activated === true)) {
+      this.isEnabled = "true";
+    } else if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === "false")) {
+      this.isDefault = true;
+      this.isEnabled = "false";
+    } else if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === "programmed")) {
+      this.isDefault = true;
+      this.isEnabled = "programmed";
+    } else if (((defaultName !== 'default_video.mp4') && (defaultName !== 'default_image.jpg')) && (activated === "true")) {
       this.isDefault = false;
-      this.isEnabled = true;
-    } else if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === false)) {
-      this.isDefault = true;
-      this.isEnabled = false;
+      this.isEnabled = "true";
+    } else if (((defaultName !== 'default_video.mp4') && (defaultName !== 'default_image.jpg')) && (activated === "false")) {
+      this.isDefault = false;
+      this.isEnabled = "false";
     } else {
       this.isDefault = false;
-      this.isEnabled = false;
+      this.isEnabled = "programmed";
     }
 
     return {
