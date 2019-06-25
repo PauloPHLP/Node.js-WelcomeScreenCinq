@@ -25,14 +25,14 @@
                 <div class="form-group flt_center">
                   <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
                   <label for="startScheduleWs">I want to schedule this WS from:</label>
-                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule start date and time" disabled/>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
                   <input type="checkbox" class="vsb_hidden">
                   <label for="finishScheduleWs">To:</label>
-                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Schedule finish date and time" disabled/>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
                 </div>
               </div>
             </div>
@@ -45,75 +45,51 @@
 </div>
 
 <script>
-  const dateNow = new Date();
-  const dateTomorrow = new Date(dateNow.getFullYear(), dateNow.getMonth(), (dateNow.getDate() + 1), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
-  let formatedDate = moment(dateNow).format('DD/MM/YYYY - HH:mm');
-  let expirationDate = moment(dateTomorrow).format('DD/MM/YYYY - HH:mm');
-  let startDateFormatted = new Date();
-  let expirationDateFormatted = dateTomorrow;
-  let socket = io();
-  let startDate = moment(dateNow).format('DD-M-YY H:m');
-  let finishDate = moment(dateTomorrow).format('DD-M-YY H:m');
   const Toast = Swal.mixin({
     toast: true,
     position: 'top',
     showConfirmButton: false,
     timer: 3000
   });
-
-  $(document).ready(() => {
-    $("#startDate").val(formatedDate);
-    $("#endDate").val(expirationDate);
-  });
+  const socket = io();
+  const dateNow = new Date();
+  const dateTomorrow = getTomorrowsDate(dateNow);
+  let yearStart = '';
+  let monthStart = '';
+  let yearFinish = '';
+  let monthFinish = '';
+  let formatedDate = formatDateBeauty(dateNow);
+  let expirationDate = formatDateBeauty(dateTomorrow);
+  let startDateFormatted = dateNow;
+  let expirationDateFormatted = dateTomorrow;
+  let startDate = formatDateUgly(dateNow);
+  let finishDate = formatDateUgly(dateTomorrow);
 
   $("#title").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#title").addClass('emptyFields');
-      $("#title").removeClass('fulfilledFields');
-    } else {
-      $("#title").addClass('fulfilledFields');
-      $("#title").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
   });
 
   $("#video").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#video").addClass('emptyFields');
-      $("#video").removeClass('fulfilledFields');
-    } else {
-      $("#video").addClass('fulfilledFields');
-      $("#video").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#startDate").addClass('emptyFields');
-      $("#startDate").removeClass('fulfilledFields');
-    } else {
-      $("#startDate").addClass('fulfilledFields');
-      $("#startDate").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#endDate").addClass('emptyFields');
-      $("#endDate").removeClass('fulfilledFields');
-    } else {
-      $("#endDate").addClass('fulfilledFields');
-      $("#endDate").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
   });
 
   $('#startScheduleWs').change(function() {
     if ($(this).is(':checked')) {
       $('#startDate, #endDate').prop('disabled', false);
+      $("#startDate").val(formatedDate);
+      $("#endDate").val(expirationDate);
     } else {
       $('#startDate, #endDate').prop('disabled', true);
-      $("#startDate").val(formatedDate);
-      $("#startDate").addClass('fulfilledFields');
-      $("#endDate").addClass('fulfilledFields');
+      $("#startDate").val('');
+      $("#endDate").val('');
     }
   });
 
@@ -123,9 +99,9 @@
     minDate: dateNow,
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
-      let yearStart = d.getYear().toString().substring(1);
-      let correctMonth = d.getMonth() + 1;
-      startDate = d.getDate() + '-' + correctMonth + '-' + yearStart + ' ' + d.getHours() + ':' + d.getMinutes();
+      monthStart = getCorrectMonth(d);
+      yearStart = formatYear(d);
+      startDate = formatDateToEnroll(d, monthStart, yearStart);
       startDateFormatted = d;
       checkTime();
     }
@@ -137,9 +113,9 @@
     minDate: dateTomorrow,
     minHours: dateTomorrow,
     onSelect: function(fd, d, picker) {
-      let yearFinish = d.getYear().toString().substring(1);
-      let correctMonth = d.getMonth() + 1;
-      finishDate = d.getDate() + '-' + correctMonth + '-' + yearFinish + ' ' + d.getHours() + ':' + d.getMinutes();
+      monthFinish = getCorrectMonth(d);
+      yearFinish = formatYear(d);
+      finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
       expirationDateFormatted = d;
       checkTime();
     }
@@ -149,26 +125,34 @@
     e.preventDefault();
 
     let formData = new FormData($(this)[0]);
-
+    const isScheduled = $("#startScheduleWs").is(':checked');
     const isDefault = $('#defaultVideo').is(':checked');
     const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
+    const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
+    const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
+    const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
+    const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
     const titleEmpty = $('#title').val() === ''; 
     const videoEmpty = $('#video').get(0).files.length !== 0;
-    const scheduledTime = $("#startScheduleWs").is(':checked') && ($("#startDate").val() !== '' && $("#startDate").val() !== ' ');
-    const scheduledTimeFinish = $("#startScheduleWs").is(':checked') && ($("#endDate").val() !== '' && $("#endDate").val() !== ' ');
-    const unscheduledTime = !$("#startScheduleWs").is(':checked');
-    const startTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#startDate").val() === '' || $("#startDate").val() === ' ');
-    const finishTimeEmpty = $("#startScheduleWs").is(':checked') && ($("#endDate").val() === '' || $("#endDate").val() === ' ');
+    const scheduledTime = isScheduled && startDateEmptyOrNull;
+    const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
+    const startTimeEmpty = isScheduled && startDateInvalid;
+    const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = checkTime();
 
-    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || unscheduledTime)) && dateTime) {
+    if (!isScheduled) {
+      $("#startDate").removeClass('fulfilledFields');
+      $("#endDate").removeClass('fulfilledFields');
+    }
+
+    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled)) && dateTime) {
+      const isProgrammed = checkIsProgrammed(isScheduled);
+      
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
-      $("#startDate").addClass('fulfilledFields');
-      $("#endDate").addClass('fulfilledFields');
 
       $.ajax({
-        url: `/api/new_welcome_screen_video/${startDate}/${finishDate}`,
+        url: `/api/new_welcome_screen_video/${startDate}/${finishDate}/${isProgrammed}`,
         type: 'POST',
         data: formData,
         async: false,
@@ -184,7 +168,7 @@
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
           }).then(result => {
-            window.location.href = "/welcome_screens_list"
+            window.location.href = "/welcome_screens_list";
           });
         },
         error: () => {
@@ -199,16 +183,12 @@
     } else {
       $("#title").addClass('emptyFields');
       $("#video").addClass('emptyFields');
-      
-      if (finishTimeEmpty === true) {
-        $("#endDate").addClass('emptyFields');
-      } else {
-        $("#endDate").addClass('fulfilledFields');
+
+      if (startTimeEmpty) {
+        addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
       }
-      if (startTimeEmpty === true) {
-        $("#startDate").addClass('emptyFields');
-      } else {
-        $("#startDate").addClass('fulfilledFields');
+      if (finishTimeEmpty) {
+        addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
       }
 
       Swal.fire({

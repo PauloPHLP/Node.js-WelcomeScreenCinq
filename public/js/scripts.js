@@ -115,11 +115,7 @@ function deleteImage(id) {
 }
 
 function checkTime() {
-  let equality = checkEqualDate(startDateFormatted, expirationDateFormatted);
-  startDateFormatted = configureDate(startDateFormatted);
-  expirationDateFormatted = configureDate(expirationDateFormatted);
-
-  if (startDateFormatted > expirationDateFormatted || equality === true) {
+  if (startDateFormatted > expirationDateFormatted || checkEqualDate(formatDate(startDateFormatted), formatDate(expirationDateFormatted))) {
     $("#startDate").removeClass('fulfilledFields');
     $("#startDate").addClass('emptyFields');
     $("#endDate").removeClass('fulfilledFields');
@@ -139,9 +135,6 @@ function checkTime() {
 }
 
 function checkEqualDate(start, finish) {
-  start = start.getDate() + start.getMonth() + start.getYear();
-  finish = finish.getDate() + finish.getMonth() + finish.getYear();
-
   if (start === finish) {
     return true;
   } else {
@@ -149,9 +142,14 @@ function checkEqualDate(start, finish) {
   }
 }
 
-function configureDate(date) {
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  return date;
+function formatDate(date) {
+  return moment(date).format('DD/MM/YYYY HH:mm');
+}
+
+function checkIsProgrammed(isChecked) {
+  if (isChecked === true) {
+    return 'programmed';
+  } else {
+    return 'true';
+  }
 }

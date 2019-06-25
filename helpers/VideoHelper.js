@@ -13,6 +13,7 @@ let endDate = '';
 let isEnable = false;
 let isDefault = false;
 let newVideo = '';
+let activated = '';
 
 module.exports = {
   SetStorage: () => {
@@ -27,13 +28,15 @@ module.exports = {
         title = req.body.title;
         startDate = req.params.startDate;
         endDate = req.params.endDate;
+        activated = req.params.isProgrammed;
         this.date = date;
         this.videoName = videoName;
         this.defaultVideoName = defaultVideoName;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-
+        this.activated = activated;
+        
         cb (null, `${videoName}`);
       }
     });
@@ -57,7 +60,8 @@ module.exports = {
         defaultVideoName: 'default_video.mp4',
         date: moment(Date.now()).format('MM/DD/YY'),
         startDate: null,
-        endDate: null
+        endDate: null,
+        activated: "true"
       });
     } else {
       return screenVideo = new ScreenVideo({
@@ -66,7 +70,8 @@ module.exports = {
         defaultVideoName: this.defaultVideoName,
         date: this.date,
         startDate: this.startDate,
-        endDate: this.endDate
+        endDate: this.endDate,
+        activated: this.activated
       });
     }
   },
@@ -128,7 +133,6 @@ module.exports = {
       this.videoName = vidName;
       this.defaultVideoName = defaultVidName;
     } 
-
     return module.exports.SetVideo(this.videoName, this.defaultVideoName, tit, dataUpd, isActivated);
   }
 }

@@ -14,7 +14,8 @@ module.exports = {
   EnableDisableImages: isActivated => {
     ScreenImage.find().then(docImage => {
       docImage.forEach(image => {
-        ScreenImage.updateOne({_id: image._id}, {$set: {activated: isActivated}}, (err, screenImage) => {});
+        if (image.activated === "true")
+          ScreenImage.updateOne({_id: image._id}, {$set: {activated: isActivated}}, (err, screenImage) => {}); 
       });
     });
   },
@@ -22,7 +23,8 @@ module.exports = {
   EnableDisableVideos: isActivated => {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
+        if (video.activated === "true")
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
       });
     });
   },
@@ -83,6 +85,10 @@ module.exports = {
   },
 
   GetDate: () => {
-    return date = moment(Date.now()).format('MM/DD/YY');
+    return moment(Date.now()).format('MM/DD/YY');
+  },
+
+  FormatDate: date => {
+    return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD/MM/YYYY - HH:mm');
   }
 }

@@ -31,6 +31,9 @@ const hbs = expressHandlebars.create({
     },
     showCompanies: companies => {
       return HBSHelpers.showCompanies(companies);
+    },
+    checkAvailability: video => {
+      return HBSHelpers.checkAvailability(video);
     }
   }
 });
@@ -380,8 +383,10 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
   }    
 });
 
-app.post('/api/new_welcome_screen_video/:startDate/:endDate', (req, res) => {
-  GlobalHelpers.EnableDisableImagesAndVideos(false);
+app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req, res) => {
+  if (req.params.isProgrammed !== "programmed") 
+    GlobalHelpers.EnableDisableImagesAndVideos(false);
+
   const upload = VideoHelper.StoreVideo();
   
   upload(req, res, function(err) {
