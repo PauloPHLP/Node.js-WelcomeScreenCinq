@@ -239,6 +239,8 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
+  GlobalHelpers.EnableDisableProgrammedWs();
+
   if (!req.user) { 
     return res.render('login', {
       header: false,
@@ -395,6 +397,13 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
     const screenVideo = VideoHelper.UploadVideo(req);
 
     screenVideo.save((err, doc) => {
+      GlobalHelpers.EnableDisableProgrammedWs();
+
+      if (doc.startDate === GlobalHelpers.formatDateUgly(new Date()))
+        GlobalHelpers.DisableEverythingButCurrentVideo(doc._id);
+      
+      GlobalHelpers.EnableDefaultVideoIfNoVideos();
+
       if (err)
         res.status(400).send(err);
     });
@@ -451,10 +460,6 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
   });
-});
-
-app.put('/api/check_scheduled_video/:id/:activation', (req, res) => {
-  console.log(req.params.id + ' ; ' + req.params.activated)
 });
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 

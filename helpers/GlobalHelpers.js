@@ -32,7 +32,7 @@ module.exports = {
   EnableDisableDefaultVideo: isActivated => {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        if (video.isDefaultVideo === "true" && video.activated !== "programmed")
+        if (video.isDefaultVideo === true && video.activated !== "programmed")
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
       });
     });
@@ -51,9 +51,8 @@ module.exports = {
 
   EnableDefaultVideoIfNoVideos: () => {
     ScreenVideo.countDocuments({activated: 'true'}, function(err, count) {
-      if (count === 0) {
+      if (count === 0) 
         module.exports.EnableDisableDefaultVideo(true);
-      }
     });
   },
 
@@ -61,8 +60,23 @@ module.exports = {
     module.exports.EnableDisableImages(false);
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        if (video._id != id && video.activated !== 'programmed') {
+        if (video._id != id && video.activated !== 'programmed') 
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, (err, screenVideo) => {});
+      });
+    });
+  },
+
+  EnableDisableProgrammedWs: () => {
+    ScreenVideo.find().then(docVideo => {
+      docVideo.forEach(video => {
+        if (video.activated === 'programmed') {
+          this.isTimeToActivate = module.exports.CheckProgrammedDate(video);
+          if (this.isTimeToActivate === true) {
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+          } 
+        } 
+        if (video.activated === 'true' && video.endDate < module.exports.formatDateUgly(new Date())) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
         }
       });
     });
@@ -101,5 +115,17 @@ module.exports = {
 
   FormatDate: date => {
     return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD/MM/YYYY - HH:mm');
+  },
+
+  formatDateUgly: date => {
+    return moment(date).format('DD-M-YY H:m');
+  },
+
+  CheckProgrammedDate: video => {
+    const dateNow = module.exports.formatDateUgly(new Date());
+
+    if (dateNow >= video.startDate && dateNow <= video.endDate) {
+      return true;
+    } 
   }
 }

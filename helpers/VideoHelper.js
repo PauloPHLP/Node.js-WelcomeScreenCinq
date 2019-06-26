@@ -103,11 +103,7 @@ module.exports = {
       GlobalHelpers.EnableDefaultVideoIfNoVideos();
     });
   },
-
-  EnableDisableVideoWithAGivenId: (id, activation) => {
-    console.log(id + ' ;; ' + activation);
-  },
-
+  
   UpdateVideo: req => {
     this.isDefault = Boolean(req.body.defaultVideo);
     this.isEnable = req.params.isProgrammed;
