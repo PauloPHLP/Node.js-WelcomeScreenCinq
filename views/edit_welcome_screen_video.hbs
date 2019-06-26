@@ -69,8 +69,8 @@
   const socket = io();
   const dateNow = new Date();
   const dateTomorrow = getTomorrowsDate(dateNow);
-  const initialStartDate = `{{{screenVideo.startDate}}}`;
-  const initialEndDate = `{{{screenVideo.endDate}}}`;
+  const initialStartDate = `{{screenVideo.startDate}}`;
+  const initialEndDate = `{{screenVideo.endDate}}`;
   let dateStart = initialStartDate;
   let dateEnd = initialEndDate;
   let startDateFormatted = initialStartDate;
@@ -81,7 +81,7 @@
   let expirationDate = formatDateBeauty(dateTomorrow);
 
   $(document).ready(() => {
-    if (`{{{isEnabled}}}` === 'programmed') {
+    if (`{{isEnabled}}` === 'programmed') {
       checkBoxCheck('programmed', initialStartDate, initialEndDate);
     } else if (`{{{isEnabled}}}` === 'true') {
       checkBoxCheck('true', initialStartDate, initialEndDate);

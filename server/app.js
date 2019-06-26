@@ -256,7 +256,7 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
             videos: docVideo,
             images: docImage,
             user: req.user,
-            title: 'Welcome Screen list'
+            title: 'Welcome Screens list'
           });
         });
       });
@@ -451,6 +451,10 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
   });
+});
+
+app.put('/api/check_scheduled_video/:id/:activation', (req, res) => {
+  console.log(req.params.id + ' ; ' + req.params.activated)
 });
 
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 

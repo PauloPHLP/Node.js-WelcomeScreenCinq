@@ -97,11 +97,27 @@ function disableScheduleFields (isEnabled) {
     $("#startDate").prop("disabled", true);
     $("#endDate").prop("disabled", true);
     $("#startDate").val(this.startDateToKeep);
-    $("#endDate").val(this.endDateToKeep)
+    $("#endDate").val(this.endDateToKeep);
   } else if (isEnabled === 'programmed') {
     $("#isEnable").prop("checked", false);
     $("#startScheduleWs").prop("checked", true);
     $("#startDate").prop("disabled", false);
     $("#endDate").prop("disabled", false);
+    $("#startDate").val(this.startDateToKeep);
+    $("#endDate").val(this.endDateToKeep);
   }
+}
+
+function enableDisableScheduledVideo (id, activation) {
+  const dateToChange = {
+    id: id,
+    activated: activation
+  }
+
+  $.ajax({
+    type:'POST',
+    url: `/api/check_scheduled_video/${id}/${activation}`,
+    data: JSON.stringify(dateToChange),
+    contentType: 'application/json'
+  });
 }

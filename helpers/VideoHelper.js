@@ -104,6 +104,10 @@ module.exports = {
     });
   },
 
+  EnableDisableVideoWithAGivenId: (id, activation) => {
+    console.log(id + ' ;; ' + activation);
+  },
+
   UpdateVideo: req => {
     this.isDefault = Boolean(req.body.defaultVideo);
     this.isEnable = req.params.isProgrammed;
@@ -114,7 +118,7 @@ module.exports = {
       GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
       return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, null, null, 'true');
     } else if (this.isDefault === false && this.isEnable === 'false') {
-      GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
+      GlobalHelpers.EnableDefaultVideoIfNoVideos();
       return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, null, null, 'false');
     } else  if (this.isDefault === false && this.isEnable === 'programmed') {
       return module.exports.SetNotDefaultVideo(req.body.oldVideoName, req.body.currentVideo, req.body.title, this.date, req.body.startDate, req.body.endDate, 'programmed');

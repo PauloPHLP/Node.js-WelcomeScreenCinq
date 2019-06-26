@@ -71,6 +71,41 @@
 </div>        
 
 <script>
+  $(document).ready(() => {
+    let dateNow = new Date();
+    dateNow = formatDateBeauty(dateNow);
+
+    {{#each videos}}
+      if (`{{activated}}` === 'programmed') {
+        if (dateNow >= `{{startDate}}` && dateNow <= `{{endDate}}`) {
+          const dateToChange = {
+            id: `{{_id}}`,
+            activated: "true"
+          }
+
+          $.ajax({
+            type:'POST',
+            url: `/api/check_scheduled_video/${dateToChange.id}/${dateToChange.activated}`,
+            data: JSON.stringify(dateToChange),
+            contentType: 'application/json'
+          });
+        } else if (dateNow > `{{endDate}}`) {
+          const dateToChange = {
+            id: `{{_id}}`,
+            activated: "false"
+          }
+
+          $.ajax({
+            type:'POST',
+            url: `/api/check_scheduled_video/${dateToChange.id}/${dateToChange.activated}`,
+            data: JSON.stringify(dateToChange),
+            contentType: 'application/json'
+          });
+        }
+      }
+    {{/each}}
+  });
+
   let socket = io();
   $('.deleteVideo, .deleteImage').on('click', () => {
     socket.emit('UpdateOnDatabase');
