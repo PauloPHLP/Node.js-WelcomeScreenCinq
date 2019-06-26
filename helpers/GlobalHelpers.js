@@ -30,7 +30,12 @@ module.exports = {
   },
 
   EnableDisableDefaultVideo: isActivated => {
-    ScreenVideo.updateOne({isDefaultVideo: 'true'}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
+    ScreenVideo.find().then(docVideo => {
+      docVideo.forEach(video => {
+        if (video.isDefaultVideo === "true" && video.activated === "false")
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: isActivated}}, (err, screenVideo) => {});
+      });
+    });
   },
 
   EnableDefaultVideoIfNoImages: () => {
@@ -56,7 +61,7 @@ module.exports = {
     module.exports.EnableDisableImages(false);
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        if (video._id != id) {
+        if (video._id != id && video.activated === "true") {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, (err, screenVideo) => {});
         }
       });

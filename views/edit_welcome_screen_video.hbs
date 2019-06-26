@@ -22,13 +22,6 @@
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  {{!-- {{#if isEnabled}}
-                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
-                    <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
-                  {{else}}
-                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
-                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
-                  {{/if}} --}}
                   <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
                   <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
                 </div>
@@ -78,14 +71,22 @@
   const dateTomorrow = getTomorrowsDate(dateNow);
   const initialStartDate = `{{{screenVideo.startDate}}}`;
   const initialEndDate = `{{{screenVideo.endDate}}}`;
-  let startDateFormatted = dateNow;
-  let expirationDateFormatted = dateTomorrow;
+  let dateStart = initialStartDate;
+  let dateEnd = initialEndDate;
+  let startDateFormatted = initialStartDate;
+  let expirationDateFormatted = initialEndDate;
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
+  let formatedDate = formatDateBeauty(dateNow);
+  let expirationDate = formatDateBeauty(dateTomorrow);
 
   $(document).ready(() => {
     if (`{{{isEnabled}}}` === 'programmed') {
       checkBoxCheck('programmed', initialStartDate, initialEndDate);
+    } else if (`{{{isEnabled}}}` === 'true') {
+      checkBoxCheck('true', initialStartDate, initialEndDate);
+    } else if (`{{{isEnabled}}}` === 'false') {
+      checkBoxCheck('false', initialStartDate, initialEndDate);
     }
   });
 
@@ -140,6 +141,8 @@
       unableDisableSchedule('programmed');
     } else {
       unableDisableSchedule('disabled');
+      $("#startDate").val('');
+      $("#endDate").val('');
     }
   });
 
@@ -149,11 +152,14 @@
     minDate: dateNow,
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
+      dateStart = d;
       monthStart = getCorrectMonth(d);
       yearStart = formatYear(d);
       startDate = formatDateToEnroll(d, monthStart, yearStart);
       startDateFormatted = d;
       checkTime();
+      if (dateEnd == '')
+        addAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
     }
   });
 
@@ -163,11 +169,14 @@
     minDate: dateTomorrow,
     minHours: dateTomorrow,
     onSelect: function(fd, d, picker) {
+      dateEnd = d;
       monthFinish = getCorrectMonth(d);
       yearFinish = formatYear(d);
       finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
       expirationDateFormatted = d;
       checkTime();
+      if (dateStart == '')
+        addAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
     }
   });
 
@@ -190,18 +199,21 @@
     const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
-    const dateTime = checkTime();
+    const videoSettingsToCheck = isDefaultVideo || defaultVideo || notDefaultVideo || newVideo;
+    const timeSettingsToCheck = scheduledTime && scheduledTimeFinish && checkTime();
+    const scheduleSettingsToCheck = !isScheduled && startDateInvalid && endDateInvalid;
 
-    if (titleNotEmpty && (isDefaultVideo || defaultVideo || notDefaultVideo || newVideo || dateTime) && scheduledTime && scheduledTimeFinish && dateTime) {
+    if (titleNotEmpty && videoSettingsToCheck && ((scheduledTime && scheduledTimeFinish && checkTime()) || (!isScheduled && startDateInvalid && endDateInvalid))) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 
+      const schedule = checkSchedule(isScheduled);
       const videoName = $('#videoName').text();
 
       var formData = new FormData($(this)[0]);
       
       $.ajax({
-        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}`,
+        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}/${schedule}`,
         type: 'PUT',
         data: formData,
         async: false,
@@ -247,8 +259,8 @@
       }
 
       Swal.fire({
-        title: 'Empty fields',
-        text: 'Please fulfill the necessary fields!',
+        title: 'Attention',
+        text: 'Please check the fields!',
         type: 'warning',
         confirmButtonColor: '#EE9658'
       });

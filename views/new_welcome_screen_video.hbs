@@ -62,6 +62,8 @@
   let expirationDate = formatDateBeauty(dateTomorrow);
   let startDateFormatted = dateNow;
   let expirationDateFormatted = dateTomorrow;
+  let dateStart = dateNow;
+  let dateEnd = dateTomorrow;
   let startDate = formatDateUgly(dateNow);
   let finishDate = formatDateUgly(dateTomorrow);
 
@@ -99,11 +101,14 @@
     minDate: dateNow,
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
+      dateStart = d;
       monthStart = getCorrectMonth(d);
       yearStart = formatYear(d);
       startDate = formatDateToEnroll(d, monthStart, yearStart);
       startDateFormatted = d;
       checkTime();
+      if (dateEnd == '' && dateStart != '')
+        addAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
     }
   });
 
@@ -113,11 +118,14 @@
     minDate: dateTomorrow,
     minHours: dateTomorrow,
     onSelect: function(fd, d, picker) {
+      dateEnd = d;
       monthFinish = getCorrectMonth(d);
       yearFinish = formatYear(d);
       finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
       expirationDateFormatted = d;
       checkTime();
+      if (dateStart == '' && dateEnd != '')
+        addAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
     }
   });
 

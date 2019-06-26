@@ -1,3 +1,6 @@
+let startDateToKeep = '';
+let endDateToKeep = '';
+
 function addAndRemoveClassConditional (field, classOne, classTwo) {
   if ($(field).val() === '' || $(field).val() === ' ') {
     $(field).addClass(classOne);
@@ -18,6 +21,8 @@ function cleanStartEndField () {
   $('#startDate').removeClass('emptyFields');
   $('#endDate').removeClass('fulfilledFields');
   $('#endDate').removeClass('emptyFields');
+  $('#startDate').val('');
+  $('#endDate').val('');
 }
 
 function getTomorrowsDate (dateNow) {
@@ -63,6 +68,15 @@ function checkBoxCheck (isProgrammed, initialStartDate, initialEndDate) {
     formatDateToShow('#endDate', initialEndDate);
     $('#startDate').removeClass('fulfilledFields');
     $('#endDate').removeClass('fulfilledFields');
+  } else if (isProgrammed === 'true') {
+    $("#isEnableLabel").text(`\xA0 This Welcome Screen is enabled`);
+    $("#isEnable").prop("checked", true);
+    $('#startDate').removeClass('fulfilledFields');
+    $('#endDate').removeClass('fulfilledFields');
+  } else if (isProgrammed === 'false') {
+    $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
+    $('#startDate').removeClass('fulfilledFields');
+    $('#endDate').removeClass('fulfilledFields');
   }
 }
 
@@ -75,11 +89,15 @@ function disableScheduleFields (isEnabled) {
     $("#startScheduleWs").prop("checked", false);
     $("#startDate").prop("disabled", true);
     $("#endDate").prop("disabled", true);
+    this.startDateToKeep = $("#startDate").val();
+    this.endDateToKeep = $("#endDate").val();
     cleanStartEndField();
   } else if (isEnabled === 'enabled') {
     $("#startScheduleWs").prop("checked", false);
     $("#startDate").prop("disabled", true);
     $("#endDate").prop("disabled", true);
+    $("#startDate").val(this.startDateToKeep);
+    $("#endDate").val(this.endDateToKeep)
   } else if (isEnabled === 'programmed') {
     $("#isEnable").prop("checked", false);
     $("#startScheduleWs").prop("checked", true);

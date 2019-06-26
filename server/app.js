@@ -429,7 +429,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
   }    
 });
 
-app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isProgrammed', (req, res) => {
   const upload = VideoHelper.StoreVideo();
 
   upload(req, res, function(err) {
@@ -440,7 +440,9 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
       defaultVideoName: screenVideo.defaultVideoName,
       title: screenVideo.title,
       date: screenVideo.date,
-      activated: screenVideo.activated
+      activated: screenVideo.activated,
+      startDate: screenVideo.startDate,
+      endDate: screenVideo.endDate
     }}, (err, screenVideo) => {});
 
     GlobalHelpers.EnableDefaultVideoIfNoVideos();

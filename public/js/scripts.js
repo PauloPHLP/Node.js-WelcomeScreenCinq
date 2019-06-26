@@ -153,3 +153,13 @@ function checkIsProgrammed(isChecked) {
     return 'true';
   }
 }
+
+function checkSchedule(isScheduled) {
+  if (!isScheduled && $("#isEnable").is(':checked')) {
+    return 'true'
+  } else if (!isScheduled && !$("#isEnable").is(':checked')) {
+    return 'false'
+  } else if (isScheduled && !$("#isEnable").is(':checked')) {
+    return 'programmed'
+  }
+}

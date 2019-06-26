@@ -45,6 +45,8 @@ module.exports = {
       return TemplateHelpers.ProgrammedWelcomeScreen(video);
     } else if (video.activated === 'true') {
       return TemplateHelpers.ActivetedWelcomeScreen(video);
+    } else if (video.activated === 'false') {
+      return TemplateHelpers.DisabledWelcomeScreen(video);
     }
   }
 }
