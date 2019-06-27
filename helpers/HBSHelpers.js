@@ -40,6 +40,16 @@ module.exports = {
     }
   },
 
+  // checkAvailability: video => {
+  //   if (video.activated === 'true' || video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === 'enabled') {
+  //     return `<td>Enabled</td>`;
+  //   } else if (video.activated === 'false' || video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === 'disabled') {
+  //     return `<td>Disabled</td>`;
+  //   } else if (video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === 'toBeEnabled') {
+  //     return `<td>Programmed to ${GlobalHelpers.FormatDate(video.startDate)}</td>`;
+  //   } 
+  // },
+
   checkIsProgrammed: video => {
     if (video.activated === 'programmed') {
       return TemplateHelpers.ProgrammedWelcomeScreen(video);

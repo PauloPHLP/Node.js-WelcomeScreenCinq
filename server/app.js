@@ -399,11 +399,6 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
 
-      if (doc.startDate === GlobalHelpers.formatDateUgly(new Date()))
-        GlobalHelpers.DisableEverythingButCurrentVideo(doc._id);
-      
-      GlobalHelpers.EnableDefaultVideoIfNoVideos();
-
       if (err)
         res.status(400).send(err);
     });

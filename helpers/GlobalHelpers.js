@@ -69,17 +69,26 @@ module.exports = {
   EnableDisableProgrammedWs: () => {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
-        if (video.activated === 'programmed') {
-          this.isTimeToActivate = module.exports.CheckProgrammedDate(video);
-          if (this.isTimeToActivate === true) {
-            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
-          } 
+        // if (video.activated === 'programmed') {
+        //   this.isTimeToActivate = module.exports.CheckProgrammedDate(video);
+        //   if (this.isTimeToActivate === true) {
+        //     ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+        //   } 
+        // } 
+        // if (video.activated === 'true' && video.endDate < module.exports.formatDateUgly(new Date())) {
+        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+        // }
+        
+        if (module.exports.CheckProgrammedDate(video) === true) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+          module.exports.DisableEverythingButCurrentVideo(video._id);
         } 
-        if (video.activated === 'true' && video.endDate < module.exports.formatDateUgly(new Date())) {
+        if (module.exports.CheckProgrammedDate(video) === false) {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
         }
       });
     });
+    module.exports.EnableDefaultVideoIfNoVideos();
   },
 
   RenderSettings: (defaultName, activated) => {
@@ -126,6 +135,8 @@ module.exports = {
 
     if (dateNow >= video.startDate && dateNow <= video.endDate) {
       return true;
-    } 
+    } else if (video.endDate < dateNow) {
+      return false;
+    }
   }
 }
