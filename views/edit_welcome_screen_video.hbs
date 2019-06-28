@@ -72,6 +72,7 @@
   const dateTomorrow = getTomorrowsDate(actualDate);
   const initialStartDate = `{{screenVideo.startDate}}`;
   const initialEndDate = `{{screenVideo.endDate}}`;
+  const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
   let dateStart = initialStartDate;
   let dateEnd = initialEndDate;
   let startDateFormatted = initialStartDate;
@@ -80,14 +81,16 @@
   let currentVideo = $('#currentVideo').text();
   let formatedDate = formatDateBeauty(dateNow);
   let expirationDate = formatDateBeauty(dateTomorrow);
-
+  
   $(document).ready(() => {
     if (`{{isEnabled}}` === 'programmed') {
       checkBoxCheck('programmed', initialStartDate, initialEndDate);
-    } else if (`{{{isEnabled}}}` === 'true') {
+    } else if (`{{{isEnabled}}}` === 'true' && compareDate === false) {
       checkBoxCheck('true', initialStartDate, initialEndDate);
     } else if (`{{{isEnabled}}}` === 'false') {
       checkBoxCheck('false', initialStartDate, initialEndDate);
+    } else if (`{{{isEnabled}}}` === 'true' && compareDate === true) {
+      checkBoxCheck('activated', initialStartDate, initialEndDate);
     }
   });
 

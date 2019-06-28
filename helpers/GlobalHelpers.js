@@ -82,38 +82,15 @@ module.exports = {
         if (video.activated === 'programmed' && module.exports.CheckProgrammedDate(video) === true) {
           docVideo.forEach(vid => {
             if (vid.activated === 'true')
-            ScreenVideo.updateOne({_id: vid._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+              ScreenVideo.updateOne({_id: vid._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
           });
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
         } else if (video.activated === 'true' && module.exports.CheckProgrammedDate(video) === false) {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
           module.exports.EnableDefaultVideoIfNoVideos();
         }
-        
-        // if (video.activated === 'true')
-        //   module.exports.DisableEverythingButCurrentVideo(video._id);
-
-        // if (video.activated === 'programmed') {
-        //   this.isTimeToActivate = module.exports.CheckProgrammedDate(video);
-        //   if (this.isTimeToActivate === true) {
-        //     ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
-        //   } 
-        // } 
-        // if (video.activated === 'true' && video.endDate < module.exports.formatDateUgly(new Date())) {
-        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
-        // }
-        
-        // if (module.exports.CheckProgrammedDate(video) === true) {
-        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
-        //   module.exports.DisableAllButCurrent(video._id);
-        //   // module.exports.DisableEverythingButCurrentVideo(video._id);
-        // } 
-        // if (module.exports.CheckProgrammedDate(video) === false) {
-        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
-        // }
       });
     });
-    // module.exports.EnableDefaultVideoIfNoVideos();
   },
 
   RenderSettings: (defaultName, activated) => {
@@ -155,23 +132,12 @@ module.exports = {
     return moment(date).format('DD-M-YY H:m');
   },
 
-  // CheckProgrammedDate: video => {
-  //   const dateNow = module.exports.formatDateUgly(new Date());
-
-  //   if (dateNow >= video.startDate && dateNow <= video.endDate) {
-  //     return true;
-  //   } else if (video.endDate < dateNow) {
-  //     return false;
-  //   } else
-  //     return null;
-  // }
-
   CheckProgrammedDate: video => {
-    const dateNow = module.exports.formatDateUgly(new Date());
+    const dateNow = module.exports.FormatDate(new Date());
 
-    if (dateNow >= video.startDate && dateNow <= video.endDate) {
+    if (dateNow >= module.exports.FormatDate(video.startDate) && dateNow <=  module.exports.FormatDate(video.endDate)) {
       return true;
-    } else if (video.endDate < dateNow) {
+    } else if ( module.exports.FormatDate(video.endDate) < dateNow) {
       return false;
     } else
       return null;

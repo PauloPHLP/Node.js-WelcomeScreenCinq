@@ -40,21 +40,13 @@ module.exports = {
     }
   },
 
-  // checkAvailability: video => {
-  //   if (video.activated === 'true' || video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === true) {
-  //     return `<td>Enabled</td>`;
-  //   } else if (video.activated === 'false' || video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === false) {
-  //     return `<td>Disabled</td>`;
-  //   } else if (video.activated === 'programmed' && GlobalHelpers.CheckProgrammedDate(video) === null) {
-  //     return `<td>Programmed to ${GlobalHelpers.FormatDate(video.startDate)}</td>`;
-  //   } 
-  // },
-
   checkIsProgrammed: video => {
     if (video.activated === 'programmed') {
       return TemplateHelpers.ProgrammedWelcomeScreen(video);
-    } else if (video.activated === 'true') {
+    } else if (video.activated === 'true' && video.startDate === null) {
       return TemplateHelpers.ActivetedWelcomeScreen(video);
+    } else if (video.activated === 'true' && video.startDate !== null) {
+      return TemplateHelpers.ProgrammedWelcomeScreen(video);
     } else if (video.activated === 'false') {
       return TemplateHelpers.DisabledWelcomeScreen(video);
     }

@@ -434,6 +434,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isProgrammed', (req, res) => {
+  GlobalHelpers.EnableDisableProgrammedWs();
   const upload = VideoHelper.StoreVideo();
 
   upload(req, res, function(err) {

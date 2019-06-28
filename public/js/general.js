@@ -70,22 +70,30 @@ function checkBoxCheck (isProgrammed, initialStartDate, initialEndDate) {
     $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
     formatDateToShow('#startDate', initialStartDate);
     formatDateToShow('#endDate', initialEndDate);
-    $('#startDate').removeClass('fulfilledFields');
-    $('#endDate').removeClass('fulfilledFields');
+    removeClassForDateFields('fulfilledFields');
   } else if (isProgrammed === 'true') {
     $("#isEnableLabel").text(`\xA0 This Welcome Screen is enabled`);
     $("#isEnable").prop("checked", true);
-    $('#startDate').removeClass('fulfilledFields');
-    $('#endDate').removeClass('fulfilledFields');
+    removeClassForDateFields('fulfilledFields');
   } else if (isProgrammed === 'false') {
     $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
-    $('#startDate').removeClass('fulfilledFields');
-    $('#endDate').removeClass('fulfilledFields');
+    removeClassForDateFields('fulfilledFields');
+  } else if (isProgrammed === 'activated') {
+    $("#isEnableLabel").text(`\xA0 This Welcome Screen is enabled`);
+    $("#isEnable").prop("checked", true);
+    formatDateToShow('#startDate', initialStartDate);
+    formatDateToShow('#endDate', initialEndDate);
+    removeClassForDateFields('fulfilledFields');
   }
 }
 
 function unableDisableSchedule (isEnabled) {
   disableScheduleFields(isEnabled);
+}
+
+function removeClassForDateFields (className) {
+  $('#startDate').removeClass(className);
+  $('#endDate').removeClass(className);
 }
 
 function disableScheduleFields (isEnabled) {
@@ -112,16 +120,6 @@ function disableScheduleFields (isEnabled) {
   }
 }
 
-function enableDisableScheduledVideo (id, activation) {
-  const dateToChange = {
-    id: id,
-    activated: activation
-  }
-
-  $.ajax({
-    type:'POST',
-    url: `/api/check_scheduled_video/${id}/${activation}`,
-    data: JSON.stringify(dateToChange),
-    contentType: 'application/json'
-  });
+function FormatDate (date) {
+  return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD/MM/YYYY - HH:mm');
 }
