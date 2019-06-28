@@ -52,8 +52,9 @@
     timer: 3000
   });
   const socket = io();
-  const dateNow = new Date();
-  const dateTomorrow = getTomorrowsDate(dateNow);
+  const actualDate = new Date();
+  const dateNow = getTodaysDatePlusOne(actualDate);
+  const dateTomorrow = getTomorrowsDate(actualDate);
   let yearStart = '';
   let monthStart = '';
   let yearFinish = '';

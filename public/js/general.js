@@ -25,6 +25,10 @@ function cleanStartEndField () {
   $('#endDate').val('');
 }
 
+function getTodaysDatePlusOne (dateNow) {
+  return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), (dateNow.getHours() + 1), dateNow.getMinutes(), dateNow.getSeconds()); 
+}
+
 function getTomorrowsDate (dateNow) {
   return new Date(dateNow.getFullYear(), dateNow.getMonth(), (dateNow.getDate() + 1), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
 }

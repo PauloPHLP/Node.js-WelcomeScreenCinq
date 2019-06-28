@@ -61,7 +61,17 @@ module.exports = {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
         if (video._id != id && video.activated !== 'programmed') 
-          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: false}}, (err, screenVideo) => {});
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+      });
+    });
+  },
+
+  DisableAllButCurrent: id => {
+    module.exports.EnableDisableImages(false);
+    ScreenVideo.find().then(doc => {
+      doc.forEach(video => {
+        if (video._id !== id)
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
       });
     });
   },
@@ -69,6 +79,20 @@ module.exports = {
   EnableDisableProgrammedWs: () => {
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
+        if (video.activated === 'programmed' && module.exports.CheckProgrammedDate(video) === true) {
+          docVideo.forEach(vid => {
+            if (vid.activated === 'true')
+            ScreenVideo.updateOne({_id: vid._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+          });
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+        } else if (video.activated === 'true' && module.exports.CheckProgrammedDate(video) === false) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+          module.exports.EnableDefaultVideoIfNoVideos();
+        }
+        
+        // if (video.activated === 'true')
+        //   module.exports.DisableEverythingButCurrentVideo(video._id);
+
         // if (video.activated === 'programmed') {
         //   this.isTimeToActivate = module.exports.CheckProgrammedDate(video);
         //   if (this.isTimeToActivate === true) {
@@ -79,16 +103,17 @@ module.exports = {
         //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
         // }
         
-        if (module.exports.CheckProgrammedDate(video) === true) {
-          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
-          module.exports.DisableEverythingButCurrentVideo(video._id);
-        } 
-        if (module.exports.CheckProgrammedDate(video) === false) {
-          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
-        }
+        // if (module.exports.CheckProgrammedDate(video) === true) {
+        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+        //   module.exports.DisableAllButCurrent(video._id);
+        //   // module.exports.DisableEverythingButCurrentVideo(video._id);
+        // } 
+        // if (module.exports.CheckProgrammedDate(video) === false) {
+        //   ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+        // }
       });
     });
-    module.exports.EnableDefaultVideoIfNoVideos();
+    // module.exports.EnableDefaultVideoIfNoVideos();
   },
 
   RenderSettings: (defaultName, activated) => {
@@ -130,6 +155,17 @@ module.exports = {
     return moment(date).format('DD-M-YY H:m');
   },
 
+  // CheckProgrammedDate: video => {
+  //   const dateNow = module.exports.formatDateUgly(new Date());
+
+  //   if (dateNow >= video.startDate && dateNow <= video.endDate) {
+  //     return true;
+  //   } else if (video.endDate < dateNow) {
+  //     return false;
+  //   } else
+  //     return null;
+  // }
+
   CheckProgrammedDate: video => {
     const dateNow = module.exports.formatDateUgly(new Date());
 
@@ -137,6 +173,7 @@ module.exports = {
       return true;
     } else if (video.endDate < dateNow) {
       return false;
-    }
+    } else
+      return null;
   }
 }
