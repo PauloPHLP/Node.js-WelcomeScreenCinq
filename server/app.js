@@ -92,27 +92,22 @@ app.get('/', (req, res) => {
 });
 
 app.get('/register', Auth, (req, res) => {
-  res.render('register', {
-    header: true,
-    title: 'Register',
-    isAdmin: true
-  });
-  // if (req.user && req.user.isAdmin === false) {
-  //   res.redirect('back');
-  // } else {
-  //   if (req.user) { 
-  //     return res.render('register', {
-  //       header: true,
-  //       title: 'Register',
-  //       isAdmin: true
-  //     });
-  //   } else {
-  //     res.render('login', {
-  //       header: false,
-  //       title: 'login'
-  //     });
-  //   }
-  // }  
+  if (req.user && req.user.isAdmin === false) {
+    res.redirect('back');
+  } else {
+    if (req.user) { 
+      return res.render('register', {
+        header: true,
+        title: 'Register',
+        isAdmin: true
+      });
+    } else {
+      res.render('login', {
+        header: false,
+        title: 'login'
+      });
+    }
+  }  
 });
 
 app.post('/api/register', (req, res) => {
