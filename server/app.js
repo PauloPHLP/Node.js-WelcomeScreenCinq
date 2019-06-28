@@ -99,7 +99,7 @@ app.get('/register', Auth, (req, res) => {
       return res.render('register', {
         header: true,
         title: 'Register',
-        isAdmin: true
+        isAdmin: req.user.isAdmin
       });
     } else {
       res.render('login', {
@@ -434,7 +434,6 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
 });
 
 app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isProgrammed', (req, res) => {
-  GlobalHelpers.EnableDisableProgrammedWs();
   const upload = VideoHelper.StoreVideo();
 
   upload(req, res, function(err) {
