@@ -46,8 +46,6 @@ function deleteVideo(id) {
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
           }).then(result => {
-            let socket = io();
-            socket.emit('UpdateOnDatabase');
             window.location.href = "/welcome_screens_list"
           });
         },
@@ -94,8 +92,6 @@ function deleteImage(id) {
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
           }).then(result => {
-            let socket = io();
-            socket.emit('UpdateOnDatabase');
             window.location.href = "/welcome_screens_list"
           })
         },
@@ -116,4 +112,54 @@ function deleteImage(id) {
       });
     }
   });
+}
+
+function checkTime() {
+  if (startDateFormatted > expirationDateFormatted || checkEqualDate(formatDate(startDateFormatted), formatDate(expirationDateFormatted))) {
+    $("#startDate").removeClass('fulfilledFields');
+    $("#startDate").addClass('emptyFields');
+    $("#endDate").removeClass('fulfilledFields');
+    $("#endDate").addClass('emptyFields');
+    Toast.fire({
+      type: 'warning',
+      title: 'End date should be greater than start date!'
+    });
+    return false;
+  } else {
+    $("#startDate").removeClass('emptyFields');
+    $("#startDate").addClass('fulfilledFields');
+    $("#endDate").removeClass('emptyFields');
+    $("#endDate").addClass('fulfilledFields');
+    return true;
+  };
+}
+
+function checkEqualDate(start, finish) {
+  if (start === finish) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function formatDate(date) {
+  return moment(date).format('DD/MM/YYYY HH:mm');
+}
+
+function checkIsProgrammed(isChecked) {
+  if (isChecked === true) {
+    return 'programmed';
+  } else {
+    return 'true';
+  }
+}
+
+function checkSchedule(isScheduled) {
+  if (!isScheduled && $("#isEnable").is(':checked')) {
+    return 'true'
+  } else if (!isScheduled && !$("#isEnable").is(':checked')) {
+    return 'false'
+  } else if (isScheduled && !$("#isEnable").is(':checked')) {
+    return 'programmed'
+  }
 }

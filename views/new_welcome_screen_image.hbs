@@ -85,7 +85,7 @@
 <script>
   let socket = io();
 
-  $("#company1").on("paste keyup change", function() {
+  $("#company1").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#company1").addClass('emptyFields');
       $("#company1").removeClass('fulfilledFields');
@@ -95,7 +95,7 @@
     }
   });
 
-  $("#image").on("paste keyup change", function() {
+  $("#image").on("paste keyup change focusout", function() {
     if ($(this).val() === '' || $(this).val() === ' ') {
       $("#image").addClass('emptyFields');
       $("#image").removeClass('fulfilledFields');

@@ -31,6 +31,12 @@ const hbs = expressHandlebars.create({
     },
     showCompanies: companies => {
       return HBSHelpers.showCompanies(companies);
+    },
+    checkAvailability: video => {
+      return HBSHelpers.checkAvailability(video);
+    },
+    checkIsProgrammed: video => {
+      return HBSHelpers.checkIsProgrammed(video);
     }
   }
 });
@@ -233,6 +239,8 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
+  GlobalHelpers.EnableDisableProgrammedWs();
+
   if (!req.user) { 
     return res.render('login', {
       header: false,
@@ -250,7 +258,7 @@ app.get('/welcome_screens_list', Auth, (req, res) => {
             videos: docVideo,
             images: docImage,
             user: req.user,
-            title: 'Welcome Screen list'
+            title: 'Welcome Screens list'
           });
         });
       });
@@ -379,14 +387,18 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
   }    
 });
 
-app.post('/api/new_welcome_screen_video', (req, res) => {
-  GlobalHelpers.EnableDisableImagesAndVideos(false);
+app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req, res) => {
+  if (req.params.isProgrammed !== "programmed") 
+    GlobalHelpers.EnableDisableImagesAndVideos(false);
+
   const upload = VideoHelper.StoreVideo();
   
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UploadVideo(req);
 
     screenVideo.save((err, doc) => {
+      GlobalHelpers.EnableDisableProgrammedWs();
+
       if (err)
         res.status(400).send(err);
     });
@@ -408,7 +420,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
       if (err)
         return res.status(400).send(err);
       const renderSettings = GlobalHelpers.RenderSettings(screenVideo.defaultVideoName, screenVideo.activated);
-
+      
       res.render('edit_welcome_screen_video', {
         screenVideo,
         isDefaultVideo: renderSettings.isDefault,
@@ -421,7 +433,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
   }    
 });
 
-app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req, res) => {
+app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isProgrammed', (req, res) => {
   const upload = VideoHelper.StoreVideo();
 
   upload(req, res, function(err) {
@@ -432,7 +444,9 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo', (req
       defaultVideoName: screenVideo.defaultVideoName,
       title: screenVideo.title,
       date: screenVideo.date,
-      activated: screenVideo.activated
+      activated: screenVideo.activated,
+      startDate: screenVideo.startDate,
+      endDate: screenVideo.endDate
     }}, (err, screenVideo) => {});
 
     GlobalHelpers.EnableDefaultVideoIfNoVideos();

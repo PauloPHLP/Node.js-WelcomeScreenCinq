@@ -21,7 +21,7 @@ module.exports = {
         cb (null, 'uploads/');
       },
       filename: (req, file, cb) => {
-        date = moment(Date.now()).format('MM/DD/YY');
+        date = GlobalHelpers.GetDate();
         imageName = Date.now() + "_" + file.originalname;
         defaultImageName = file.originalname;
         this.date = date;

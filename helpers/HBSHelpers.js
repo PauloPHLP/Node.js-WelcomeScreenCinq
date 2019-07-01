@@ -1,3 +1,6 @@
+const GlobalHelpers = require('./GlobalHelpers');
+const TemplateHelpers = require('./TemplateHelpers');
+
 module.exports = {
   guestList: guestName => {
     if (guestName !== '') 
@@ -24,6 +27,28 @@ module.exports = {
       return `<td>${companies[0]} - ${companies[1]}</td>`;
     } else {
       return `<td></td>`;
+    }
+  },
+
+  checkAvailability: video => {
+    if (video.activated === 'true') {
+      return `<td>Enabled</td>`;
+    } else if (video.activated === 'false') {
+      return `<td>Disabled</td>`;
+    } else if (video.activated === 'programmed') {
+      return `<td>Programmed to ${GlobalHelpers.FormatDate(video.startDate)}</td>`;
+    }
+  },
+
+  checkIsProgrammed: video => {
+    if (video.activated === 'programmed') {
+      return TemplateHelpers.ProgrammedWelcomeScreen(video);
+    } else if (video.activated === 'true' && video.startDate === null) {
+      return TemplateHelpers.ActivetedWelcomeScreen(video);
+    } else if (video.activated === 'true' && video.startDate !== null) {
+      return TemplateHelpers.ProgrammedWelcomeScreen(video);
+    } else if (video.activated === 'false') {
+      return TemplateHelpers.DisabledWelcomeScreen(video);
     }
   }
 }
