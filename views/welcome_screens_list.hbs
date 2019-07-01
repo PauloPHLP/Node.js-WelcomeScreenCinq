@@ -10,7 +10,7 @@
         <br/><br/>
         <div class="btn_add">
           <button type="button" class="btn btn-info add-new" onclick="window.location.href='/new_welcome_screen_image'">
-            <i class="fa fa-plus btn_add">Add new image</i>
+            <i class="fa fa-plus btn_add">Add Visitor Page</i>
           </button>
         </di>
         <div class="btn_add">
@@ -53,11 +53,8 @@
             {{#showCompanies this.companies}}
             {{/showCompanies}}
               <td>{{this.date}}</td>
-            {{#if this.activated}}
-              <td>Enabled</td>
-            {{else}}
-              <td>Disabled</td>
-            {{/if}}
+            {{#checkAvailability this}}
+            {{/checkAvailability}}
             <td>{{this.wsType}}</td>
             <td>
               <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

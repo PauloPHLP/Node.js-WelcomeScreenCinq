@@ -22,9 +22,17 @@ const screenImageSchema = mongoose.Schema({
     default: Date.now,
     require: true
   },
+  startDate: {
+    type: String,
+    require: true
+  },
+  endDate: {
+    type: String,
+    require: true
+  },
   activated: {
-    type: Boolean,
-    default: true
+    type: String,
+    default: "true"
   },
   wsType: {
     type: String,

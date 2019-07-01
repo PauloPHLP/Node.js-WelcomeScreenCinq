@@ -17,9 +17,9 @@
   {{#each videos}}
     {{#if this.activated}}
       <section>
-        <video class="current_video_fill" id="current_video_fill" autoplay loop muted preload>
+        {{!-- <video class="current_video_fill" id="current_video_fill" autoplay loop muted preload>
           <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
-        </video>
+        </video> --}}
         <video class="current_video_with_nav" id="current_video" autoplay loop muted preload>
           <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
         </video>

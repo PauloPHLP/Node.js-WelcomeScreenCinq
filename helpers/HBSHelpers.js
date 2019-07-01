@@ -30,25 +30,25 @@ module.exports = {
     }
   },
 
-  checkAvailability: video => {
-    if (video.activated === 'true') {
+  checkAvailability: ws => {
+    if (ws.activated === 'true') {
       return `<td>Enabled</td>`;
-    } else if (video.activated === 'false') {
+    } else if (ws.activated === 'false') {
       return `<td>Disabled</td>`;
-    } else if (video.activated === 'programmed') {
-      return `<td>Programmed to ${GlobalHelpers.FormatDate(video.startDate)}</td>`;
+    } else if (ws.activated === 'programmed') {
+      return `<td>Programmed to ${GlobalHelpers.FormatDate(ws.startDate)}</td>`;
     }
   },
 
-  checkIsProgrammed: video => {
-    if (video.activated === 'programmed') {
-      return TemplateHelpers.ProgrammedWelcomeScreen(video);
-    } else if (video.activated === 'true' && video.startDate === null) {
-      return TemplateHelpers.ActivetedWelcomeScreen(video);
-    } else if (video.activated === 'true' && video.startDate !== null) {
-      return TemplateHelpers.ProgrammedWelcomeScreen(video);
-    } else if (video.activated === 'false') {
-      return TemplateHelpers.DisabledWelcomeScreen(video);
+  checkIsProgrammed: ws => {
+    if (ws.activated === 'programmed') {
+      return TemplateHelpers.ProgrammedWelcomeScreen(ws);
+    } else if (ws.activated === 'true' && ws.startDate === null) {
+      return TemplateHelpers.ActivetedWelcomeScreen(ws);
+    } else if (ws.activated === 'true' && ws.startDate !== null) {
+      return TemplateHelpers.ProgrammedWelcomeScreen(ws);
+    } else if (ws.activated === 'false') {
+      return TemplateHelpers.DisabledWelcomeScreen(ws);
     }
   }
 }

@@ -49,8 +49,8 @@
                   {{/if}}
                 </div>
               </div>
-              {{!-- {{#checkIsProgrammed screenVideo}}
-              {{/checkIsProgrammed}}  --}}
+              {{#checkIsProgrammed screenVideo}}
+              {{/checkIsProgrammed}} 
             <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
         </div>
@@ -249,12 +249,10 @@
       if (titleNotEmpty === false && notDefaultVideo === true) {
         $("#title").addClass('emptyFields');
       }
-      
       if (titleNotEmpty === false && notDefaultVideo === false) {
         $("#title").addClass('emptyFields');
         $("#video").addClass('emptyFields');
       }
-
       if (startTimeEmpty) {
         addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
       }

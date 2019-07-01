@@ -57,7 +57,7 @@ module.exports = {
   },
 
   DisableEverythingButCurrentVideo: id => {
-    module.exports.EnableDisableImages(false);
+    module.exports.EnableDisableImages("false");
     ScreenVideo.find().then(docVideo => {
       docVideo.forEach(video => {
         if (video._id != id && video.activated !== 'programmed') 
@@ -67,7 +67,7 @@ module.exports = {
   },
 
   DisableAllButCurrent: id => {
-    module.exports.EnableDisableImages(false);
+    module.exports.EnableDisableImages("false");
     ScreenVideo.find().then(doc => {
       doc.forEach(video => {
         if (video._id !== id)
@@ -141,5 +141,19 @@ module.exports = {
       return false;
     } else
       return null;
+  },
+
+  CheckProgrammedStartAndEndDate: req => {
+    if (req.params.isProgrammed === "programmed") {
+      return {
+        startDate: req.params.startDate,
+        endDate: req.params.endDate
+      }
+    } else {
+      return {
+        startDate: null,
+        endDate: null
+      }
+    }
   }
 }

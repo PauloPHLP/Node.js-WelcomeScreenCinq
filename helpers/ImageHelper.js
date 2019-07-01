@@ -13,6 +13,9 @@ let companiesList = [];
 let isEnable = false;
 let isDefault = false;
 let newImage = '';
+let startDate = '';
+let endDate = '';
+let activated = '';
 
 module.exports = {
   SetStorage: () => {
@@ -24,9 +27,14 @@ module.exports = {
         date = GlobalHelpers.GetDate();
         imageName = Date.now() + "_" + file.originalname;
         defaultImageName = file.originalname;
+        activated = req.params.isProgrammed;
         this.date = date;
         this.imageName = imageName;
         this.defaultImage = defaultImageName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.activated = activated;
+
         cb (null, `${imageName}`);
       }
     });
@@ -49,7 +57,10 @@ module.exports = {
         imageName: 'default_image.jpg',
         companies: 'Default image',
         defaultImageName: 'default_image.jpg',
-        date: moment(Date.now()).format('MM/DD/YY')
+        date: moment(Date.now()).format('MM/DD/YY'),
+        startDate: this.startDate,
+        endDate: this.endDate,
+        activated: "true"
       });
     } else {
       return screenImage = new ScreenImage({
@@ -85,41 +96,59 @@ module.exports = {
 
   UpdateImage: req => {
     this.isDefault = Boolean(req.body.defaultImage);
-    this.isEnable = Boolean(req.body.isEnable);
+    this.isEnable = req.params.isProgrammed;
     module.exports.DeleteImage(req.params.oldImageName);
     this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
     this.date = GlobalHelpers.GetDate();
     
-    if (this.isDefault == true && this.isEnable == true) {
-      GlobalHelpers.EnableDisableVideos(false);
-      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);
-    } else if (this.isDefault == true && this.isEnable == false) {
-      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false);
-    } else if (this.isDefault == false && this.isEnable == true) {
-      GlobalHelpers.EnableDisableVideos(false);
-      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true);
-    } else {
-      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false);
-    }
+    // if (this.isDefault == true && this.isEnable == true) {
+    //   GlobalHelpers.EnableDisableVideos(false);
+    //   return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);
+    // } else if (this.isDefault == true && this.isEnable == false) {
+    //   return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false);
+    // } else if (this.isDefault == false && this.isEnable == true) {
+    //   GlobalHelpers.EnableDisableVideos(false);
+    //   return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true);
+    // } else {
+    //   return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false);
+    // }
+
+    if (this.isDefault === false && this.isEnable === 'true') {
+      GlobalHelpers.EnableDisableVideos("false");
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, null, null, 'true');
+    } else if (this.isDefault === false && this.isEnable === 'false') {
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, null, null, 'false');
+    } else  if (this.isDefault === false && this.isEnable === 'programmed') {
+      return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, req.body.startDate, req.body.endDate, 'programmed');
+    } else if (this.isDefault === true && this.isEnable === 'true') {
+      GlobalHelpers.EnableDisableVideos("false");
+      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, null, null, 'true');
+    } else if (this.isDefault === true && this.isEnable === 'false') {
+      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, null, null, 'false');
+    } else if (this.isDefault === true && this.isEnable === 'programmed') {
+      return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, req.body.startDate, req.body.endDate, 'programmed');
+    } 
   },
 
-  SetImage: (imgName, defaultImgName, comp, dataUpd, isActivated) => {
+  SetImage: (imgName, defaultImgName, comp, dataUpd, startDate, endDate, isActivated) => {
     return this.newImage = {
       imageName: imgName,
       defaultImageName: defaultImgName,
       companies: comp,
       date: dataUpd,
+      startDate: startDate,
+      endDate: endDate,
       activated: isActivated 
     }
   },
 
-  SetNotDefaultImage: (imgName, defImgName, comp, dataUpd, isActivated) => {
+  SetNotDefaultImage: (imgName, defImgName, comp, dataUpd, startDate, endDate, isActivated) => {
     if (this.imageName == "" && this.defaultImage == "") {
       this.imageName = imgName;
       this.defaultImage = defImgName;
     } 
 
-    return module.exports.SetImage(this.imageName, this.defaultImage, comp, dataUpd, isActivated);
+    return module.exports.SetImage(this.imageName, this.defaultImage, comp, dataUpd, startDate, endDate, isActivated);
   },
 
   SetCompanies: () => {

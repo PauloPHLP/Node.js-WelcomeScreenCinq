@@ -281,11 +281,15 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
   }    
 });
 
-app.post('/api/new_welcome_screen_image', (req, res) => {
+app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req, res) => {
+  if (req.params.isProgrammed !== "programmed") 
+    GlobalHelpers.EnableDisableImagesAndVideos(false);
+
   const upload = ImageHelper.StoreImage();
   
   upload(req, res, function(err) {
     const screenImage = ImageHelper.UploadImage(req);
+    const checkDates = GlobalHelpers.CheckProgrammedStartAndEndDate(req); 
 
     for (let i = 1; i < 9; i++) {
       guests.push(req.body['guest' + i.toString()]);
@@ -297,10 +301,15 @@ app.post('/api/new_welcome_screen_image', (req, res) => {
 
     screenImage.companies = companies;
     screenImage.guestsNames = guests;
+    screenImage.startDate = checkDates.startDate;
+    screenImage.endDate = checkDates.endDate;
+    screenImage.activated = req.params.isProgrammed;
     companies = [];
     guests = [];
 
     screenImage.save((err, doc) => {
+      GlobalHelpers.EnableDisableProgrammedWs();
+
       if (err)
         res.status(400).send(err);
     });
@@ -334,7 +343,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
   }    
 });
 
-app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req, res) => {
+app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage/:isProgrammed', (req, res) => {
   const upload = ImageHelper.StoreImage();
 
   upload(req, res, err => {
@@ -354,7 +363,9 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage', (req
       guestsNames: guests,
       companies: companies,
       date: screenImage.date,
-      activated: screenImage.activated
+      activated: screenImage.activated,
+      startDate: screenImage.startDate,
+      endDate: screenImage.endDate
     }}, (err, screenImage) => {});
 
     GlobalHelpers.EnableDefaultVideoIfNoImages();

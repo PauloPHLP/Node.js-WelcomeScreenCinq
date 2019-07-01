@@ -91,6 +91,10 @@ table.table td .add {
   background-color: #002C4F;
 }
 
+.cursor_hidden {
+  cursor: none;
+}
+
 .table-title .add-new i {
   margin-right: 4px;
 }

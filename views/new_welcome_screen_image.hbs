@@ -4,7 +4,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">New image as Welcome Screen</h3>
+          <h3 class="panel-title">New Visitor Page</h3>
         </div>
         <div class="panel-body">
           <form id="upload_form">
@@ -22,14 +22,28 @@
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_center">
+                  <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
+                  <label for="startScheduleWs">I want to schedule this WS from:</label>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group flt_center"> 
+                  <input type="checkbox" class="vsb_hidden">
+                  <label for="finishScheduleWs">To:</label>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">Put the first company name</label>
+                  <label for="company">First company name</label>
                   <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">Put the second company name</label>
+                  <label for="company">Second company name</label>
                   <input type="text" name="company2" id="company2" class="form-control input-sm" placeholder="Company 2">
                 </div>
               </div>
@@ -83,26 +97,43 @@
 </div>
 
 <script>
-  let socket = io();
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000
+  });
+  const socket = io();
+  const actualDate = new Date();
+  const dateNow = getTodaysDatePlusOne(actualDate);
+  const dateTomorrow = getTomorrowsDate(actualDate);
+  let yearStart = '';
+  let monthStart = '';
+  let yearFinish = '';
+  let monthFinish = '';
+  let formatedDate = formatDateBeauty(dateNow);
+  let expirationDate = formatDateBeauty(dateTomorrow);
+  let startDateFormatted = dateNow;
+  let expirationDateFormatted = dateTomorrow;
+  let dateStart = dateNow;
+  let dateEnd = dateTomorrow;
+  let startDate = formatDateUgly(dateNow);
+  let finishDate = formatDateUgly(dateTomorrow);
 
   $("#company1").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#company1").addClass('emptyFields');
-      $("#company1").removeClass('fulfilledFields');
-    } else {
-      $("#company1").addClass('fulfilledFields');
-      $("#company1").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#company1", "emptyFields", "fulfilledFields");
   });
 
   $("#image").on("paste keyup change focusout", function() {
-    if ($(this).val() === '' || $(this).val() === ' ') {
-      $("#image").addClass('emptyFields');
-      $("#image").removeClass('fulfilledFields');
-    } else {
-      $("#image").addClass('fulfilledFields');
-      $("#image").removeClass('emptyFields');
-    }
+    addAndRemoveClassConditional("#image", "emptyFields", "fulfilledFields");
+  });
+
+  $("#startDate").on("paste keyup change focusout", function() {
+    addAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+  });
+
+  $("#endDate").on("paste keyup change focusout", function() {
+    addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
   });
 
   $('#defaultImage').change(function() {
@@ -111,23 +142,91 @@
     } else {
       $('#image').prop('disabled', false);
     }
-  })
+  });
+  
+  $('#startScheduleWs').change(function() {
+    if ($(this).is(':checked')) {
+      $('#startDate, #endDate').prop('disabled', false);
+      $("#startDate").val(formatedDate);
+      $("#endDate").val(expirationDate);
+    } else {
+      $('#startDate, #endDate').prop('disabled', true);
+      $("#startDate").val('');
+      $("#endDate").val('');
+    }
+  });
+
+  $('#startDate').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateNow,
+    minHours: dateNow,
+    onSelect: function(fd, d, picker) {
+      dateStart = d;
+      monthStart = getCorrectMonth(d);
+      yearStart = formatYear(d);
+      startDate = formatDateToEnroll(d, monthStart, yearStart);
+      startDateFormatted = d;
+      checkTime();
+      if (dateEnd == '' && dateStart != '')
+        addAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+    }
+  });
+
+  $('#endDate').datepicker({
+    dateTimeSeparator: " - ",
+    clearButton: true,
+    minDate: dateTomorrow,
+    minHours: dateTomorrow,
+    onSelect: function(fd, d, picker) {
+      dateEnd = d;
+      monthFinish = getCorrectMonth(d);
+      yearFinish = formatYear(d);
+      finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
+      expirationDateFormatted = d;
+      checkTime();
+      if (dateStart == '' && dateEnd != '')
+        addAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+    }
+  });
 
   $('#upload_form').submit(function(e) {
     e.preventDefault();
 
-    let formData = new FormData($(this)[0]);
-
+    const formData = new FormData($(this)[0]);
     const isDefault = $('#defaultImage').is(':checked');
-    const companyEmpty = $('#company1').val() != '' && $('#company1').val() != ' ';
+    const companyEmptyOrNull = $('#company1').val() !== '' && $('#company1').val() !== ' ';
     const imageEmpty = $('#image').get(0).files.length !== 0;
-    
-    if ((isDefault && companyEmpty) || (companyEmpty && !isDefault && imageEmpty)) {
+    const isScheduled = $("#startScheduleWs").is(':checked');
+    const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
+    const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
+    const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
+    const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
+    const companyEmpty = $('#company1').val() === ''; 
+    const scheduledTime = isScheduled && startDateEmptyOrNull;
+    const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
+    const startTimeEmpty = isScheduled && startDateInvalid;
+    const finishTimeEmpty = isScheduled && endDateInvalid;
+    const defaultImage = isDefault && companyEmptyOrNull && !isScheduled;
+    const notDefaultImageNotScheduled = !isDefault && companyEmptyOrNull && imageEmpty && !isScheduled;
+    const notDefaultScheduled = !isDefault && imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
+    const defaultScheduled = isDefault && !imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
+    const dateTime = checkTime();
+    const conditionToEnroll = defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled && dateTime;
+
+    if (!isScheduled) {
+      $("#startDate").removeClass('fulfilledFields');
+      $("#endDate").removeClass('fulfilledFields');
+    }
+
+    if (conditionToEnroll) {
+      const isProgrammed = checkIsProgrammed(isScheduled);
+
       $("#company1").addClass('fulfilledFields');
       $('#image').addClass('fulfilledFields');
       
       $.ajax({
-        url: '/api/new_welcome_screen_image',
+        url: `/api/new_welcome_screen_image/${startDate}/${finishDate}/${isProgrammed}`,
         type: 'POST',
         data: formData,
         async: false,
@@ -159,11 +258,19 @@
       if (!$('#defaultImage').is(':checked') && $('#image').get(0).files.length === 0) {
         $("#image").addClass('emptyFields');
       }
+
       $("#company1").addClass('emptyFields');
 
+      if (startTimeEmpty) {
+        addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
+      }
+      if (finishTimeEmpty) {
+        addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
+      }
+
       Swal.fire({
-        title: 'Empty fields',
-        text: 'Please fulfill the necessary fields!',
+        title: 'Attention',
+        text: 'Please check the fields!',
         type: 'warning',
         confirmButtonColor: '#EE9658'
       });

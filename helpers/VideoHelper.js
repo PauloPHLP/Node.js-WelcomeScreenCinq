@@ -122,7 +122,7 @@ module.exports = {
       GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, null, null, 'true');
     } else if (this.isDefault === true && this.isEnable === 'false') {
-      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, null, null, 'true');
+      return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, null, null, 'false');
     } else if (this.isDefault === true && this.isEnable === 'programmed') {
       return module.exports.SetVideo('default_video.mp4', 'default_video.mp4', 'Default video', this.date, req.body.startDate, req.body.endDate, 'programmed');
     } 

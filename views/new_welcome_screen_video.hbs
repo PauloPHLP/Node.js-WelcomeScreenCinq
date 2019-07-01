@@ -133,7 +133,7 @@
   $('#upload_form').submit(function(e) {
     e.preventDefault();
 
-    let formData = new FormData($(this)[0]);
+    const formData = new FormData($(this)[0]);
     const isScheduled = $("#startScheduleWs").is(':checked');
     const isDefault = $('#defaultVideo').is(':checked');
     const titleEmptyOrNull = $('#title').val() !== '' && $('#title').val() !== ' ';
@@ -148,13 +148,16 @@
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = checkTime();
+    const notDefaultNotScheduled = isDefault && titleEmpty;
+    const isOrNotScheduled = titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled);
+    const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime;
 
     if (!isScheduled) {
       $("#startDate").removeClass('fulfilledFields');
       $("#endDate").removeClass('fulfilledFields');
     }
 
-    if ((isDefault && titleEmpty) || (titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled)) && dateTime) {
+    if (conditionToEnroll) {
       const isProgrammed = checkIsProgrammed(isScheduled);
       
       $("#title").addClass('fulfilledFields');
