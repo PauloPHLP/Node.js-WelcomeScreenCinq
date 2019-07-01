@@ -6,10 +6,6 @@ html, body {
   font-family: 'Raleway Black';
 }
 
-input[type="submit"]:disabled {
-  background-color: #EE9658;
-}
-
 table.table {
   table-layout: fixed;
 }

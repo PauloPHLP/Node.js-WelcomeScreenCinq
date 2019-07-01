@@ -35,8 +35,11 @@
             <tr>
                 <td>{{this.title}}</td>
                 <td>{{this.date}}</td>
-                {{#checkAvailability this}}
-                {{/checkAvailability}}
+                {{#if this.activated}}
+                  <td>Enabled</td>
+                {{else}}
+                  <td>Disabled</td>
+                {{/if}}
                 <td>{{this.wsType}}</td>
                 <td>
                   {{#if this.isDefaultVideo}}
@@ -71,8 +74,9 @@
 </div>        
 
 <script>
-  let socket = io();
+  {{!-- let socket = io();
+socket.emit('UpdateOnDatabase');
   $('.deleteVideo, .deleteImage').on('click', () => {
     socket.emit('UpdateOnDatabase');
-  });
+  }); --}}
 </script>

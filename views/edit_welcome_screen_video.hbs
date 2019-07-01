@@ -22,8 +22,13 @@
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
-                  <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
+                  {{#if isEnabled}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
+                    <input type="checkbox"class="flt_right" name="isEnable" id="isEnable" checked>
+                  {{else}}
+                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
+                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
+                  {{/if}}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
@@ -49,8 +54,7 @@
                   {{/if}}
                 </div>
               </div>
-              {{!-- {{#checkIsProgrammed screenVideo}}
-              {{/checkIsProgrammed}}  --}}
+            </div>
             <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
           </form>
         </div>
@@ -64,58 +68,31 @@
     toast: true,
     position: 'top',
     showConfirmButton: false,
-    timer: 3000
+    timer: 3000,
   });
-  const socket = io();
-  const actualDate = new Date();
-  const dateNow = getTodaysDatePlusOne(actualDate);
-  const dateTomorrow = getTomorrowsDate(actualDate);
-  const initialStartDate = `{{screenVideo.startDate}}`;
-  const initialEndDate = `{{screenVideo.endDate}}`;
-  const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
-  let dateStart = initialStartDate;
-  let dateEnd = initialEndDate;
-  let startDateFormatted = initialStartDate;
-  let expirationDateFormatted = initialEndDate;
+
+  let socket = io();
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
-  let formatedDate = formatDateBeauty(dateNow);
-  let expirationDate = formatDateBeauty(dateTomorrow);
-  
-  $(document).ready(() => {
-    if (`{{isEnabled}}` === 'programmed') {
-      checkBoxCheck('programmed', initialStartDate, initialEndDate);
-    } else if (`{{{isEnabled}}}` === 'true' && compareDate === false) {
-      checkBoxCheck('true', initialStartDate, initialEndDate);
-    } else if (`{{{isEnabled}}}` === 'false') {
-      checkBoxCheck('false', initialStartDate, initialEndDate);
-    } else if (`{{{isEnabled}}}` === 'true' && compareDate === true) {
-      checkBoxCheck('activated', initialStartDate, initialEndDate);
+
+  $("#title").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#title").addClass('emptyFields');
+      $("#title").removeClass('fulfilledFields');
+    } else {
+      $("#title").addClass('fulfilledFields');
+      $("#title").removeClass('emptyFields');
     }
   });
 
-  $("#title").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
-  });
-
-  $("#video").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
-  });
-
-  $("#startDate").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
-  });
-
-  $("#endDate").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
-  });
-
-  $('#isEnable').change(function() {
-    changeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
-  });
-
-  $('#currentVideo').change(function() {
-    currentVideo = $('#currentVideo').text();
+  $("#video").on("paste keyup change", function() {
+    if ($(this).val() === '' || $(this).val() === ' ') {
+      $("#video").addClass('emptyFields');
+      $("#video").removeClass('fulfilledFields');
+    } else {
+      $("#video").addClass('fulfilledFields');
+      $("#video").removeClass('emptyFields');
+    }
   });
 
   $('#defaultVideo').change(function() {
@@ -132,92 +109,39 @@
     }
   });
 
-  $("#isEnable").on("change", function() {
+  $('#currentVideo').change(function() {
+    currentVideo = $('#currentVideo').text();
+  });
+
+  $('#isEnable').change(function() {
     if ($(this).is(':checked')) {
-      unableDisableSchedule('disabled');
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is enabled');
     } else {
-      unableDisableSchedule('enabled');
-    }
-  });
-
-  $("#startScheduleWs").on("change", function() {
-    if ($(this).is(':checked')) {
-      unableDisableSchedule('programmed');
-    } else {
-      unableDisableSchedule('disabled');
-      $("#startDate").val('');
-      $("#endDate").val('');
-    }
-  });
-
-  $('#startDate').datepicker({
-    dateTimeSeparator: " - ",
-    clearButton: true,
-    minDate: dateNow,
-    minHours: dateNow,
-    onSelect: function(fd, d, picker) {
-      dateStart = d;
-      monthStart = getCorrectMonth(d);
-      yearStart = formatYear(d);
-      startDate = formatDateToEnroll(d, monthStart, yearStart);
-      startDateFormatted = d;
-      checkTime();
-      if (dateEnd == '')
-        addAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
-    }
-  });
-
-  $('#endDate').datepicker({
-    dateTimeSeparator: " - ",
-    clearButton: true,
-    minDate: dateTomorrow,
-    minHours: dateTomorrow,
-    onSelect: function(fd, d, picker) {
-      dateEnd = d;
-      monthFinish = getCorrectMonth(d);
-      yearFinish = formatYear(d);
-      finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
-      expirationDateFormatted = d;
-      checkTime();
-      if (dateStart == '')
-        addAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+      $('#isEnableLabel').text('\u00A0 This Welcome Screen is disabled');
     }
   });
 
   $('#update_form').submit(function(e) {
     e.preventDefault();
 
-    const isScheduled = $("#startScheduleWs").is(':checked');
     const defaultText = 'Current video: default_video.mp4';
     const videoSize = $('#video').get(0).files.length;
     const isDefaultVideo = $('#defaultVideo').is(':checked');
     const titleNotEmpty = $('#title').val() != '' && $('#title').val() != ' ';
-    const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
-    const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
-    const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
-    const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
     const defaultVideo = currentVideo === defaultText && videoSize !== 0;
     const notDefaultVideo = currentVideo !== defaultText && videoSize === 0;
     const newVideo = currentVideo !== defaultText && videoSize !== 0;
-    const scheduledTime = isScheduled && startDateEmptyOrNull;
-    const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
-    const startTimeEmpty = isScheduled && startDateInvalid;
-    const finishTimeEmpty = isScheduled && endDateInvalid;
-    const videoSettingsToCheck = isDefaultVideo || defaultVideo || notDefaultVideo || newVideo;
-    const timeSettingsToCheck = scheduledTime && scheduledTimeFinish && checkTime();
-    const scheduleSettingsToCheck = !isScheduled && startDateInvalid && endDateInvalid;
 
-    if (titleNotEmpty && videoSettingsToCheck) {
+    if (titleNotEmpty && (isDefaultVideo || defaultVideo || notDefaultVideo || newVideo)) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 
-      const schedule = checkSchedule(isScheduled);
       const videoName = $('#videoName').text();
 
       var formData = new FormData($(this)[0]);
       
       $.ajax({
-        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}/${schedule}`,
+        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}`,
         type: 'PUT',
         data: formData,
         async: false,
@@ -246,6 +170,8 @@
         }
       });
     } else {
+      console.log(titleNotEmpty + ' ' + notDefaultVideo);
+
       if (titleNotEmpty === false && notDefaultVideo === true) {
         $("#title").addClass('emptyFields');
       }
@@ -255,16 +181,9 @@
         $("#video").addClass('emptyFields');
       }
 
-      if (startTimeEmpty) {
-        addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
-      }
-      if (finishTimeEmpty) {
-        addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
-      }
-
       Swal.fire({
-        title: 'Attention',
-        text: 'Please check the fields!',
+        title: 'Empty fields',
+        text: 'Please fulfill the necessary fields!',
         type: 'warning',
         confirmButtonColor: '#EE9658'
       });
