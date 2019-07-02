@@ -20,7 +20,7 @@
                   {{/if}}
                 </div>
               </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
+              {{!-- <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_left">
                   {{#if isEnabled}}
                     <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
@@ -30,7 +30,15 @@
                     <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
                   {{/if}}
                 </div>
+              </div> --}}
+
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
+                  <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
+                </div>
               </div>
+
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
@@ -161,6 +169,10 @@
     addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
   });
 
+  $('#isEnable').change(function() {
+    changeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
+  });
+
   $('#currentImage').change(function() {
     currentImage = $('#currentImage').text();
   });
@@ -190,6 +202,14 @@
       unableDisableSchedule('disabled');
       $("#startDate").val('');
       $("#endDate").val('');
+    }
+  });
+
+  $("#isEnable").on("change", function() {
+    if ($(this).is(':checked')) {
+      unableDisableSchedule('disabled');
+    } else {
+      unableDisableSchedule('enabled');
     }
   });
 
@@ -231,13 +251,12 @@
     e.preventDefault();
 
     const defaultText = 'Current image: default_image.jpg';
-    const imageSize = $('#image').get(0).files.length;
+    const imageEmpty = $('#image').get(0).files.length;
     const isDefaultImage = $('#defaultImage').is(':checked');
-    const companyNotEmpty = $('#company1').val() != '' && $('#company1').val() != ' ';
-    const defaultImage = currentImage === defaultText && imageSize !== 0;
-    const notDefaultImage = currentImage !== defaultText && imageSize === 0;
-    const newImage = currentImage !== defaultText && imageSize !== 0;
-
+    const companyEmptyOrNull = $('#company1').val() !== '' && $('#company1').val() !== ' ';
+    const defaultImage = currentImage === defaultText && imageEmpty !== 0;
+    const notDefaultImage = currentImage !== defaultText && imageEmpty === 0;
+    const newImage = currentImage !== defaultText && imageEmpty !== 0;
     const isScheduled = $("#startScheduleWs").is(':checked');
     const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
     const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
@@ -247,8 +266,21 @@
     const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
+    const dateTime = checkTime();
+    const onlyCompanyToCheck = companyEmptyOrNull && isDefaultImage && imageEmpty === 0 && !isScheduled;
+    const companyAndNotDefault = companyEmptyOrNull && !isDefaultImage && imageEmpty !== 0 && !isScheduled;
+    const companyAndNotDefaultSame = companyEmptyOrNull && notDefaultImage && !isScheduled;
+    const scheduledSettings = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && isDefaultImage && imageEmpty === 0;
+    const scheduledAndNotDefault = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && !isDefaultImage && imageEmpty !== 0;
+    const scheduledAndNotDefaultSame = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && notDefaultImage;
+    const conditionsToEnroll = onlyCompanyToCheck || scheduledSettings || companyAndNotDefault || companyAndNotDefaultSame || scheduledAndNotDefault || scheduledAndNotDefaultSame;
 
-    if (companyNotEmpty && (isDefaultImage || defaultImage || notDefaultImage || newImage)) {
+    if (!isScheduled) {
+      $("#startDate").removeClass('emptyFields');
+      $("#endDate").removeClass('emptyFields');
+    }
+
+    if (conditionsToEnroll) {
       $("#company1").addClass('fulfilledFields');
       $('#image').addClass('fulfilledFields');
 
@@ -286,11 +318,17 @@
         }
       });
     } else {
-      if (companyNotEmpty === false && defaultImage === false) {
+      if (companyEmptyOrNull === false && defaultImage === false) {
         $("#company1").addClass('emptyFields');
       }
-      if (defaultImage === false && companyNotEmpty === true) {
+      if (defaultImage === false && companyEmptyOrNull === true) {
         $("#image").addClass('emptyFields');
+      }
+      if (notDefaultImage && !isDefaultImage) {
+        addAndRemoveClassSimple("#image", "", "emptyFields");
+      }
+      if (isDefaultImage) {
+        addAndRemoveClassSimple("#image", "", "emptyFields");
       }
       if (startTimeEmpty) {
         addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
@@ -298,7 +336,7 @@
       if (finishTimeEmpty) {
         addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
       }
-      
+
       Swal.fire({
         title: 'Attention',
         text: 'Please check the fields!',

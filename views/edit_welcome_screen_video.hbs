@@ -206,8 +206,9 @@
     const videoSettingsToCheck = isDefaultVideo || defaultVideo || notDefaultVideo || newVideo;
     const timeSettingsToCheck = scheduledTime && scheduledTimeFinish && checkTime();
     const scheduleSettingsToCheck = !isScheduled && startDateInvalid && endDateInvalid;
+    const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck;
 
-    if (titleNotEmpty && videoSettingsToCheck) {
+    if (conditionsToEnroll) {
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
 

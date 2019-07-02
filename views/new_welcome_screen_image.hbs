@@ -197,6 +197,7 @@
     const isDefault = $('#defaultImage').is(':checked');
     const companyEmptyOrNull = $('#company1').val() !== '' && $('#company1').val() !== ' ';
     const imageEmpty = $('#image').get(0).files.length !== 0;
+    const imageSize = $('#image').get(0).files.length;
     const isScheduled = $("#startScheduleWs").is(':checked');
     const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
     const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
@@ -212,14 +213,14 @@
     const notDefaultScheduled = !isDefault && imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
     const defaultScheduled = isDefault && !imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
     const dateTime = checkTime();
-    const conditionToEnroll = defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled && dateTime;
+    const conditionsToEnroll = defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled && dateTime;
 
     if (!isScheduled) {
       $("#startDate").removeClass('fulfilledFields');
       $("#endDate").removeClass('fulfilledFields');
     }
 
-    if (conditionToEnroll) {
+    if (conditionsToEnroll) {
       const isProgrammed = checkIsProgrammed(isScheduled);
 
       $("#company1").addClass('fulfilledFields');
@@ -255,7 +256,7 @@
         }
       });
     } else {
-      if (!$('#defaultImage').is(':checked') && $('#image').get(0).files.length === 0) {
+      if (!isDefault && imageSize === 0) {
         $("#image").addClass('emptyFields');
       }
 
