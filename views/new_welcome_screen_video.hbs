@@ -53,35 +53,35 @@
   });
   const socket = io();
   const actualDate = new Date();
-  const dateNow = getTodaysDatePlusOne(actualDate);
-  const dateTomorrow = getTomorrowsDate(actualDate);
+  const dateNow = GetTodaysDatePlusOne(actualDate);
+  const dateTomorrow = GetTomorrowsDate(actualDate);
   let yearStart = '';
   let monthStart = '';
   let yearFinish = '';
   let monthFinish = '';
-  let formatedDate = formatDateBeauty(dateNow);
-  let expirationDate = formatDateBeauty(dateTomorrow);
+  let formatedDate = FormatDateBeauty(dateNow);
+  let expirationDate = FormatDateBeauty(dateTomorrow);
   let startDateFormatted = dateNow;
   let expirationDateFormatted = dateTomorrow;
   let dateStart = dateNow;
   let dateEnd = dateTomorrow;
-  let startDate = formatDateUgly(dateNow);
-  let finishDate = formatDateUgly(dateTomorrow);
+  let startDate = FormatDateUgly(dateNow);
+  let finishDate = FormatDateUgly(dateTomorrow);
 
   $("#title").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
   });
 
   $("#video").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    addAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
   });
 
   $('#startScheduleWs').change(function() {
@@ -103,13 +103,13 @@
     minHours: dateNow,
     onSelect: function(fd, d, picker) {
       dateStart = d;
-      monthStart = getCorrectMonth(d);
-      yearStart = formatYear(d);
-      startDate = formatDateToEnroll(d, monthStart, yearStart);
+      monthStart = GetCorrectMonth(d);
+      yearStart = FormatYear(d);
+      startDate = FormatDateToEnroll(d, monthStart, yearStart);
       startDateFormatted = d;
-      checkTime();
+      CheckTime();
       if (dateEnd == '' && dateStart != '')
-        addAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
     }
   });
 
@@ -120,13 +120,13 @@
     minHours: dateTomorrow,
     onSelect: function(fd, d, picker) {
       dateEnd = d;
-      monthFinish = getCorrectMonth(d);
-      yearFinish = formatYear(d);
-      finishDate = formatDateToEnroll(d, monthFinish, yearFinish);
+      monthFinish = GetCorrectMonth(d);
+      yearFinish = FormatYear(d);
+      finishDate = FormatDateToEnroll(d, monthFinish, yearFinish);
       expirationDateFormatted = d;
-      checkTime();
+      CheckTime();
       if (dateStart == '' && dateEnd != '')
-        addAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
     }
   });
 
@@ -147,7 +147,7 @@
     const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
-    const dateTime = checkTime();
+    const dateTime = CheckTime();
     const notDefaultNotScheduled = isDefault && titleEmpty;
     const isOrNotScheduled = titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled);
     const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime;
@@ -158,7 +158,7 @@
     }
 
     if (conditionToEnroll) {
-      const isProgrammed = checkIsProgrammed(isScheduled);
+      const isProgrammed = CheckIsProgrammed(isScheduled);
       
       $("#title").addClass('fulfilledFields');
       $("#video").addClass('fulfilledFields');
@@ -197,10 +197,10 @@
       $("#video").addClass('emptyFields');
 
       if (startTimeEmpty) {
-        addAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
+        AddAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
       }
       if (finishTimeEmpty) {
-        addAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
+        AddAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
       }
 
       Swal.fire({

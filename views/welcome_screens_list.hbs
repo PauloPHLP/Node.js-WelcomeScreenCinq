@@ -31,23 +31,8 @@
         </tr>
       </thead>
       <tbody>
-        {{#each videos}}
-            <tr>
-                <td>{{this.title}}</td>
-                <td>{{this.date}}</td>
-                {{#checkAvailability this}}
-                {{/checkAvailability}}
-                <td>{{this.wsType}}</td>
-                <td>
-                  {{#if this.isDefaultVideo}}
-                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                  {{else}}
-                    <a href="/edit_welcome_screen_video/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                    <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="deleteVideo('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
-                  {{/if}}
-                </td>
-            </tr>
-        {{/each}}
+          {{#showVideos videos isAdmin}}
+          {{/showVideos}}
         {{#each images}}
           <tr>
             {{#showCompanies this.companies}}
@@ -58,7 +43,7 @@
             <td>{{this.wsType}}</td>
             <td>
               <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-              <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="deleteImage('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
+              <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="DeleteImage('{{this.id}}');"><i class="material-icons">&#xE872;</i></a>
             </td>
           </tr>
         {{/each}}

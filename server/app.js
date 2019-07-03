@@ -37,6 +37,9 @@ const hbs = expressHandlebars.create({
     },
     checkIsProgrammed: video => {
       return HBSHelpers.checkIsProgrammed(video);
+    },
+    showVideos: (videos, isAdmin) => {
+      return HBSHelpers.showVideos(videos, isAdmin);
     }
   }
 });
@@ -282,9 +285,6 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
 });
 
 app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req, res) => {
-  if (req.params.isProgrammed !== "programmed") 
-    GlobalHelpers.EnableDisableImagesAndVideos(false);
-
   const upload = ImageHelper.StoreImage();
   
   upload(req, res, function(err) {
@@ -366,9 +366,12 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage/:isPro
       activated: screenImage.activated,
       startDate: screenImage.startDate,
       endDate: screenImage.endDate
-    }}, (err, screenImage) => {});
+    }}, (err, screenImage) => {
+      GlobalHelpers.EnableDefaultVideoIfNoImages();
+    });
 
-    GlobalHelpers.EnableDefaultVideoIfNoImages();
+    companies = [];
+    guests = [];
 
     if (err)
       return res.end('An error has occurred!');

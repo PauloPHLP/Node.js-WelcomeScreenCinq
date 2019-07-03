@@ -50,5 +50,9 @@ module.exports = {
     } else if (ws.activated === 'false') {
       return TemplateHelpers.DisabledWelcomeScreen(ws);
     }
+  },
+
+  showVideos: (videos, isAdmin) => {
+    return TemplateHelpers.ShowVideos(videos, isAdmin);
   }
 }

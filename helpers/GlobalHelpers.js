@@ -1,7 +1,6 @@
 const moment = require('moment');
 const {ScreenVideo} = require('./../server/models/screen_video');
 const {ScreenImage} = require('./../server/models/screen_image');
-
 let isDefault = false;
 let isEnabled = false;
 
@@ -41,10 +40,10 @@ module.exports = {
   EnableDefaultVideoIfNoImages: () => {
     ScreenImage.countDocuments({activated: 'true'}, function(err, count) {
       if (count === 0) {
-        module.exports.EnableDisableDefaultVideo(true);
+        module.exports.EnableDisableDefaultVideo('true');
       }
       if (count > 0) {
-        module.exports.EnableDisableVideos(false);
+        module.exports.EnableDisableVideos('false');
       }
     });
   },
@@ -52,7 +51,7 @@ module.exports = {
   EnableDefaultVideoIfNoVideos: () => {
     ScreenVideo.countDocuments({activated: 'true'}, function(err, count) {
       if (count === 0) 
-        module.exports.EnableDisableDefaultVideo(true);
+        module.exports.EnableDisableDefaultVideo('true');
     });
   },
 
@@ -128,7 +127,7 @@ module.exports = {
     return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD/MM/YYYY - HH:mm');
   },
 
-  formatDateUgly: date => {
+  FormatDateUgly: date => {
     return moment(date).format('DD-M-YY H:m');
   },
 
@@ -137,7 +136,7 @@ module.exports = {
 
     if (dateNow >= module.exports.FormatDate(video.startDate) && dateNow <=  module.exports.FormatDate(video.endDate)) {
       return true;
-    } else if ( module.exports.FormatDate(video.endDate) < dateNow) {
+    } else if (module.exports.FormatDate(video.endDate) < dateNow) {
       return false;
     } else
       return null;
@@ -154,6 +153,16 @@ module.exports = {
         startDate: null,
         endDate: null
       }
+    }
+  },
+
+  CheckAvailability: ws => {
+    if (ws.activated === 'true') {
+      return `<td>Enabled</td>`;
+    } else if (ws.activated === 'false') {
+      return `<td>Disabled</td>`;
+    } else if (ws.activated === 'programmed') {
+      return `<td>Programmed to ${module.exports.FormatDate(ws.startDate)}</td>`;
     }
   }
 }

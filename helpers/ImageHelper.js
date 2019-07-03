@@ -50,8 +50,9 @@ module.exports = {
 
   UploadImage: req => {
     req.body.defaultImage = Boolean(req.body.defaultImage);
-    GlobalHelpers.EnableDisableVideos(false);
-    
+    if (req.params.isProgrammed !== "programmed") 
+      GlobalHelpers.EnableDisableVideos('false');
+
     if (req.body.defaultImage == true) {
       return screenImage = new ScreenImage({
         imageName: 'default_image.jpg',
@@ -100,18 +101,6 @@ module.exports = {
     module.exports.DeleteImage(req.params.oldImageName);
     this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
     this.date = GlobalHelpers.GetDate();
-    
-    // if (this.isDefault == true && this.isEnable == true) {
-    //   GlobalHelpers.EnableDisableVideos(false);
-    //   return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, true);
-    // } else if (this.isDefault == true && this.isEnable == false) {
-    //   return module.exports.SetImage('default_image.jpg', 'default_image.jpg', this.companiesList, this.date, false);
-    // } else if (this.isDefault == false && this.isEnable == true) {
-    //   GlobalHelpers.EnableDisableVideos(false);
-    //   return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, true);
-    // } else {
-    //   return module.exports.SetNotDefaultImage(req.params.oldImageName, req.params.currentImage, this.companiesList, this.date, false);
-    // }
 
     if (this.isDefault === false && this.isEnable === 'true') {
       GlobalHelpers.EnableDisableVideos("false");

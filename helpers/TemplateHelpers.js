@@ -1,4 +1,5 @@
 const GlobalHelpers = require('./GlobalHelpers');
+const HBSHelpers = require('./HBSHelpers');
 
 module.exports = {
   ProgrammedWelcomeScreen: ws => {
@@ -75,5 +76,42 @@ module.exports = {
         </div>
       </div>
     `;
+  },
+
+  ShowVideos: (videos, isAdmin) => {
+    let toReturn = '';
+    videos.forEach(video => {
+      if (isAdmin) {
+        toReturn += `
+          <tr>
+            <td>${video.title}</td>
+            <td>${video.date}</td>
+            ${GlobalHelpers.CheckAvailability(video)}
+            <td>${video.wsType}</td>
+            <td>
+              <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+              <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons">&#xE872;</i></a>
+            </td>
+          </tr>
+        `
+      } else if (!isAdmin) {
+        if (!video.isDefaultVideo) {
+          toReturn += `
+            <tr>
+              <td>${video.title}</td>
+              <td>${video.date}</td>
+              ${GlobalHelpers.CheckAvailability(video)}
+              <td>${video.wsType}</td>
+              <td>
+                <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons">&#xE872;</i></a>
+              </td>
+            </tr>
+          ` 
+        }
+      }
+    });
+
+    return toReturn;
   }
 }
