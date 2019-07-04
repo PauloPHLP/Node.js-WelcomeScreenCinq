@@ -164,5 +164,17 @@ module.exports = {
     } else if (ws.activated === 'programmed') {
       return `<td>Programmed to ${module.exports.FormatDate(ws.startDate)}</td>`;
     }
+  },
+
+  GetArrayDate: date => {
+    date = date.replace(' ', '-').replace(':', '-').split('-');
+    return {
+      day: date[0],
+      month: date[1] - 1,
+      year: date[2],
+      hour: date[3],
+      minute: date[4],
+      second: 0
+    }
   }
 }

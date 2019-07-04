@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
+const cron = require('cron').CronJob;
 const config = require('./config/config').get(process.env.NODE_ENV);
 const GlobalHelpers = require('../helpers/GlobalHelpers');
 const HBSHelpers = require('./../helpers/HBSHelpers');
@@ -24,22 +25,22 @@ const hbs = expressHandlebars.create({
   partialsDir: __dirname + './../views/partials',
   helpers: {
     guestList: guestName => {
-      return HBSHelpers.guestList(guestName);
+      return HBSHelpers.GuestList(guestName);
     },
     companyList: companyName => {
-      return HBSHelpers.companyList(companyName);
+      return HBSHelpers.CompanyList(companyName);
     },
     showCompanies: companies => {
-      return HBSHelpers.showCompanies(companies);
+      return HBSHelpers.ShowCompanies(companies);
     },
     checkAvailability: video => {
-      return HBSHelpers.checkAvailability(video);
+      return HBSHelpers.CheckAvailability(video);
     },
     checkIsProgrammed: video => {
-      return HBSHelpers.checkIsProgrammed(video);
+      return HBSHelpers.CheckIsProgrammed(video);
     },
     showVideos: (videos, isAdmin) => {
-      return HBSHelpers.showVideos(videos, isAdmin);
+      return HBSHelpers.ShowVideos(videos, isAdmin);
     }
   }
 });
@@ -112,7 +113,7 @@ app.get('/register', Auth, (req, res) => {
     }
   }  
 });
-
+ 
 app.post('/api/register', (req, res) => {
   const user = new User({
     isAdmin: req.body.isAdmin,
@@ -307,6 +308,14 @@ app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req
     companies = [];
     guests = [];
 
+    checkDates.startDate = '4-7-19 11:51';
+    checkDates.endDate = '4-7-19 11:52';
+    
+    if (checkDates.startDate !== null && checkDates.endDate !== null) {
+      SetUpCron(GlobalHelpers.GetArrayDate(checkDates.startDate));
+      SetUpCron(GlobalHelpers.GetArrayDate(checkDates.endDate));
+    }
+
     screenImage.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
 
@@ -480,4 +489,13 @@ app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
 http.listen(config.PORT, '0.0.0.0', () => {
   console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
 });
+/* #endregion */
+
+/* #region Helper method for Cron */
+//This helper method is here for the Socket.io module work better.
+function SetUpCron(date) {
+  new cron(`${date.second} ${date.minute} ${date.hour} ${date.day} ${date.month} ${date.year}`, () => {
+    io.sockets.emit('RefreshPage');
+  }, null, true);
+}
 /* #endregion */

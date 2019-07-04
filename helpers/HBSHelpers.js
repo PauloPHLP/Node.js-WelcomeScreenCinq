@@ -2,23 +2,23 @@ const GlobalHelpers = require('./GlobalHelpers');
 const TemplateHelpers = require('./TemplateHelpers');
 
 module.exports = {
-  guestList: guestName => {
+  GuestList: guestName => {
     if (guestName !== '') 
-      return `<li class="guest-item list-group-item col-xs-6 ">&#x2022; ${guestName}</li>`;
+      return `<li class="guest-item list-group-item col-xs-6">&#x2022; ${guestName}</li>`;
     else if (guestName === '') {
-      return `<li class="guest-item list-group-item col-xs-6 ">&nbsp</li>`;
+      return `<li class="guest-item list-group-item col-xs-6">&nbsp</li>`;
     }
   },
 
-  companyList: companyName => {
+  CompanyList: companyName => {
     if (companyName !== '') 
-      return `<li class="company_name list-group-item col-xs-6 "> ${companyName}</li>`;
+      return `<li class="company_name list-group-item col-xs-6"> ${companyName}</li>`;
     else if (companyName === '') {
-      return `<li class="company_name list-group-item col-xs-6 ">&nbsp</li>`;
+      return `<li class="company_name list-group-item col-xs-6">&nbsp</li>`;
     }
   },
 
-  showCompanies: companies => {
+  ShowCompanies: companies => {
     if ((companies[0] !== '' && companies[1] === '') || (companies[0] !== ' ' && companies[1] === ' ')) {
       return `<td>${companies[0]}</td>`;
     } else if ((companies[0] === '' && companies[1] !== '') || (companies[0] === ' ' && companies[1] !== ' ')) {
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
 
-  checkAvailability: ws => {
+  CheckAvailability: ws => {
     if (ws.activated === 'true') {
       return `<td>Enabled</td>`;
     } else if (ws.activated === 'false') {
@@ -40,7 +40,7 @@ module.exports = {
     }
   },
 
-  checkIsProgrammed: ws => {
+  CheckIsProgrammed: ws => {
     if (ws.activated === 'programmed') {
       return TemplateHelpers.ProgrammedWelcomeScreen(ws);
     } else if (ws.activated === 'true' && ws.startDate === null) {
@@ -52,7 +52,7 @@ module.exports = {
     }
   },
 
-  showVideos: (videos, isAdmin) => {
+  ShowVideos: (videos, isAdmin) => {
     return TemplateHelpers.ShowVideos(videos, isAdmin);
   }
 }
