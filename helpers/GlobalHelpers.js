@@ -92,6 +92,28 @@ module.exports = {
     });
   },
 
+  SetProgrammedWS: () => {
+    module.exports.SetProgrammedVideo();
+  },  
+
+  SetProgrammedVideo: () => {
+    ScreenVideo.find().then(doc => {
+      doc.forEach(video => {
+        if ((video.activated === 'programmed' || video.activated === 'true') && module.exports.CheckTime(video.startDate, video.endDate) === true) {
+          module.exports.EnableDisableImagesAndVideos('false');
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+        }
+        else if ((video.activated === 'programmed' || video.activated === 'true') && module.exports.CheckTime(video.startDate, video.endDate) === false) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+        }
+        else if (video.activated === 'false' && module.exports.CheckTime(video.startDate, video.endDate) === false) {
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+        }
+      });
+    });
+    module.exports.EnableDefaultVideoIfNoVideos();
+  },
+
   RenderSettings: (defaultName, activated) => {
     if (((defaultName === 'default_video.mp4') || (defaultName === 'default_image.jpg')) && (activated === "true")) {
       this.isDefault = true;
@@ -119,8 +141,22 @@ module.exports = {
     };
   },
 
+  CheckTime: (startDate, endDate) => {
+    const dateNow = module.exports.GetDateEnrollFormat();
+    if (dateNow >= startDate && dateNow <= endDate)
+      return true;
+    else if (dateNow > endDate)
+      return false;
+    else 
+      return null
+  },
+
   GetDate: () => {
     return moment(Date.now()).format('MM/DD/YY');
+  },
+
+  GetDateEnrollFormat: () => {
+    return moment(Date.now()).format('DD-M-YY H:m');
   },
 
   FormatDate: date => {
@@ -168,6 +204,27 @@ module.exports = {
     } else if (ws.activated === 'programmed') {
       return `<td>Programmed to ${module.exports.FormatDate(ws.startDate)}</td>`;
     }
+  },
+
+  CompanyList: companyName => {
+    if (companyName !== '') 
+      return `<li class="company_name list-group-item col-xs-6"> ${companyName}</li>`;
+    else if (companyName === '') {
+      return `<li class="company_name list-group-item col-xs-6">&nbsp</li>`;
+    }
+  },
+
+  GuestList: guestsNames => {
+    let guestNamesList = '';
+    guestsNames.forEach(guestName => {
+      if (guestName !== '') 
+        guestNamesList += `<li class="guest-item list-group-item col-xs-6">&#x2022; ${guestName}</li>`;
+      else if (guestName === '') {
+        guestNamesList += `<li class="guest-item list-group-item col-xs-6">&nbsp</li>`;
+      }
+    });
+
+    return guestNamesList;
   },
 
   GetDateArray: date => {

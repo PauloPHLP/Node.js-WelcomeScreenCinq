@@ -1,27 +1,11 @@
 <div class="gallery">
   {{#each images}}
-    {{#if this.activated}}
-      <section>
-        <img class="current_image_with_nav" id="current_image" src="/uploads/{{this.imageName}}"/>
-        <ul class="list-group row guests_list">
-          {{#companyList this.companies.[0]}}{{/companyList}}
-          {{#companyList this.companies.[1]}}{{/companyList}}
-          {{#each this.guestsNames}}
-          {{#guestList this}}
-            {{/guestList }}
-          {{/each}}
-        </ul>
-      </section>
-    {{/if}}
+    {{#checkImagectivation this}}
+    {{/checkImagectivation}}
   {{/each}}
   {{#each videos}}
-    {{#if this.activated}}
-      <section>
-        <video class="current_video_with_nav" id="current_video" autoplay loop muted preload>
-          <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
-        </video>
-      </section>
-    {{/if}}
+    {{#checkVideoActivation this}}
+    {{/checkVideoActivation}}
   {{/each}}
 </div>
 

@@ -1,37 +1,17 @@
 <div class="gallery cursor_hidden">
   {{#each images}}
-    {{#if this.activated}}
-      <section>
-        <img class="current_image" id="current_image" src="/uploads/{{this.imageName}}"/>
-        <ul class="list-group row guests_list">
-          {{#companyList this.companies.[0]}}{{/companyList}}
-          {{#companyList this.companies.[1]}}{{/companyList}}
-          {{#each this.guestsNames}}
-            {{#guestList this}}
-            {{/guestList }}
-          {{/each}}
-        </ul>
-      </section>
-    {{/if}}
+    {{#checkImagectivation this}}
+    {{/checkImagectivation}}
   {{/each}}
   {{#each videos}}
-    {{#if this.activated}}
-      <section>
-        <video class="current_video_fill" id="current_video_fill" autoplay loop muted preload>
-          <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
-        </video>
-        <video class="current_video" id="current_video" autoplay loop muted preload>
-          <source src="/uploads/{{this.videoName}}" type="video/mp4"></source>
-        </video>
-      </section>
-    {{/if}}
+    {{#checkVideoActivation this}}
+    {{/checkVideoActivation}}
   {{/each}}
 </div>
 
 <script>
   var socket = io.connect("http://{{host}}:3000");
   socket.on('RefreshPage', function(data) {
-    {{!-- location.reload(); --}}
-    alert('Worked');
+    location.reload();
   });
 </script>

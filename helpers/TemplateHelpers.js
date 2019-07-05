@@ -113,5 +113,31 @@ module.exports = {
     });
 
     return toReturn;
+  },
+
+  ImageList: image => {
+    return `
+      <section>
+        <img class="current_image" id="current_image" src="/uploads/${image.imageName}"/>
+        <ul class="list-group row guests_list">
+          ${GlobalHelpers.CompanyList(image.companies[0])}
+          ${GlobalHelpers.CompanyList(image.companies[1])}
+          ${GlobalHelpers.GuestList(image.guestsNames)}
+        </ul>
+      </section>
+    `;
+  },
+
+  VideoList: video => {
+    return `
+      <section>
+        <video class="current_video_fill" id="current_video_fill" autoplay loop muted preload>
+          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
+        </video>
+        <video class="current_video" id="current_video" autoplay loop muted preload>
+          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
+        </video>
+      </section>
+    `;
   }
 }

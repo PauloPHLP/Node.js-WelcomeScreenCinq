@@ -41,6 +41,12 @@ const hbs = expressHandlebars.create({
     },
     showVideos: (videos, isAdmin) => {
       return HBSHelpers.ShowVideos(videos, isAdmin);
+    },
+    checkImagectivation: image => {
+      return HBSHelpers.CheckImagectivation(image);
+    },
+    checkVideoActivation: video => {
+      return HBSHelpers.CheckVideoActivation(video);
     }
   }
 });
@@ -83,9 +89,11 @@ io.on('connection', socket => {
 function SetUpCron(startDate, endDate) {
   if (startDate !== null && endDate !== null) {
     new cron(`${startDate.second} ${startDate.minute} ${startDate.hour} ${startDate.day} ${startDate.month} ${startDate.year}`, () => {
+      // GlobalHelpers.SetProgrammedWS();
       io.sockets.emit('RefreshPage');
     }, null, true);
     new cron(`${endDate.second} ${endDate.minute} ${endDate.hour} ${endDate.day} ${endDate.month} ${endDate.year}`, () => {
+      // GlobalHelpers.SetProgrammedWS();
       io.sockets.emit('RefreshPage');
     }, null, true); 
   }
@@ -94,6 +102,9 @@ function SetUpCron(startDate, endDate) {
 
 /* #region HTTP methods */
 app.get('/', (req, res) => {
+  GlobalHelpers.SetProgrammedWS();
+  io.sockets.emit('RefreshPage');
+  
   ScreenImage.find().exec((err, docImage) => {
     ScreenVideo.find().exec((err, docVideo) => {
       if (err) 
@@ -481,11 +492,10 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
       startDate: screenVideo.startDate,
       endDate: screenVideo.endDate
     }}, (err, scrVid) => {
+      GlobalHelpers.EnableDefaultVideoIfNoVideos();
       SetUpCron(GlobalHelpers.GetDateArray(screenVideo.startDate), GlobalHelpers.GetDateArray(screenVideo.endDate));
     });
 
-    GlobalHelpers.EnableDefaultVideoIfNoVideos();
-    
     if (err)
       return res.end('An error has occurred!');
     res.end('Welcome Screen update successfully!');
