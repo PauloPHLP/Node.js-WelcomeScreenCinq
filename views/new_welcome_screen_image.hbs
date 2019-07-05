@@ -236,7 +236,9 @@
         enctype: 'multipart/form-data',
         processData: false,
         success: data => {
-           Swal.fire({
+          socket.emit('UpdateOnDatabase');
+
+          Swal.fire({
             title: 'Success!',
             text: 'Image uploaded successfully!',
             type: 'success',
@@ -276,7 +278,5 @@
         confirmButtonColor: '#EE9658'
       });
     }
-
-    socket.emit('UpdateOnDatabase');
   });
 </script>

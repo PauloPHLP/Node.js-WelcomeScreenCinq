@@ -78,6 +78,20 @@ io.on('connection', socket => {
 });
 /* #endregion */
 
+/* #region Helper method for Cron */
+//This helper method is here for the Socket.io module work better.
+function SetUpCron(startDate, endDate) {
+  if (startDate !== null && endDate !== null) {
+    new cron(`${startDate.second} ${startDate.minute} ${startDate.hour} ${startDate.day} ${startDate.month} ${startDate.year}`, () => {
+      io.sockets.emit('RefreshPage');
+    }, null, true);
+    new cron(`${endDate.second} ${endDate.minute} ${endDate.hour} ${endDate.day} ${endDate.month} ${endDate.year}`, () => {
+      io.sockets.emit('RefreshPage');
+    }, null, true); 
+  }
+}
+/* #endregion */
+
 /* #region HTTP methods */
 app.get('/', (req, res) => {
   ScreenImage.find().exec((err, docImage) => {
@@ -308,13 +322,7 @@ app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req
     companies = [];
     guests = [];
 
-    checkDates.startDate = '4-7-19 11:51';
-    checkDates.endDate = '4-7-19 11:52';
-    
-    if (checkDates.startDate !== null && checkDates.endDate !== null) {
-      SetUpCron(GlobalHelpers.GetArrayDate(checkDates.startDate));
-      SetUpCron(GlobalHelpers.GetArrayDate(checkDates.endDate));
-    }
+    SetUpCron(GlobalHelpers.GetDateArray(checkDates.startDate), GlobalHelpers.GetDateArray(checkDates.endDate));
 
     screenImage.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
@@ -375,8 +383,9 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage/:isPro
       activated: screenImage.activated,
       startDate: screenImage.startDate,
       endDate: screenImage.endDate
-    }}, (err, screenImage) => {
+    }}, (err, scrImg) => {
       GlobalHelpers.EnableDefaultVideoIfNoImages();
+      SetUpCron(GlobalHelpers.GetDateArray(screenImage.startDate), GlobalHelpers.GetDateArray(screenImage.endDate));
     });
 
     companies = [];
@@ -421,6 +430,7 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
 
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
+      SetUpCron(GlobalHelpers.GetDateArray(screenVideo.startDate), GlobalHelpers.GetDateArray(screenVideo.endDate));
 
       if (err)
         res.status(400).send(err);
@@ -470,7 +480,9 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
       activated: screenVideo.activated,
       startDate: screenVideo.startDate,
       endDate: screenVideo.endDate
-    }}, (err, screenVideo) => {});
+    }}, (err, scrVid) => {
+      SetUpCron(GlobalHelpers.GetDateArray(screenVideo.startDate), GlobalHelpers.GetDateArray(screenVideo.endDate));
+    });
 
     GlobalHelpers.EnableDefaultVideoIfNoVideos();
     
@@ -489,13 +501,4 @@ app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
 http.listen(config.PORT, '0.0.0.0', () => {
   console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
 });
-/* #endregion */
-
-/* #region Helper method for Cron */
-//This helper method is here for the Socket.io module work better.
-function SetUpCron(date) {
-  new cron(`${date.second} ${date.minute} ${date.hour} ${date.day} ${date.month} ${date.year}`, () => {
-    io.sockets.emit('RefreshPage');
-  }, null, true);
-}
 /* #endregion */

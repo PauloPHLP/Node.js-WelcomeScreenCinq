@@ -42,6 +42,9 @@ function DeleteVideo(id) {
         url: `/api/delete_welcome_screen_video/${id}`,
         contentType: 'application/json',
         success: data => {
+          let socketVid = io();
+          socketVid.emit('UpdateOnDatabase');
+
           Swal.fire({
             title: 'Deleted!',
             text: 'Welcome Screen deleted successfully!',
@@ -88,6 +91,9 @@ function DeleteImage(id) {
         url: `/api/delete_welcome_screen_image/${id}`,
         contentType: 'application/json',
         success: data => {
+          let socketImg = io();
+          socketImg.emit('UpdateOnDatabase');
+
           Swal.fire({
             title: 'Deleted!',
             text: 'Welcome Screen deleted successfully!',
@@ -203,7 +209,12 @@ function CheckBoxCheck (isProgrammed, initialStartDate, initialEndDate) {
   }
 }
 
-function UnableDisableScheduled (isEnabled) {
+function EnableDisableVideoAndTitle (isEnable) {
+  $('#video').prop('disabled', isEnable);
+  $('#title').prop('disabled', isEnable);
+}
+
+function EnableDisableScheduled (isEnabled) {
   DisableScheduleFields(isEnabled);
 }
 

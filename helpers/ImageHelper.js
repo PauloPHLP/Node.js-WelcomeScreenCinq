@@ -101,6 +101,8 @@ module.exports = {
     module.exports.DeleteImage(req.params.oldImageName);
     this.companiesList = module.exports.SetCompanies(req.body.company1, req.body.company2);
     this.date = GlobalHelpers.GetDate();
+    req.body.startDate = GlobalHelpers.FormatDateToUpdate(req.body.startDate);
+    req.body.endDate = GlobalHelpers.FormatDateToUpdate(req.body.endDate);
 
     if (this.isDefault === false && this.isEnable === 'true') {
       GlobalHelpers.EnableDisableVideos("false");

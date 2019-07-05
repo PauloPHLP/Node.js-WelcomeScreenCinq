@@ -9,6 +9,14 @@
         <div class="panel-body">
           <form id="upload_form">
             <div class="row">
+              {{#if isAdmin}}
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                  <div class="form-group flt_left">
+                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo">
+                  </div>
+                </div>
+              {{/if}}
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label for="title">Choose a title for the video</label>
@@ -82,6 +90,14 @@
 
   $("#endDate").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+  });
+
+  $('#defaultVideo').change(function() {
+    if ($(this).is(':checked')) {
+      EnableDisableVideoAndTitle(true);
+    } else {
+      EnableDisableVideoAndTitle(false);
+    }
   });
 
   $('#startScheduleWs').change(function() {
@@ -173,6 +189,8 @@
         enctype: 'multipart/form-data',
         processData: false,
         success: data => {
+          socket.emit('UpdateOnDatabase');
+          
           Swal.fire({
             title: 'Success!',
             text: 'Video uploaded successfully!',
@@ -210,7 +228,5 @@
         confirmButtonColor: '#EE9658'
       });
     }
-
-    socket.emit('UpdateOnDatabase');
   });
 </script>

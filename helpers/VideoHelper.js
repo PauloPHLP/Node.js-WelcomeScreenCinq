@@ -109,6 +109,8 @@ module.exports = {
     this.isEnable = req.params.isProgrammed;
     this.date = GlobalHelpers.GetDate();
     module.exports.DeleteVideo(req.params.oldVideoName);
+    req.body.startDate = GlobalHelpers.FormatDateToUpdate(req.body.startDate);
+    req.body.endDate = GlobalHelpers.FormatDateToUpdate(req.body.endDate);
 
     if (this.isDefault === false && this.isEnable === 'true') {
       GlobalHelpers.DisableEverythingButCurrentVideo(req.params.id);

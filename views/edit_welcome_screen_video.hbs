@@ -134,20 +134,17 @@
 
   $("#isEnable").on("change", function() {
     if ($(this).is(':checked')) {
-      UnableDisableScheduled('disabled');
+      EnableDisableScheduled('disabled');
     } else {
-      UnableDisableScheduled('enabled');
+      EnableDisableScheduled('enabled');
     }
   });
 
   $("#startScheduleWs").on("change", function() {
     if ($(this).is(':checked')) {
-      UnableDisableScheduled('programmed');
-      
-      {{!-- $("#startDate").val(formatedDate);
-      $("#endDate").val(expirationDate); --}}
+      EnableDisableScheduled('programmed');
     } else {
-      UnableDisableScheduled('disabled');
+      EnableDisableScheduled('disabled');
       $("#startDate").val('');
       $("#endDate").val('');
     }
@@ -209,7 +206,7 @@
     const videoSettingsToCheck = isDefaultVideo || defaultVideo || notDefaultVideo || newVideo;
     const timeSettingsToCheck = scheduledTime && scheduledTimeFinish && CheckTime();
     const scheduleSettingsToCheck = !isScheduled && startDateInvalid && endDateInvalid;
-    const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck;
+    const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck && (timeSettingsToCheck || scheduleSettingsToCheck);
 
     if (conditionsToEnroll) {
       $("#title").addClass('fulfilledFields');
@@ -230,6 +227,8 @@
         enctype: 'multipart/form-data',
         processData: false,
         success: (data) => {
+          socket.emit('UpdateOnDatabase');
+          
           Swal.fire({
             title: 'Success',
             text: 'Welcome Screen updated successfully!',
@@ -271,7 +270,5 @@
         confirmButtonColor: '#EE9658'
       });
     }
-
-    socket.emit('UpdateOnDatabase');
   });
 </script>

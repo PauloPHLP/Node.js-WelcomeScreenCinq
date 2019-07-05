@@ -197,9 +197,9 @@
 
   $("#startScheduleWs").on("change", function() {
     if ($(this).is(':checked')) {
-      UnableDisableScheduled('programmed');
+      EnableDisableScheduled('programmed');
     } else {
-      UnableDisableScheduled('disabled');
+      EnableDisableScheduled('disabled');
       $("#startDate").val('');
       $("#endDate").val('');
     }
@@ -207,9 +207,9 @@
 
   $("#isEnable").on("change", function() {
     if ($(this).is(':checked')) {
-      UnableDisableScheduled('disabled');
+      EnableDisableScheduled('disabled');
     } else {
-      UnableDisableScheduled('enabled');
+      EnableDisableScheduled('enabled');
     }
   });
 
@@ -298,6 +298,8 @@
         enctype: 'multipart/form-data',
         processData: false,
         success: data => {
+          socket.emit('UpdateOnDatabase');
+          
           Swal.fire({
             title: 'Success',
             text: 'Welcome Screen updated successfully!',
@@ -344,7 +346,5 @@
         confirmButtonColor: '#EE9658'
       });
     }
-
-    socket.emit('UpdateOnDatabase');
   });
 </script>

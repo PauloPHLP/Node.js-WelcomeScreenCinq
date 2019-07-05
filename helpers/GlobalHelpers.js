@@ -131,6 +131,10 @@ module.exports = {
     return moment(date).format('DD-M-YY H:m');
   },
 
+  FormatDateToUpdate: date => {
+    return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD-M-YY H:m');
+  },
+
   CheckProgrammedDate: video => {
     const dateNow = module.exports.FormatDate(new Date());
 
@@ -166,15 +170,19 @@ module.exports = {
     }
   },
 
-  GetArrayDate: date => {
-    date = date.replace(' ', '-').replace(':', '-').split('-');
-    return {
-      day: date[0],
-      month: date[1] - 1,
-      year: date[2],
-      hour: date[3],
-      minute: date[4],
-      second: 0
+  GetDateArray: date => {
+    if (date !== null) {
+      date = date.replace(' ', '-').replace(':', '-').split('-');
+      return {
+        day: date[0],
+        month: date[1] - 1,
+        year: date[2],
+        hour: date[3],
+        minute: date[4],
+        second: 0
+      }
+    } else {
+      return null;
     }
   }
 }
