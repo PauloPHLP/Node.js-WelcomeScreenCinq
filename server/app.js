@@ -87,13 +87,27 @@ io.on('connection', socket => {
 /* #region Helper method for Cron */
 //This helper method is here for the Socket.io module work better.
 function SetUpCron(startDate, endDate) {
+  startDate.second = 0;
+  startDate.minute = 56;
+  startDate.hour = 11;
+  startDate.day = 23;
+  startDate.month = 6;
+  startDate.year = 19;
+
+  endDate.second = 0;
+  endDate.minute = 57;
+  endDate.hour = 11;
+  endDate.day = 23;
+  endDate.month = 6;
+  endDate.year = 19;
+
   if (startDate !== null && endDate !== null) {
     new cron(`${startDate.second} ${startDate.minute} ${startDate.hour} ${startDate.day} ${startDate.month} ${startDate.year}`, () => {
-      // GlobalHelpers.SetProgrammedWS();
+      GlobalHelpers.SetProgrammedWS();
       io.sockets.emit('RefreshPage');
     }, null, true);
     new cron(`${endDate.second} ${endDate.minute} ${endDate.hour} ${endDate.day} ${endDate.month} ${endDate.year}`, () => {
-      // GlobalHelpers.SetProgrammedWS();
+      GlobalHelpers.SetProgrammedWS();
       io.sockets.emit('RefreshPage');
     }, null, true); 
   }
@@ -102,9 +116,6 @@ function SetUpCron(startDate, endDate) {
 
 /* #region HTTP methods */
 app.get('/', (req, res) => {
-  GlobalHelpers.SetProgrammedWS();
-  io.sockets.emit('RefreshPage');
-  
   ScreenImage.find().exec((err, docImage) => {
     ScreenVideo.find().exec((err, docVideo) => {
       if (err) 

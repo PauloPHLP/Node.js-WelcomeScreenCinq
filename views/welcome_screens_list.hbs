@@ -56,5 +56,6 @@
   var socket = io.connect("http://{{host}}:3000");
   socket.on('RefreshPage', function(data) {
     location.reload();
+    alert('aaa');
   });
 </script>
