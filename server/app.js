@@ -36,6 +36,9 @@ const hbs = expressHandlebars.create({
     checkAvailability: video => {
       return HBSHelpers.CheckAvailability(video);
     },
+    checkType: type => {
+      return HBSHelpers.CheckType(type);
+    }, 
     checkIsProgrammed: video => {
       return HBSHelpers.CheckIsProgrammed(video);
     },
@@ -90,14 +93,14 @@ function SetUpCron(startDate, endDate) {
   startDate.second = 0;
   startDate.minute = 56;
   startDate.hour = 11;
-  startDate.day = 23;
+  startDate.day = 24;
   startDate.month = 6;
   startDate.year = 19;
 
   endDate.second = 0;
   endDate.minute = 57;
   endDate.hour = 11;
-  endDate.day = 23;
+  endDate.day = 24;
   endDate.month = 6;
   endDate.year = 19;
 

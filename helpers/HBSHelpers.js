@@ -24,6 +24,13 @@ module.exports = {
     }
   },
 
+  CheckType: type => {
+    if (type === 'Image')
+      return `<td>Visitor Page</td>`;
+    else 
+      return `<td>Video</td>`;
+  },
+
   CheckIsProgrammed: ws => {
     if (ws.activated === 'programmed') {
       return TemplateHelpers.ProgrammedWelcomeScreen(ws);
