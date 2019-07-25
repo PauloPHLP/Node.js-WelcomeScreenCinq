@@ -100,7 +100,7 @@ module.exports = {
   
     ScreenVideo.find({_id: req.params.id}).deleteOne().exec((err, screenVideo) => {
       res.status(200).send(screenVideo);
-      GlobalHelpers.EnableDefaultVideoIfNoVideos();
+      GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
     });
   },
   

@@ -90,20 +90,6 @@ io.on('connection', socket => {
 /* #region Helper method for Cron */
 //This helper method is here for the Socket.io module work better.
 function SetUpCron(startDate, endDate) {
-  startDate.second = 0;
-  startDate.minute = 56;
-  startDate.hour = 11;
-  startDate.day = 24;
-  startDate.month = 6;
-  startDate.year = 19;
-
-  endDate.second = 0;
-  endDate.minute = 57;
-  endDate.hour = 11;
-  endDate.day = 24;
-  endDate.month = 6;
-  endDate.year = 19;
-
   if (startDate !== null && endDate !== null) {
     new cron(`${startDate.second} ${startDate.minute} ${startDate.hour} ${startDate.day} ${startDate.month} ${startDate.year}`, () => {
       GlobalHelpers.SetProgrammedWS();

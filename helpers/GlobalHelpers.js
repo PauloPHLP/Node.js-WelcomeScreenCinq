@@ -58,7 +58,6 @@ module.exports = {
   EnableDisableDefaultVideoIfNoWS: () => {
     ScreenImage.countDocuments({activated: 'true'}, function(err, countImages) {
       ScreenVideo.countDocuments({activated: 'true'}, function(err, countVideos) {
-        console.log(countImages === 0 && countVideos === 0);
         if (countImages === 0 && countVideos === 0) 
           module.exports.EnableDisableDefaultVideo('true');
       });
@@ -123,7 +122,8 @@ module.exports = {
           module.exports.EnableCurrentAndDisableAll(video._id);
         } else if (video.activated === 'true' && module.exports.CheckTime(video.startDate, video.endDate) === false) {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
-          module.exports.EnableDefaultVideoIfNoVideos(); 
+          //module.exports.EnableDefaultVideoIfNoVideos(); 
+          module.exports.EnableDisableDefaultVideoIfNoWS();
         }
       });
     });
