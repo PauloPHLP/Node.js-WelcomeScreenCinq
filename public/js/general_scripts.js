@@ -1,8 +1,12 @@
 let startDateToKeep = '';
 let endDateToKeep = '';
 
+$(window).resize(function() {
+  CheckBrowserResolution();
+});
+
 $(document).ready(() => {
-	$('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="tooltip"]').tooltip();
   var actions = $("table td:last-child").html();
 
   $(document).on("click", ".delete", () => {
@@ -23,7 +27,18 @@ $(document).ready(() => {
     variableWidth: true,
     useTransform: false
   });
+
+  CheckBrowserResolution();
 });
+
+function CheckBrowserResolution() {
+  const list = document.getElementById("list-ul");
+
+  if ($(window).width() > 768)
+    list.classList.add('nav-items-settings');
+  else if ($(window).width() < 768)
+    list.classList.remove('nav-items-settings');
+}
 
 function DeleteVideo(id) {
   Swal.fire({

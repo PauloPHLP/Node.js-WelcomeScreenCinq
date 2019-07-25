@@ -104,17 +104,6 @@ table.table td .add {
   z-index: 1;
 }
 
-.cd-slider-nav a,
-.navbar-nav .nav-link {
-	color: #EE9658; 
-  display: table-cell;
-  font-weight: 400;
-  font-size: 1em;
-  vertical-align: middle;
-  width: 130px;
-  height: 63px;
-}
-
 .table-title h2 {
   margin: 6px 0px 15px;
   font-size: 22px;
@@ -217,10 +206,21 @@ table.table td .add {
   background-color: rgb(0, 7, 9);
 }
 
+.nav-settings {
+  background-color: rgb(0, 7, 9);
+  border: black;
+  border-radius: 0;
+  margin: 0;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white;
+}
+
 .logo {
   margin-top: -12px;
-  height: 50px;
-  width: 180px;
+  height: 40px;
+  width: 140px;
 }
 
 .btn-register {
@@ -235,6 +235,25 @@ table.table td .add {
 	background-color: #EE9658;
 }
 
+.nav-item {
+  font-size: 20px;
+}
+
+.nav-item:hover, .nav-item:focus {
+  background-color: #EE9658;
+}
+
+.dropdown-menu {
+  background-color: #000000;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-family: 'Raleway Black';
+}
+
+.navbar-dark {
+  background-color: #000000;
+}
+
 .tm-navbar-bg {
   text-transform: uppercase;
   text-align: center;
@@ -247,6 +266,14 @@ table.table td .add {
   padding-left: 10px; 
   padding-right: 0;
   position: static;
+}
+
+.nav-settings {
+  border: none;
+}
+
+.nav-items-settings {
+  float: right;
 }
 
 .passesDontMatch {
@@ -312,7 +339,7 @@ table.table td .add {
 }
 
 .current_image_with_nav {
-  top: 64px;
+  top: 50px;
 }
 
 .btn_add {
@@ -364,4 +391,9 @@ table.table td .add {
 #create-btn {
   top: 10px;
   margin-bottom: 10px;
+}
+
+#nav-toggle-button:hover, #nav-toggle-button:focus {
+  background-color: #EE9658;
+  border-color: #EE9658;
 }
