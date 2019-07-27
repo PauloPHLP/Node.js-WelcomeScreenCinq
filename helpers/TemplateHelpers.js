@@ -129,7 +129,10 @@ module.exports = {
   VideoList: video => {
     return `
       <section>
-        <video class="current_video_with_nav" id="current_video" autoplay loop muted preload>
+        <video class="current_video_blur" autoplay loop muted preload>
+          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
+        </video>
+        <video class="current_video" id="current_video" autoplay loop muted preload>
           <source src="/uploads/${video.videoName}" type="video/mp4"></source>
         </video>
       </section>
