@@ -1,10 +1,10 @@
 <div class="container">
-  <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+  <img class="current_image_vp" src="/images/cinq_background_without_logo.png"/>
   <div id="new_welcome_screen_form" class="row centered-form">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Edit Visitor Page</h3>
+          <h3 class="panel-title">Edit visitor page</h3>
         </div>
         <div class="panel-body">
           <form id="update_form">
@@ -12,103 +12,97 @@
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_left">
                   {{#if isDefaultImage}}
-                    <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
+                    <label for="defaultImage" class="flt_right releway-font">&nbsp Default image as Welcome Screen</label>
+                    <input type="checkbox" name="defaultImage" id="defaultImage" checked>
                   {{else}}
-                    <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage">
+                    <label for="defaultImage" class="flt_right releway-font">&nbsp Default image as Welcome Screen</label>
+                    <input type="checkbox" name="defaultImage" id="defaultImage">
                   {{/if}}
                 </div>
               </div>
-              {{!-- <div class="col-xs-6 col-sm-6 col-md-6">
-                <div class="form-group flt_left">
-                  {{#if isEnabled}}
-                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is enabled</label>
-                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable" checked>
-                  {{else}}
-                    <label id="isEnableLabel" for="isEnable" class="flt_right">&nbsp This Welcome Screen is disabled</label>
-                    <input type="checkbox" class="flt_right" name="isEnable" id="isEnable">
-                  {{/if}}
-                </div>
-              </div> --}}
-
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
-                  <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
+                  <label id="isEnableLabel" for="isEnable" class="flt_right releway-font"></label>
+                  <input type="checkbox" class="flt_right_av" name="isEnable" id="isEnable">
                 </div>
               </div>
-
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label id="currentImage" for="image">Current image: {{screenImage.defaultImageName}}</label>
+                  <label for="image" id="currentImage" class="releway-font"><label class="releway-font-sub">Current image:</label> {{screenImage.defaultImageName}}</label>
                   <label id="imageName" class="vsb_hidden">{{screenImage.imageName}}</label>
-                  <label id="guestsNames" class="vsb_hidden"></label>
                   <br/>
-                  <label for="image">Choose a new image</label>
-                  {{#if isDefaultImage}}
-                    <input type="file" name="image" value="{{screenImage.imageName}}" id="image" class="form-control input-sm" placeholder="Image" disabled>
-                  {{else}}
-                    <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image">
-                  {{/if}}
+                  <label for="image" class="releway-font-sub">Choose a new image</label>
+                    <div class="input-group mb-3">
+                      <div class="custom-file">
+                        {{#if isDefaultImage}}
+                          <input type="file" class="custom-file-input releway-font" name="image" id="image" value="{{screenImage.imageName}}" disabled>
+                        {{else}}
+                          <input type="file" class="custom-file-input releway-font" name="image" id="image">
+                        {{/if}}
+                        <label class="custom-file-label" for="video">Choose file</label>
+                      </div>
+                    </div>
                 </div>
               </div>
               {{#checkIsProgrammed screenImage}}
               {{/checkIsProgrammed}} 
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">First company name</label>
-                  <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1" value="{{screenImage.companies.[0]}}">
+                  <label for="company" class="releway-font-sub">First company name</label>
+                  <input type="text" name="company1" id="company1" class="form-control input-sm releway-font" placeholder="Company 1" value="{{screenImage.companies.[0]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">Second company name</label>
-                  <input type="text" name="company2" id="company2" class="form-control input-sm" placeholder="Company 2" value="{{screenImage.companies.[1]}}">
+                  <label for="company" class="releway-font-sub">Second company name</label>
+                  <input type="text" name="company2" id="company2" class="form-control input-sm releway-font" placeholder="Company 2" value="{{screenImage.companies.[1]}}">
+                </div>
+              </div>
+              <label for="company" class="releway-font-sub col-12 text-center">Guests names</label>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest1" id="guest1" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[0]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest1" id="guest1" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[0]}}">
+                  <input type="text" name="guest2" id="guest2" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[1]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest2" id="guest2" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[1]}}">
+                  <input type="text" name="guest3" id="guest3" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[2]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest3" id="guest3" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[2]}}">
+                  <input type="text" name="guest4" id="guest4" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[3]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest4" id="guest4" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[3]}}">
+                  <input type="text" name="guest5" id="guest5" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[4]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest5" id="guest5" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[4]}}">
+                  <input type="text" name="guest6" id="guest6" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[5]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest6" id="guest6" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[5]}}">
+                  <input type="text" name="guest7" id="guest7" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[6]}}">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest7" id="guest7" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[6]}}">
-                </div>
-              </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <div class="form-group">
-                  <input type="text" name="guest8" id="guest8" class="form-control input-sm" placeholder="Guest name" value="{{screenImage.guestsNames.[7]}}">
+                  <input type="text" name="guest8" id="guest8" class="form-control input-sm releway-font" placeholder="Guest name" value="{{screenImage.guestsNames.[7]}}">
                 </div>
               </div>
             </div>
-            <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="text-center">
+              <input type="submit" value="Update" class="btn btn-default btn-upload col-6 releway-font">
+            </div>
           </form>
         </div>
       </div>
@@ -154,19 +148,19 @@
   });
 
   $("#company1").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#company1", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#company1", "is-invalid", "is-valid");
   });
 
   $("#image").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#image", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#endDate", "is-invalid", "is-valid");
   });
 
   $('#isEnable').change(function() {
@@ -226,7 +220,7 @@
       startDateFormatted = d;
       CheckTime();
       if (dateEnd == '')
-        AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -243,13 +237,12 @@
       expirationDateFormatted = d;
       CheckTime();
       if (dateStart == '')
-        AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
     }
   });
 
   $('#update_form').submit(function(e) {
     e.preventDefault();
-
     const defaultText = 'Current image: default_image.jpg';
     const imageEmpty = $('#image').get(0).files.length;
     const isDefaultImage = $('#defaultImage').is(':checked');
@@ -267,6 +260,7 @@
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = CheckTime();
+    const imageNameTxt = $("#imageName").val();
     const onlyCompanyToCheck = companyEmptyOrNull && isDefaultImage && imageEmpty === 0 && !isScheduled;
     const companyAndNotDefault = companyEmptyOrNull && !isDefaultImage && imageEmpty !== 0 && !isScheduled;
     const companyAndNotDefaultSame = companyEmptyOrNull && notDefaultImage && !isScheduled;
@@ -275,19 +269,22 @@
     const scheduledAndNotDefaultSame = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && notDefaultImage;
     const conditionsToEnroll = onlyCompanyToCheck || scheduledSettings || companyAndNotDefault || companyAndNotDefaultSame || scheduledAndNotDefault || scheduledAndNotDefaultSame;
 
-    if (!isScheduled) {
-      $("#startDate").removeClass('emptyFields');
-      $("#endDate").removeClass('emptyFields');
-    }
-
     if (conditionsToEnroll) {
-      $("#company1").addClass('fulfilledFields');
-      $('#image').addClass('fulfilledFields');
+      $("#company1").addClass('is-valid');
+
+      if (!isDefaultImage && imageEmpty !== 0)
+        AddAndRemoveClassSimple('#image', 'is-valid', 'is-invalid');
+      if (imageEmpty === 0 && imageNameTxt !== 'default_image.jpg' && !isDefaultImage)
+        AddAndRemoveClassSimple('#image', 'is-valid', 'is-invalid');
+      if (!startTimeEmpty && dateTime)
+        AddAndRemoveClassSimple('#startDate', 'is-valid', 'is-invalid');
+      if (!finishTimeEmpty && dateTime)
+        AddAndRemoveClassSimple('#endDate', 'is-valid', 'is-invalid');
 
       const schedule = CheckSchedule(isScheduled);
       const imageName = $('#imageName').text();
-
       var formData = new FormData($(this)[0]);
+      
       $.ajax({
         url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}/${schedule}`,
         type: 'PUT',
@@ -320,23 +317,24 @@
         }
       });
     } else {
-      if (companyEmptyOrNull === false && defaultImage === false) {
-        $("#company1").addClass('emptyFields');
-      }
-      if (defaultImage === false && companyEmptyOrNull === true) {
-        $("#image").addClass('emptyFields');
-      }
-      if (notDefaultImage && !isDefaultImage) {
-        AddAndRemoveClassSimple("#image", "", "emptyFields");
-      }
-      if (isDefaultImage) {
-        AddAndRemoveClassSimple("#image", "", "emptyFields");
-      }
+      if (!companyEmptyOrNull) 
+        AddAndRemoveClassSimple('#company1', 'is-invalid', 'is-valid');
+      if (companyEmptyOrNull) 
+        AddAndRemoveClassSimple('#company1', 'is-valid', 'is-invalid');
+      if (!isDefaultImage && imageEmpty === 0)
+        AddAndRemoveClassSimple('#image', 'is-invalid', 'is-valid');
       if (startTimeEmpty) {
-        AddAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
+        $("#image").removeClass('is-invalid');
       }
       if (finishTimeEmpty) {
-        AddAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
+        $("#image").removeClass('is-invalid');
+      }
+      if (!dateTime && isScheduled) {
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
+        $("#image").removeClass('is-invalid');
       }
 
       Swal.fire({

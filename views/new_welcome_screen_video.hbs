@@ -229,6 +229,10 @@
         AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
       if (isScheduled && !endDateInvalid)
         AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
+      if (dateTime === false) {
+        AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
+        AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
+      }
 
       Swal.fire({
         title: 'Attention',

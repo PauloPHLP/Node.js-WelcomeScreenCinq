@@ -1,5 +1,5 @@
 <div class="container">
-  <img class="current_image_with_nav" src="/images/cinq_background_without_logo.png"/>
+  <img class="current_image_vp" src="/images/cinq_background_without_logo.png"/>
   <div id="new_welcome_screen_form" class="row centered-form">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
@@ -11,84 +11,90 @@
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group flt_left">
-                  <label for="defaultImage" class="flt_right">&nbsp Default image as Welcome Screen</label>
-                  <input type="checkbox" class="flt_right" name="defaultImage" id="defaultImage" checked>
+                  <label for="defaultImage" class="flt_right releway-font">&nbsp Default image as Welcome Screen</label>
+                  <input type="checkbox" name="defaultImage" id="defaultImage" checked>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                  <label for="video">Choose a new image</label>
-                  <input type="file" name="image" id="image" class="form-control input-sm" placeholder="Image" disabled>
+                <label for="image" class="releway-font-sub">Choose a new image</label>
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input releway-font" name="image" id="image" disabled>
+                    <label class="custom-file-label" for="image">Choose file</label>
+                  </div>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
                   <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-                  <label for="startScheduleWs">I want to schedule this WS from:</label>
-                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+                  <label for="startScheduleWs" class="releway-font">I want to schedule this WS from:</label>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center"> 
                   <input type="checkbox" class="vsb_hidden">
-                  <label for="finishScheduleWs">To:</label>
-                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+                  <label for="finishScheduleWs" class="releway-font">To:</label>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">First company name</label>
-                  <input type="text" name="company1" id="company1" class="form-control input-sm" placeholder="Company 1">
+                  <label for="company" class="releway-font-sub">First company name</label>
+                  <input type="text" name="company1" id="company1" class="form-control input-sm releway-font" placeholder="Company 1">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label for="company">Second company name</label>
-                  <input type="text" name="company2" id="company2" class="form-control input-sm" placeholder="Company 2">
+                  <label for="company" class="releway-font-sub">Second company name</label>
+                  <input type="text" name="company2" id="company2" class="form-control input-sm releway-font" placeholder="Company 2">
+                </div>
+              </div>
+              <label for="company" class="releway-font-sub col-12 text-center">Guests names</label>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="guest1" id="guest1" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest1" id="guest1" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest2" id="guest2" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest2" id="guest2" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest3" id="guest3" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest3" id="guest3" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest4" id="guest4" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest4" id="guest4" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest5" id="guest5" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest5" id="guest5" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest6" id="guest6" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest6" id="guest6" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest7" id="guest7" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <input type="text" name="guest7" id="guest7" class="form-control input-sm" placeholder="Guest name">
-                </div>
-              </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <div class="form-group">
-                  <input type="text" name="guest8" id="guest8" class="form-control input-sm" placeholder="Guest name">
+                  <input type="text" name="guest8" id="guest8" class="form-control input-sm releway-font" placeholder="Guest name">
                 </div>
               </div>
             </div>
-            <input type="submit" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="text-center">
+              <input type="submit" value="Upload and create" class="btn btn-default btn-upload col-6 releway-font">
+            </div>
           </form>
         </div>
       </div>
@@ -121,19 +127,19 @@
   let finishDate = FormatDateUgly(dateTomorrow);
 
   $("#company1").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#company1", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#company1", "is-invalid", "is-valid");
   });
 
   $("#image").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#image", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#endDate", "is-invalid", "is-valid");
   });
 
   $('#defaultImage').change(function() {
@@ -169,7 +175,7 @@
       startDateFormatted = d;
       CheckTime();
       if (dateEnd == '' && dateStart != '')
-        AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -186,7 +192,7 @@
       expirationDateFormatted = d;
       CheckTime();
       if (dateStart == '' && dateEnd != '')
-        AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -216,15 +222,18 @@
     const conditionsToEnroll = defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled && dateTime;
 
     if (!isScheduled) {
-      $("#startDate").removeClass('fulfilledFields');
-      $("#endDate").removeClass('fulfilledFields');
+      $("#startDate").removeClass('is-valid');
+      $("#endDate").removeClass('is-valid');
     }
 
     if (conditionsToEnroll) {
       const isProgrammed = CheckIsProgrammed(isScheduled);
 
-      $("#company1").addClass('fulfilledFields');
-      $('#image').addClass('fulfilledFields');
+      $("#company1").addClass('is-valid');
+      $('#image').addClass('is-valid');
+
+      if (isDefault)
+        $("#image").removeClass('is-valid');
       
       $.ajax({
         url: `/api/new_welcome_screen_image/${startDate}/${finishDate}/${isProgrammed}`,
@@ -258,19 +267,29 @@
         }
       });
     } else {
-      if (!isDefault && imageSize === 0) {
-        $("#image").addClass('emptyFields');
+      if (!isDefault && imageSize === 0)
+        $("#image").addClass('is-invalid');
+      if (!companyEmptyOrNull)
+        $("#company1").addClass('is-invalid');
+      else 
+        AddAndRemoveClassSimple("#company1", "is-valid", "is-invalid");
+      if (startTimeEmpty) 
+        AddAndRemoveClassSimple("#startDate", "is-invalid", "is-valid");
+      else 
+        AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
+      if (finishTimeEmpty) 
+        AddAndRemoveClassSimple("#endDate", "is-invalid", "is-valid");
+      else 
+        AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
+      if (startDateInvalid && !isScheduled)
+        $("#startDate").removeClass('is-valid');
+      if (endDateInvalid && !isScheduled)       
+        $("#endDate").removeClass('is-valid');  
+      if (dateTime === false) {
+        $("#startDate").addClass('is-invalid');
+        $("#endDate").addClass('is-invalid');  
       }
-
-      $("#company1").addClass('emptyFields');
-
-      if (startTimeEmpty) {
-        AddAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
-      }
-      if (finishTimeEmpty) {
-        AddAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
-      }
-
+        
       Swal.fire({
         title: 'Attention',
         text: 'Please check the fields!',

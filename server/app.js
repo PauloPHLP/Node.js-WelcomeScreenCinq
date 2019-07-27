@@ -368,6 +368,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
         isEnabled: renderSettings.isEnabled,
         header: true,
         isAdmin: req.user.isAdmin,
+        user: req.user,
         title: 'Edit Welcome Screen'
       });
     });

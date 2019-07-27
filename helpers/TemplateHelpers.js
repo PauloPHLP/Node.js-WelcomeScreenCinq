@@ -7,15 +7,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs" checked>
-          <label for="startScheduleWs">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
+          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
-          <label for="finishScheduleWs">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
+          <label for="finishScheduleWs" class="releway-font">Until:</label>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
         </div>
       </div>
     `;
@@ -26,15 +26,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-          <label for="startScheduleWs">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
-          <label for="finishScheduleWs">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+          <label for="finishScheduleWs" class="releway-font">Until:</label>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
         </div>
       </div>
     `;
@@ -46,14 +46,14 @@ module.exports = {
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs" checked>
           <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
           <label for="finishScheduleWs" class="releway-font">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
         </div>
       </div>
     `;
@@ -64,15 +64,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-          <label for="startScheduleWs">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
-          <label for="finishScheduleWs">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+          <label for="finishScheduleWs" class="releway-font">Until:</label>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
         </div>
       </div>
     `;

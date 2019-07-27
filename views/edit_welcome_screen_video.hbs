@@ -38,7 +38,7 @@
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="video" id="currentVideo"><labe class="releway-font-sub">Current video:</labe> {{screenVideo.defaultVideoName}}</label>
+                  <label for="video" id="currentVideo" class="releway-font"><label class="releway-font-sub">Current video:</label> {{screenVideo.defaultVideoName}}</label>
                   <label id="videoName" class="vsb_hidden">{{screenVideo.videoName}}</label>
                   <br/>
                   <label for="video" class="releway-font-sub">Choose a new video</label>
@@ -287,6 +287,10 @@
         AddAndRemoveClassSimple("#startDate", "is-invalid", "is-valid");
       if (finishTimeEmpty) 
         AddAndRemoveClassSimple("#endDate", "is-invalid", "is-valid");
+      if (CheckTime() === false) {
+        AddAndRemoveClassSimple("#startDate", "is-invalid", "is-valid");
+        AddAndRemoveClassSimple("#endDate", "is-invalid", "is-valid");
+      }
 
       Swal.fire({
         title: 'Attention',
