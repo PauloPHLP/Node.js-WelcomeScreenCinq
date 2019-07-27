@@ -45,14 +45,14 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs" checked>
-          <label for="startScheduleWs">This welcome screen is schedule to:</label>
+          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
           <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
-          <label for="finishScheduleWs">Until:</label>
+          <label for="finishScheduleWs" class="releway-font">Until:</label>
           <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
         </div>
       </div>
@@ -84,13 +84,12 @@ module.exports = {
       if (isAdmin) {
         toReturn += `
           <tr>
-            <td>${video.title}</td>
-            <td>${video.date}</td>
+            <td class="releway-font ellipsis">${video.title}</td>
+            <td class="releway-font ellipsis">${video.date}</td>
             ${GlobalHelpers.CheckAvailability(video)}
-            <td>${video.wsType}</td>
             <td>
               <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-              <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons">&#xE872;</i></a>
+              <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
             </td>
           </tr>
         `
@@ -98,13 +97,12 @@ module.exports = {
         if (!video.isDefaultVideo) {
           toReturn += `
             <tr>
-              <td>${video.title}</td>
-              <td>${video.date}</td>
+              <td class="releway-font ellipsis">${video.title}</td>
+              <td class="releway-font ellipsis">${video.date}</td>
               ${GlobalHelpers.CheckAvailability(video)}
-              <td>${video.wsType}</td>
               <td>
                 <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons">&#xE872;</i></a>
+                <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
               </td>
             </tr>
           ` 
@@ -131,10 +129,7 @@ module.exports = {
   VideoList: video => {
     return `
       <section>
-        <video class="current_video_fill" id="current_video_fill" autoplay loop muted preload>
-          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
-        </video>
-        <video class="current_video" id="current_video" autoplay loop muted preload>
+        <video class="current_video_with_nav" id="current_video" autoplay loop muted preload>
           <source src="/uploads/${video.videoName}" type="video/mp4"></source>
         </video>
       </section>

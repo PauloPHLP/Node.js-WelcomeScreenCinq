@@ -3,7 +3,6 @@ html, body {
   width: 100%;
   margin: 0;
   overflow-x: hidden;
-  font-family: 'Raleway Black';
 }
 
 input[type="submit"]:disabled {
@@ -73,6 +72,41 @@ table.table td .add {
   display: none;
 }
 
+nav > .nav.nav-tabs {
+  margin-top: 5%;
+  border: none;
+  color:#FFFFFF;
+  background:#272E38;
+  border-radius: 0;
+}
+
+nav > div a.nav-item.nav-link,
+nav > div a.nav-item.nav-link.active {
+  border: none;
+  padding: 18px 25px;
+  color:#FFFFFF;
+  background:#272e38;
+  border-radius: 0;
+}
+
+nav > div a.nav-item.nav-link.active:after {
+  content: "";
+  position: relative;
+  bottom: -60px;
+  left: -10%;
+  border: 15px solid transparent;
+  border-top-color:#EE9658 ;
+}
+
+nav > div a.nav-item.nav-link:hover,
+nav > div a.nav-item.nav-link:focus {
+  border: none;
+  background:#EE9658;
+  color:#FFFFFF;
+  border-radius:0;
+  transition:background 0.20s linear;
+}
+
 .emptyFields {
   border: 1px solid red;
 }
@@ -82,12 +116,10 @@ table.table td .add {
 }
 
 .swal2-popup {
-  font-family: 'Raleway Black';
+  font-family: 'Raleway', sans-serif;
 }
 
 .gallery {
-  height: 100%;
-  width: 100%;
   background-color: #002C4F;
 }
 
@@ -110,15 +142,34 @@ table.table td .add {
 }
 
 .table-wrapper {
-  width: 700px;
-  margin: 30px auto;
-  background: #fff;
+  background: #FFFFFF;
   padding: 20px;	
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
 
 .table-title {
   margin: 0 0 10px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.releway-font {
+  font-family: 'Raleway', sans-serif;
+}
+
+.releway-font-sub {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+}
+
+.sign {
+  width: 100%;
+  color: #FFFFFF;
+}
+
+.delete {
+  background-color: #FF0000;
+  width: 100%;
+  color: #FFFFFF;
 }
 
 .table-title .add-new {
@@ -132,15 +183,37 @@ table.table td .add {
   line-height: 13px;
 }
 
-.btn_add {
-  padding-right: 15px;
+.margin-align {
+  margin-right: 15px;
 }
 
-.add-new {
-  margin-right: 5px;
+.btn-add-page {
+  font-weight: bold;
+  font-style: normal;
+  font-size: 12px;
+  height: 30px;
+  padding: 0px;
+  color: #FFFFFF;
 }
 
-.page-login{
+.btn-upload {
+  font-weight: bold;
+  font-style: normal;
+  font-size: 12px;
+  height: 40px;
+  padding: 0px;
+  color: #FFFFFF;
+}
+
+.btn-default {
+  background-color: #EE9658;
+}
+
+.video {
+  height: 40px;
+}
+
+.page-login {
   width: 100%;
 	padding: 15px;
   padding-top: 15px;
@@ -154,8 +227,21 @@ table.table td .add {
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   background-color: #fff;
-  max-width: 350px;
-  border-radius: 3px;
+  max-width: 400px;
+  border-radius: 10px;
+}
+
+.page-enroll {
+	padding: 15px;
+  padding-top: 15px;
+  padding-bottom: 25px;
+  position: relative;
+  background-color: #fff;
+  max-width: 400px;
+  border-radius: 10px;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form-signin {
@@ -188,12 +274,14 @@ table.table td .add {
   right: 25%;
 }
 
-.logo-signin {
-  float: none;
-  text-align: center;
-  padding: 30px;
+.img-responsive {
+  height: 150px;
+  width: 100%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
   margin: 0 auto;
-  width: 250px;
 }
 
 .cd-slider-nav {
@@ -213,14 +301,21 @@ table.table td .add {
   margin: 0;
 }
 
+.navbar {
+  font-family: 'Raleway', sans-serif;
+}
+
 .navbar-default .navbar-toggle .icon-bar {
   background-color: white;
 }
 
 .logo {
-  margin-top: -12px;
+  position: absolute;
+  display: block;
+  top: 8px;
   height: 40px;
-  width: 140px;
+  width: 130px;
+  padding: 0;
 }
 
 .btn-register {
@@ -231,7 +326,6 @@ table.table td .add {
 .cd-slider-nav .nav-item.selected .nav-link,
 .cd-slider-nav .nav-item .nav-link:hover,
 .cd-slider-nav .nav-item .nav-link:focus {	
-  color: #FFF;
 	background-color: #EE9658;
 }
 
@@ -239,19 +333,15 @@ table.table td .add {
   font-size: 20px;
 }
 
-.nav-item:hover, .nav-item:focus {
-  background-color: #EE9658;
-}
-
 .dropdown-menu {
   background-color: #000000;
   color: #FFFFFF;
   font-size: 15px;
-  font-family: 'Raleway Black';
+  font-family: 'Raleway', sans-serif;
 }
 
 .navbar-dark {
-  background-color: #000000;
+  background-color: #000d17;
 }
 
 .tm-navbar-bg {
@@ -268,12 +358,12 @@ table.table td .add {
   position: static;
 }
 
-.nav-settings {
-  border: none;
+.material-icons {
+  vertical-align: middle !important;
 }
 
-.nav-items-settings {
-  float: right;
+.dropdown-item {
+  font-family: 'Raleway', sans-serif;
 }
 
 .passesDontMatch {
@@ -285,20 +375,20 @@ table.table td .add {
 }
 
 .list-group-item {
-  color: #FFF;
+  /* color: #FFF;
   font-size: 3.5vw;
   background: none;
   border: none;
-  margin-left: 0px;
+  margin-left: 0px; */
 }
 
 .list-group  {
-  position: absolute;
+  /* position: absolute; */
 }
 
 .company_name {
-  padding-left: 70px;
-  margin-bottom: 10px;
+  /* padding-left: 70px;
+  margin-bottom: 10px; */
 }
 
 .guests_list {
@@ -313,8 +403,8 @@ table.table td .add {
 }
 
 .guest-item {
-  text-align: left;
-  padding-left: 140px;
+  /* text-align: left;
+  padding-left: 140px;  */
 }
 
 .current_video, .current_video_with_nav, .current_video_fill {
@@ -335,20 +425,21 @@ table.table td .add {
 }
 
 .current_video_with_nav {
-  top: 64px;
+  top: 62px;
+  object-fit: fill;
 }
 
 .current_image_with_nav {
   top: 50px;
 }
 
-.btn_add {
-  font-style: normal;
-  padding: 0%
-}
-
 .flt_right {
   float: right;
+}
+
+.flt_right_av {
+  float: right;
+  margin-top: 5px;
 }
 
 .flt_left {
@@ -375,8 +466,56 @@ table.table td .add {
   background-size: cover;
 }
 
-#new_welcome_screen_form, #ws_list {
-  margin-top: 10vw;
+.ellipsis {
+  max-width: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.delete-icon {
+  color: #FF0000;
+}
+
+.on-icon {
+  color: greenyellow;
+}
+
+.off-icon {
+  color: #FF0000;
+}
+
+.programmed-icon {
+  color: deepskyblue;
+}
+
+.tab-title {
+  font-family: 'Raleway', sans-serif;
+}
+
+.tab-pane {
+  font-family: 'Raleway', sans-serif;
+}
+
+.tab-content{
+  background:#FDFDFD;
+  line-height: 25px;
+  border: 1px solid #DDDDDD;
+  border-top:5px solid #EE9658;
+  border-bottom:5px solid #EE9658;
+  padding: 30px 25px;
+}
+
+.panel-title {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+}
+
+#new_welcome_screen_form {
+  margin-top: 40px;
+  background-color: #FFFFFF;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 #btn_delete {

@@ -127,8 +127,9 @@ app.get('/register', Auth, (req, res) => {
     if (req.user) { 
       return res.render('register', {
         header: true,
-        title: 'Register',
-        isAdmin: req.user.isAdmin
+        title: 'Enroll new user',
+        isAdmin: req.user.isAdmin,
+        user: req.user
       });
     } else {
       res.render('login', {
@@ -260,6 +261,7 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
           header: true,
           isAdmin: req.user.isAdmin,
           title: 'Welcome Screens preview',
+          user: req.user,
           host: config.HOST
         });
       });
@@ -305,7 +307,8 @@ app.get('/new_welcome_screen_image', Auth, (req, res) => {
     res.render('new_welcome_screen_image', {
       header: true,
       isAdmin: req.user.isAdmin,
-      title: 'New Welcome Screen'
+      user: req.user,
+      title: 'New visitor page'
     });
   }    
 });
@@ -425,7 +428,8 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
     res.render('new_welcome_screen_video', {
       header: true,
       isAdmin: req.user.isAdmin,
-      title: 'New Welcome Screen'
+      user: req.user,
+      title: 'New video'
     });
   }    
 });
@@ -471,6 +475,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
         isEnabled: renderSettings.isEnabled,
         header: true,
         isAdmin: req.user.isAdmin,
+        user: req.user,
         title: 'Edit Welcome Screen'
       });
     });

@@ -4,7 +4,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Edit Welcome Screen</h3>
+          <h3 class="panel-title releway-font">Edit video</h3>
         </div>
         <div class="panel-body">
           <form id="update_form">
@@ -12,46 +12,54 @@
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_left">
                   {{#if isDefaultVideo}}
-                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo" checked>
+                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" name="defaultVideo" id="defaultVideo" checked>
                   {{else}}
-                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo">
+                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" name="defaultVideo" id="defaultVideo">
                   {{/if}}
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label id="isEnableLabel" for="isEnable" class="flt_right"></label>
-                  <input type="checkbox"class="flt_right" name="isEnable" id="isEnable">
+                  <label id="isEnableLabel" for="isEnable" class="flt_right releway-font"></label>
+                  <input type="checkbox" class="flt_right_av" name="isEnable" id="isEnable">
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="title">Current video title</label>
+                  <label for="title" class="releway-font-sub">Current video title</label>
                   {{#if isDefaultVideo}}
-                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}" disabled>
+                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}" disabled>
                   {{else}}
-                    <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title" value="{{screenVideo.title}}">
+                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}">
                   {{/if}}
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="video" id="currentVideo">Current video: {{screenVideo.defaultVideoName}}</label>
+                  <label for="video" id="currentVideo"><labe class="releway-font-sub">Current video:</labe> {{screenVideo.defaultVideoName}}</label>
                   <label id="videoName" class="vsb_hidden">{{screenVideo.videoName}}</label>
                   <br/>
-                  <label for="video">Choose a new video</label>
-                  {{#if isDefaultVideo}}
-                    <input type="file" name="video" value="{{screenVideo.videoName}}" id="video" class="form-control input-sm" placeholder="Video" disabled>
-                  {{else}}
-                    <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
-                  {{/if}}
+                  <label for="video" class="releway-font-sub">Choose a new video</label>
+                    <div class="input-group mb-3">
+                      <div class="custom-file">
+                        {{#if isDefaultVideo}}
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video" value="{{screenVideo.videoName}}" disabled>
+                        {{else}}
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video">
+                        {{/if}}
+                        <label class="custom-file-label" for="video">Choose file</label>
+                      </div>
+                    </div>
                 </div>
               </div>
               {{#checkIsProgrammed screenVideo}}
               {{/checkIsProgrammed}} 
-            <input type="submit" value="Update" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              </div>
+            <div class="text-center">
+              <input type="submit" value="Update" class="btn btn-default btn-upload col-6 releway-font">
+            </div>
           </form>
         </div>
       </div>
@@ -95,19 +103,19 @@
   });
 
   $("#title").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#title", "is-invalid", "is-valid");
   });
 
   $("#video").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#endDate", "is-invalid", "is-valid");
   });
 
   $('#isEnable').change(function() {
@@ -163,7 +171,7 @@
       startDateFormatted = d;
       CheckTime();
       if (dateEnd == '')
-        AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -180,7 +188,7 @@
       expirationDateFormatted = d;
       CheckTime();
       if (dateStart == '')
-        AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -196,6 +204,7 @@
     const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
     const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
     const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
+    const videoNameTxt = $("#videoName").val();
     const defaultVideo = currentVideo === defaultText && videoSize !== 0;
     const notDefaultVideo = currentVideo !== defaultText && videoSize === 0;
     const newVideo = currentVideo !== defaultText && videoSize !== 0;
@@ -209,8 +218,23 @@
     const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck && (timeSettingsToCheck || scheduleSettingsToCheck);
 
     if (conditionsToEnroll) {
-      $("#title").addClass('fulfilledFields');
-      $("#video").addClass('fulfilledFields');
+      $("#title").addClass('is-valid');
+      $("#video").addClass('is-valid');
+      $("#startDate").addClass('is-valid');
+      $("#endDate").addClass('is-valid');
+
+      if (isDefaultVideo) {
+        $("#title").removeClass('is-valid');
+        $("#video").removeClass('is-valid');
+      }
+
+      if (!isScheduled) {
+        $("#startDate").removeClass('is-valid');
+        $("#endDate").removeClass('is-valid');
+      }
+
+      if (videoSize === 0 && videoNameTxt !== 'default_video.mp4' && !isDefaultVideo)
+        AddAndRemoveClassSimple('#video', 'is-valid', 'is-invalid');
 
       const schedule = CheckSchedule(isScheduled);
       const videoName = $('#videoName').text();
@@ -249,19 +273,20 @@
         }
       });
     } else {
-      if (titleNotEmpty === false && notDefaultVideo === true) {
-        $("#title").addClass('emptyFields');
-      }
       if (titleNotEmpty === false && notDefaultVideo === false) {
-        $("#title").addClass('emptyFields');
-        $("#video").addClass('emptyFields');
+        $("#title").addClass('is-invalid');
+        $("#video").addClass('is-invalid');
       }
-      if (startTimeEmpty) {
-        AddAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
-      }
-      if (finishTimeEmpty) {
-        AddAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
-      }
+      if (titleNotEmpty === false && notDefaultVideo === true) 
+        $("#title").addClass('is-invalid');
+      if (titleNotEmpty)
+        $("#title").addClass('is-valid');
+      if (videoSize == 0 && videoNameTxt !== 'default_video.mp4')
+        $("#video").addClass('is-valid');
+      if (startTimeEmpty) 
+        AddAndRemoveClassSimple("#startDate", "is-invalid", "is-valid");
+      if (finishTimeEmpty) 
+        AddAndRemoveClassSimple("#endDate", "is-invalid", "is-valid");
 
       Swal.fire({
         title: 'Attention',

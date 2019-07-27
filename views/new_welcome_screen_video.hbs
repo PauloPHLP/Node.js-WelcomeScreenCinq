@@ -12,39 +12,44 @@
               {{#if isAdmin}}
                 <div class="col-xs-12 col-sm-12 col-md-12">
                   <div class="form-group flt_left">
-                    <label for="defaultVideo" class="flt_right">&nbsp Default video as Welcome Screen</label>
-                    <input type="checkbox" class="flt_right" name="defaultVideo" id="defaultVideo">
+                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <input type="checkbox" name="defaultVideo" id="defaultVideo">
                   </div>
                 </div>
               {{/if}}
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="title">Choose a title for the video</label>
-                  <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Title">
+                  <label for="title" class="releway-font-sub">Choose a title for the video</label>
+                  <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title">
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                  <label for="video">Choose a new video</label>
-                  <input type="file" name="video" id="video" class="form-control input-sm" placeholder="Video">
+                <label for="video" class="releway-font-sub">Choose a new video</label>
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input releway-font" name="video" id="video">
+                    <label class="custom-file-label" for="video">Choose file</label>
+                  </div>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
                   <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-                  <label for="startScheduleWs">I want to schedule this WS from:</label>
-                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+                  <label for="startScheduleWs" class="releway-font">I want to schedule this WS from:</label>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center"> 
                   <input type="checkbox" class="vsb_hidden">
-                  <label for="finishScheduleWs">To:</label>
-                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+                  <label for="finishScheduleWs" class="releway-font">To:</label>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
                 </div>
               </div>
             </div>
-            <input type="submit" id="confirm" value="Upload and create" class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="text-center">
+              <input type="submit" id="confirm" value="Upload and create" class="btn btn-default btn-upload col-6 releway-font">
+            </div>
           </form>
         </div>
       </div>
@@ -77,19 +82,19 @@
   let finishDate = FormatDateUgly(dateTomorrow);
 
   $("#title").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#title", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#title", "is-invalid", "is-valid");
   });
 
   $("#video").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#video", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#startDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
 
   $("#endDate").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#endDate", "emptyFields", "fulfilledFields");
+    AddAndRemoveClassConditional("#endDate", "is-invalid", "is-valid");
   });
 
   $('#defaultVideo').change(function() {
@@ -125,7 +130,7 @@
       startDateFormatted = d;
       CheckTime();
       if (dateEnd == '' && dateStart != '')
-        AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -142,7 +147,7 @@
       expirationDateFormatted = d;
       CheckTime();
       if (dateStart == '' && dateEnd != '')
-        AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+        AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
     }
   });
 
@@ -169,15 +174,20 @@
     const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime;
 
     if (!isScheduled) {
-      $("#startDate").removeClass('fulfilledFields');
-      $("#endDate").removeClass('fulfilledFields');
+      $("#startDate").removeClass('is-valid');
+      $("#endDate").removeClass('is-valid');
     }
 
     if (conditionToEnroll) {
       const isProgrammed = CheckIsProgrammed(isScheduled);
       
-      $("#title").addClass('fulfilledFields');
-      $("#video").addClass('fulfilledFields');
+      $("#title").addClass('is-valid');
+      $("#video").addClass('is-valid');
+
+      if (isDefault) {
+        $("#title").removeClass('is-valid');
+        $("#video").removeClass('is-valid');
+      }
 
       $.ajax({
         url: `/api/new_welcome_screen_video/${startDate}/${finishDate}/${isProgrammed}`,
@@ -211,15 +221,14 @@
         }
       });
     } else {
-      $("#title").addClass('emptyFields');
-      $("#video").addClass('emptyFields');
-
-      if (startTimeEmpty) {
-        AddAndRemoveClassSimple("#startDate", "emptyFields", "fulfilledFields");
-      }
-      if (finishTimeEmpty) {
-        AddAndRemoveClassSimple("#endDate", "emptyFields", "fulfilledFields");
-      }
+      if (!titleEmptyOrNull) 
+        $("#title").addClass('is-invalid');
+      if (!isDefault && !videoEmpty)
+        $("#video").addClass('is-invalid');
+      if (isScheduled && !startDateInvalid)
+        AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
+      if (isScheduled && !endDateInvalid)
+        AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
 
       Swal.fire({
         title: 'Attention',

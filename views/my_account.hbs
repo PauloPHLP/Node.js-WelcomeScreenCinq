@@ -1,21 +1,25 @@
 <div>
   <img class="current_image_with_nav" src="/images/cinq_background.png">
-  <div class="container page-login">
+  <div class="page-enroll">
     <div class="logo-signin ">
       <img class="img-responsive" src="/images/logo.png" />
     </div>
     <div>
       <form id="register_form" class="form-signin">
         <fieldset>
-          <input required autofocus name="name" id="name" type="text" class="form-control" placeholder="Name" maxlength="100" value="{{user.name}}">
-          <input required name="login" id="login" type="text" class="form-control" placeholder="Login" maxlength="100" value="{{user.login}}">
-          <input required name="email" id="email" type="email" class="form-control" placeholder="E-mail" maxlength="100" value="{{user.email}}">
-          <input required id="password" name="password" type="password" class="form-control" placeholder="Password" maxlength="100">
-          <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Confirm password" maxlength="100">
-          <button type="submit" class="btn btn-info btn-block">Update account</button>
+          <input required autofocus name="name" id="name" type="text" class="form-control releway-font" placeholder="Name" maxlength="100" value="{{user.name}}">
+          <input required name="login" id="login" type="text" class="form-control releway-font" placeholder="Login" maxlength="100" value="{{user.login}}">
+          <input required name="email" id="email" type="email" class="form-control releway-font" placeholder="E-mail" maxlength="100" value="{{user.email}}">
+          <input required id="password" name="password" type="password" class="form-control releway-font" placeholder="Password" maxlength="100">
+          <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control releway-font" placeholder="Confirm password" maxlength="100">
+          <div class="text-center">
+            <button type="submit" class="btn btn-default ml-auto releway-font sign">Update account</button>
+          </div>
         </fieldset>
       </form>
-      <button type="submit" id="btn_delete" class="btn btn-info btn-block"><a class="nav-link" href="/api/delete"></a>Delete account</button>
+      <div class="text-center">
+        <button type="submit" id="btn_delete" class="btn btn-default ml-auto releway-font delete">Delete my account</button>
+      </div>
     </div>
   </div>
 </div>
@@ -39,13 +43,16 @@
         confirmButtonColor: '#EE9658'
       });
 
-      $('#confirmPassword').addClass('passesDontMatch');
-      $('#password').addClass('passesDontMatch');
+      $('#confirmPassword').addClass('is-invalid');
+      $('#password').addClass('is-invalid');
 
       return false;
     } else {
-      $('#confirmPassword').addClass('passesMatch');
-      $('#password').addClass('passesMatch');
+      $('#name').addClass('is-valid');
+      $('#login').addClass('is-valid');
+      $('#email').addClass('is-valid');
+      AddAndRemoveClassConditional("#confirmPassword", "is-invalid", "is-valid");
+      AddAndRemoveClassConditional("#password", "is-invalid", "is-valid");
 
       $.ajax({
         type:'PUT',
