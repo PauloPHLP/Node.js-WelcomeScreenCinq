@@ -48,6 +48,9 @@ const hbs = expressHandlebars.create({
     checkImagectivation: image => {
       return HBSHelpers.CheckImagectivation(image);
     },
+    checkVideoActivationPreview: video => {
+      return HBSHelpers.CheckVideoActivationPreview(video);
+    },
     checkVideoActivation: video => {
       return HBSHelpers.CheckVideoActivation(video);
     }

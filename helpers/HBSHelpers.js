@@ -60,6 +60,13 @@ module.exports = {
       return;
   },
 
+  CheckVideoActivationPreview: video => {
+    if (video.activated === 'true') 
+      return TemplateHelpers.VideoListPreview(video);
+    else 
+      return;
+  },
+
   CheckVideoActivation: video => {
     if (video.activated === 'true') 
       return TemplateHelpers.VideoList(video);

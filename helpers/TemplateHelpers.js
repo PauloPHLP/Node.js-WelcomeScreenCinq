@@ -117,11 +117,34 @@ module.exports = {
     return `
       <section>
         <img class="current_image" id="current_image" src="/uploads/${image.imageName}"/>
-        <ul class="list-group row guests_list">
+        <div class="loader-wrapper">
+          <span class="loader">
+            <span class="loader-inner"></span>
+          </span>
+        </div>
+        <ul class="row guests_list">
           ${GlobalHelpers.CompanyList(image.companies[0])}
           ${GlobalHelpers.CompanyList(image.companies[1])}
           ${GlobalHelpers.GuestList(image.guestsNames)}
         </ul>
+      </section>
+    `;
+  },
+
+  VideoListPreview: video => {
+    return `
+      <section>
+        <div class="loader-wrapper">
+          <span class="loader">
+            <span class="loader-inner"></span>
+          </span>
+        </div>
+        <video class="current_video_blur" autoplay loop muted preload>
+          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
+        </video>
+        <video class="current_video" id="current_video" autoplay loop muted preload>
+          <source src="/uploads/${video.videoName}" type="video/mp4"></source>
+        </video>
       </section>
     `;
   },
@@ -135,6 +158,11 @@ module.exports = {
         <video class="current_video" id="current_video" autoplay loop muted preload>
           <source src="/uploads/${video.videoName}" type="video/mp4"></source>
         </video>
+        <div class="loader-wrapper">
+          <span class="loader">
+            <span class="loader-inner"></span>
+          </span>
+        </div>
       </section>
     `;
   }

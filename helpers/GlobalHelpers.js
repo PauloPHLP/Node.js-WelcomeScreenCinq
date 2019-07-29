@@ -243,9 +243,9 @@ module.exports = {
 
   CompanyList: companyName => {
     if (companyName !== '') 
-      return `<li class="company_name list-group-item col-6"> ${companyName}</li>`;
+      return `<li class="company_name col-lg-6 col-md-6 col-sm-12 col-xs-12"> ${companyName}</li>`;
     else if (companyName === '') {
-      return `<li class="company_name list-group-item col-6">&nbsp</li>`;
+      return `<li class="company_name col-lg-6 col-md-6 col-sm-12 col-xs-12">&nbsp</li>`;
     }
   },
 
@@ -253,9 +253,9 @@ module.exports = {
     let guestNamesList = '';
     guestsNames.forEach(guestName => {
       if (guestName !== '') 
-        guestNamesList += `<li class="guest-item list-group-item col-6">&#x2022; ${guestName}</li>`;
+        guestNamesList += `<li class="guest-item col-lg-6 col-md-6 col-sm-12 col-xs-12">&#x2022; ${guestName}</li>`;
       else if (guestName === '') {
-        guestNamesList += `<li class="guest-item list-group-item col-6">&nbsp</li>`;
+        guestNamesList += `<li class="guest-item col-lg-6 col-md-6 col-sm-12 col-xs-12">&nbsp</li>`;
       }
     });
 

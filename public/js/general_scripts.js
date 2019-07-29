@@ -1,6 +1,14 @@
 let startDateToKeep = '';
 let endDateToKeep = '';
 
+$(window).on("load",function(){
+  $(".loader-wrapper").fadeOut("slow");
+});
+
+$(window).on("reload",function(){
+  $(".loader-wrapper").fadeOut("slow");
+});
+
 $(document).ready(() => {
   $('[data-toggle="tooltip"]').tooltip();
   var actions = $("table td:last-child").html();
