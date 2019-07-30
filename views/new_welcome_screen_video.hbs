@@ -32,7 +32,7 @@
                 <label for="video" class="releway-font-sub">Choose a new video</label>
                 <div class="input-group mb-3">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input releway-font" name="video" id="video">
+                    <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType()">
                     <label class="custom-file-label" for="video">Choose file</label>
                   </div>
                 </div>
@@ -89,11 +89,7 @@
   $("#title").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#title", "is-invalid", "is-valid");
   });
-
-  $("#video").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
-  });
-
+  
   $("#startDate").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
@@ -174,9 +170,10 @@
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = CheckTime();
+    const fileTypeOk = validateVideoFileType();
     const notDefaultNotScheduled = isDefault && titleEmpty;
     const isOrNotScheduled = titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled);
-    const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime;
+    const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime && fileTypeOk;
 
     if (!isScheduled) {
       $("#startDate").removeClass('is-valid');

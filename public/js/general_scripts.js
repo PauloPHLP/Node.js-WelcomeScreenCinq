@@ -33,6 +33,46 @@ $(document).ready(() => {
   });
 });
 
+function validateVideoFileType() {
+  var fileName = document.getElementById("video").value;
+  var idxDot = fileName.lastIndexOf(".") + 1;
+  var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+  if (extFile == "avi" || extFile == "mp4" || extFile == "mpeg" || extFile == "mpg" || extFile == "wmv") {
+    AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
+    return true;
+  }else{
+    Swal.fire ({
+      title: 'Sorry',
+      text: 'Only avi, mp4, mpeg, mpg and wmv files are allowed!',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+    AddAndRemoveClassConditional("#video", "is-valid", "is-invalid");
+    return false;
+  }   
+}
+
+function validateImageFileType() {
+  var fileName = document.getElementById("image").value;
+  var idxDot = fileName.lastIndexOf(".") + 1;
+  var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+
+  if (extFile == "gif" || extFile == "png" || extFile == "jpeg" || extFile == "jpg") {
+    AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
+    return true;
+  }else{
+    Swal.fire ({
+      title: 'Sorry',
+      text: 'Only jpg, jpeg, png, anf gif files are allowed!',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+    AddAndRemoveClassConditional("#image", "is-valid", "is-invalid");
+    return false;
+  }   
+}
+
 function DeleteVideo(id) {
   Swal.fire({
     title: 'Are you sure about this?',
@@ -64,11 +104,12 @@ function DeleteVideo(id) {
           });
         },
         error: () => {
-          Swal.fire(
-            'Sorry',
-            'An issue has occurred :(',
-            'error'
-          );
+          Swal.fire ({
+            title: 'Sorry',
+            text: 'An issue has occurred :(',
+            type: 'error',
+            confirmButtonColor: '#EE9658'
+          });
         }
       });
     } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -113,11 +154,12 @@ function DeleteImage(id) {
           })
         },
         error: () => {
-          Swal.fire(
-            'Sorry',
-            'An issue has occurred :(',
-            'error'
-          );
+          Swal.fire ({
+            title: 'Sorry',
+            text: 'An issue has occurred :(',
+            type: 'error',
+            confirmButtonColor: '#EE9658'
+          });
         }
       });
     } else if (result.dismiss === Swal.DismissReason.cancel) {

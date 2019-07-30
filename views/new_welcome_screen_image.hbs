@@ -24,7 +24,7 @@
                 <label for="image" class="releway-font-sub">Choose a new image</label>
                 <div class="input-group mb-3">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input releway-font" name="image" id="image" disabled>
+                    <input type="file" class="custom-file-input releway-font" name="image" id="image" accept=".gif, .png, .jpeg, .jpg"  onchange="validateImageFileType()" disabled>
                     <label class="custom-file-label" for="image">Choose file</label>
                   </div>
                 </div>
@@ -135,10 +135,6 @@
     AddAndRemoveClassConditional("#company1", "is-invalid", "is-valid");
   });
 
-  $("#image").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
-  });
-
   $("#startDate").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
@@ -224,7 +220,8 @@
     const notDefaultScheduled = !isDefault && imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
     const defaultScheduled = isDefault && !imageEmpty && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull && companyEmptyOrNull;
     const dateTime = CheckTime();
-    const conditionsToEnroll = defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled && dateTime;
+    const fileTypeOk = validateImageFileType();
+    const conditionsToEnroll = (defaultImage || notDefaultImageNotScheduled || notDefaultScheduled || defaultScheduled) && dateTime && fileTypeOk;
 
     if (!isScheduled) {
       $("#startDate").removeClass('is-valid');
