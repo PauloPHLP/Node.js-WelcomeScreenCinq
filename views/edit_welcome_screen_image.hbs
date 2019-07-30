@@ -40,9 +40,9 @@
                     <div class="input-group mb-3">
                       <div class="custom-file">
                         {{#if isDefaultImage}}
-                          <input type="file" class="custom-file-input releway-font" name="image" id="image" value="{{screenImage.imageName}}" disabled>
+                          <input type="file" class="custom-file-input releway-font" name="image" id="image" value="{{screenImage.imageName}}" name="image" id="image" accept=".gif, .png, .jpeg, .jpg" onchange="validateImageFileType(true)" disabled>
                         {{else}}
-                          <input type="file" class="custom-file-input releway-font" name="image" id="image">
+                          <input type="file" class="custom-file-input releway-font" name="image" id="image" name="image" id="image" accept=".gif, .png, .jpeg, .jpg" onchange="validateImageFileType(true)">
                         {{/if}}
                         <label class="custom-file-label" for="video">Choose file</label>
                       </div>
@@ -156,10 +156,6 @@
     AddAndRemoveClassConditional("#company1", "is-invalid", "is-valid");
   });
 
-  $("#image").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
-  });
-
   $("#startDate").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#startDate", "is-invalid", "is-valid");
   });
@@ -265,6 +261,7 @@
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = CheckTime();
+    const fileTypeOk = validateImageFileType();
     const imageNameTxt = $("#imageName").val();
     const onlyCompanyToCheck = companyEmptyOrNull && isDefaultImage && imageEmpty === 0 && !isScheduled;
     const companyAndNotDefault = companyEmptyOrNull && !isDefaultImage && imageEmpty !== 0 && !isScheduled;
@@ -272,7 +269,7 @@
     const scheduledSettings = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && isDefaultImage && imageEmpty === 0;
     const scheduledAndNotDefault = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && !isDefaultImage && imageEmpty !== 0;
     const scheduledAndNotDefaultSame = companyEmptyOrNull && scheduledTime && scheduledTimeFinish && dateTime && notDefaultImage;
-    const conditionsToEnroll = onlyCompanyToCheck || scheduledSettings || companyAndNotDefault || companyAndNotDefaultSame || scheduledAndNotDefault || scheduledAndNotDefaultSame;
+    const conditionsToEnroll = (onlyCompanyToCheck || scheduledSettings || companyAndNotDefault || companyAndNotDefaultSame || scheduledAndNotDefault || scheduledAndNotDefaultSame) && fileTypeOk;
 
     if (conditionsToEnroll) {
       $("#company1").addClass('is-valid');

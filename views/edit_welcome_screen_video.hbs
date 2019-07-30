@@ -50,9 +50,9 @@
                     <div class="input-group mb-3">
                       <div class="custom-file">
                         {{#if isDefaultVideo}}
-                          <input type="file" class="custom-file-input releway-font" name="video" id="video" value="{{screenVideo.videoName}}" disabled>
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video" value="{{screenVideo.videoName}}" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)" disabled>
                         {{else}}
-                          <input type="file" class="custom-file-input releway-font" name="video" id="video">
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)">
                         {{/if}}
                         <label class="custom-file-label" for="video">Choose file</label>
                       </div>
@@ -109,10 +109,6 @@
 
   $("#title").on("paste keyup change focusout", function() {
     AddAndRemoveClassConditional("#title", "is-invalid", "is-valid");
-  });
-
-  $("#video").on("paste keyup change focusout", function() {
-    AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
   });
 
   $("#startDate").on("paste keyup change focusout", function() {
@@ -217,10 +213,11 @@
     const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
     const startTimeEmpty = isScheduled && startDateInvalid;
     const finishTimeEmpty = isScheduled && endDateInvalid;
+    const fileTypeOk = validateVideoFileType();
     const videoSettingsToCheck = isDefaultVideo || defaultVideo || notDefaultVideo || newVideo;
     const timeSettingsToCheck = scheduledTime && scheduledTimeFinish && CheckTime();
     const scheduleSettingsToCheck = !isScheduled && startDateInvalid && endDateInvalid;
-    const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck && (timeSettingsToCheck || scheduleSettingsToCheck);
+    const conditionsToEnroll = titleNotEmpty && videoSettingsToCheck && fileTypeOk && (timeSettingsToCheck || scheduleSettingsToCheck);
 
     if (conditionsToEnroll) {
       $("#title").addClass('is-valid');

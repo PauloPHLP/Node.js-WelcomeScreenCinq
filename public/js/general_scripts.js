@@ -33,15 +33,23 @@ $(document).ready(() => {
   });
 });
 
-function validateVideoFileType() {
-  var fileName = document.getElementById("video").value;
-  var idxDot = fileName.lastIndexOf(".") + 1;
-  var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+function validateVideoFileType(isOnEdit) {
+  let fileName = document.getElementById("video").value;
+  let idxDot = fileName.lastIndexOf(".") + 1;
+  let extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
 
   if (extFile == "avi" || extFile == "mp4" || extFile == "mpeg" || extFile == "mpg" || extFile == "wmv") {
     AddAndRemoveClassConditional("#video", "is-invalid", "is-valid");
     return true;
-  }else{
+  } else if (extFile == '' || extFile == ' ') {
+    if (isOnEdit === false) {
+      $("#video").removeClass('is-valid');
+      return false;
+    } else {
+      $("#video").removeClass('is-invalid');
+      return true;
+    }
+  } else {
     Swal.fire ({
       title: 'Sorry',
       text: 'Only avi, mp4, mpeg, mpg and wmv files are allowed!',
@@ -53,15 +61,23 @@ function validateVideoFileType() {
   }   
 }
 
-function validateImageFileType() {
-  var fileName = document.getElementById("image").value;
-  var idxDot = fileName.lastIndexOf(".") + 1;
-  var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-
+function validateImageFileType(isOnEdit) {
+  let fileName = document.getElementById("image").value;
+  let idxDot = fileName.lastIndexOf(".") + 1;
+  let extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+  
   if (extFile == "gif" || extFile == "png" || extFile == "jpeg" || extFile == "jpg") {
     AddAndRemoveClassConditional("#image", "is-invalid", "is-valid");
     return true;
-  }else{
+  } else if (extFile == '' || extFile == ' ') {
+    if (isOnEdit === false) {
+      $("#image").removeClass('is-valid');
+      return false;
+    } else {
+      $("#image").removeClass('is-invalid');
+      return true;
+    }
+  } else {
     Swal.fire ({
       title: 'Sorry',
       text: 'Only jpg, jpeg, png, anf gif files are allowed!',

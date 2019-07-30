@@ -258,12 +258,12 @@ module.exports = {
         guestNamesList += `<li class="guest-item col-lg-6 col-md-6 col-sm-12 col-xs-12">&nbsp</li>`;
       }
     });
-
+    
     return guestNamesList;
   },
 
   GetDateArray: date => {
-    if (date !== null) {
+    if (date !== null && date != undefined) {
       date = date.replace(' ', '-').replace(':', '-').split('-');
       return {
         day: date[0],
