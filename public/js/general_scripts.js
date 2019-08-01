@@ -225,6 +225,14 @@ function FormatDateBeauty (date) {
   return moment(date).format('DD/MM/YYYY - HH:mm');
 }
 
+function FormatDateBeautyCorrectFormat (date) {
+  return moment(date).format('MM/DD/YYYY - HH:mm');
+}
+
+function GetCorrectHour (date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(), (date.getHours() - 1), date.getMinutes(), date.getSeconds())
+}
+
 function FormatDateToShow (field, date) {
   $(field).data('datepicker').selectDate(new Date(moment(moment(date, 'DD/MM/YYYY HH:mm')).format('MM/DD/YYYY HH:mm')));
 }

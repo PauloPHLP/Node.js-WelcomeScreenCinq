@@ -232,6 +232,11 @@ nav > div a.nav-item.nav-link:focus {
   background-color: #EE9658;
 }
 
+.btn-cancel {
+  color: #FFFFFF;
+  background-color: #272E38;
+}
+
 .video {
   height: 40px;
 }

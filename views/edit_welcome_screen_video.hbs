@@ -62,8 +62,10 @@
               {{#checkIsProgrammed screenVideo}}
               {{/checkIsProgrammed}} 
               </div>
-            <div class="text-center">
-              <input type="submit" value="Update" class="btn btn-default btn-upload col-6 releway-font">
+            <div class="d-flex justify-content-around">
+              <input type="button" id="bnt-cancel" value="Cancel" class="btn btn-default btn-cancel col-3 releway-font">
+              <input type="button" value="Delete" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteVideo('{{screenVideo.id}}');">
+              <input type="submit" value="Update" class="btn btn-default btn-upload col-3 releway-font">
             </div>
           </form>
         </div>
@@ -136,9 +138,21 @@
     } else {
       $('#video').prop('disabled', false);
       $('#title').prop('disabled', false);
-      $('#title').prop('value', '');
+      $('#title').prop('value', '{{screenVideo.title}}');
       $('#currentVideo').text(currentVideo);
     }
+  });
+
+  $('#bnt-cancel').on('click', function() {
+    $('#title').prop('value', '{{screenVideo.title}}');
+    $('#currentVideo').prop('value', currentVideo);
+    $("#startDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.startDate}}'));
+    $("#endDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.endDate}}'));
+
+    if ('{{isEnabled}}' === 'programmed') {
+      
+    }
+
   });
 
   $("#isEnable").on("change", function() {
