@@ -372,7 +372,7 @@ app.get('/edit_welcome_screen_image/:id', Auth, (req, res) => {
         header: true,
         isAdmin: req.user.isAdmin,
         user: req.user,
-        title: 'Edit Welcome Screen'
+        title: screenImage.companies[1] == '' ? 'Edit WS: ' + screenImage.companies[0] : 'Edit WS: ' + screenImage.companies[0] + ' - ' + screenImage.companies[1] 
       });
     });
   }    

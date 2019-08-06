@@ -17,17 +17,17 @@
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_left">
                   {{#if isDefaultVideo}}
-                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <label for="defaultVideo" class="flt_right releway-font"data-toggle="tooltip" data-placement="right" title="Once selected the default video will be used">&nbsp Default video as Welcome Screen</label>
                     <input type="checkbox" name="defaultVideo" id="defaultVideo" checked>
                   {{else}}
-                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <label for="defaultVideo" class="flt_right releway-font"data-toggle="tooltip" data-placement="right" title="Once selected the default video will be used">&nbsp Default video as Welcome Screen</label>
                     <input type="checkbox" name="defaultVideo" id="defaultVideo">
                   {{/if}}
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group">
-                  <label id="isEnableLabel" for="isEnable" class="flt_right releway-font"></label>
+                  <label id="isEnableLabel" for="isEnable" class="flt_right releway-font" data-toggle="tooltip" data-placement="bottom" title="Enable/disable video"></label>
                   <input type="checkbox" class="flt_right_av" name="isEnable" id="isEnable">
                 </div>
               </div>
@@ -35,9 +35,9 @@
                 <div class="form-group">
                   <label for="title" class="releway-font-sub">Current video title</label>
                   {{#if isDefaultVideo}}
-                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}" disabled>
+                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}" disabled data-toggle="tooltip" data-placement="bottom" title="Video title here">
                   {{else}}
-                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}">
+                    <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" value="{{screenVideo.title}}" data-toggle="tooltip" data-placement="bottom" title="Video title here">
                   {{/if}}
                 </div>
               </div>
@@ -50,9 +50,9 @@
                     <div class="input-group mb-3">
                       <div class="custom-file">
                         {{#if isDefaultVideo}}
-                          <input type="file" class="custom-file-input releway-font" name="video" id="video" value="{{screenVideo.videoName}}" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)" disabled>
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video" value="{{screenVideo.videoName}}" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)" disabled  data-toggle="tooltip" data-placement="top" title="Select video">
                         {{else}}
-                          <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)">
+                          <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(true)" data-toggle="tooltip" data-placement="top" title="Select video">
                         {{/if}}
                         <label class="custom-file-label" for="video">Choose file</label>
                       </div>
@@ -63,9 +63,9 @@
               {{/checkIsProgrammed}} 
               </div>
             <div class="d-flex justify-content-around">
-              <input type="button" id="bnt-cancel" value="Cancel" class="btn btn-default btn-cancel col-3 releway-font">
-              <input type="button" value="Delete" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteVideo('{{screenVideo.id}}');">
-              <input type="submit" value="Update" class="btn btn-default btn-upload col-3 releway-font">
+              <button type="button" id="bnt-cancel" value="Cancel" class="btn btn-default btn-cancel col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Reset to initial">Cancel &nbsp<i class="material-icons">cancel_presentation</i>
+              <button type="button" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteVideo('{{screenVideo.id}}');" data-toggle="tooltip" data-placement="bottom" title="Delete video">Delete video &nbsp<i class="material-icons">delete</i>
+              <button type="submit" value="Update" class="btn btn-default btn-upload col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Update video">Update video &nbsp<i class="material-icons">update</i>
             </div>
           </form>
         </div>

@@ -339,20 +339,16 @@ function CheckEqualDate(start, finish) {
 
 function CheckTime() {
   if (startDateFormatted > expirationDateFormatted || CheckEqualDate(FormatDateSimple(startDateFormatted), FormatDateSimple(expirationDateFormatted))) {
-    $("#startDate").removeClass('fulfilledFields');
-    $("#startDate").addClass('emptyFields');
-    $("#endDate").removeClass('fulfilledFields');
-    $("#endDate").addClass('emptyFields');
+    AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
+    AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
     Toast.fire({
       type: 'warning',
       title: 'End date should be greater than start date!'
     });
     return false;
   } else {
-    $("#startDate").removeClass('emptyFields');
-    $("#startDate").addClass('fulfilledFields');
-    $("#endDate").removeClass('emptyFields');
-    $("#endDate").addClass('fulfilledFields');
+    AddAndRemoveClassSimple('#startDate', 'fulfilledFields', 'emptyFields');
+    AddAndRemoveClassSimple('#endDate', 'fulfilledFields', 'emptyFields');
     return true;
   };
 }

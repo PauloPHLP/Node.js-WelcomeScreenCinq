@@ -12,18 +12,18 @@
     <div>
       <form id="register_form" class="form-signin">
         <fieldset>
-          <input required autofocus name="name" id="name" type="text" class="form-control releway-font" placeholder="Name" maxlength="100" value="{{user.name}}">
-          <input required name="login" id="login" type="text" class="form-control releway-font" placeholder="Login" maxlength="100" value="{{user.login}}">
-          <input required name="email" id="email" type="email" class="form-control releway-font" placeholder="E-mail" maxlength="100" value="{{user.email}}">
-          <input required id="password" name="password" type="password" class="form-control releway-font" placeholder="Password" maxlength="100">
-          <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control releway-font" placeholder="Confirm password" maxlength="100">
+          <input required autofocus name="name" id="name" type="text" class="form-control releway-font" placeholder="Name" maxlength="100" value="{{user.name}}" data-toggle="tooltip" data-placement="top" title="Your name">
+          <input required name="login" id="login" type="text" class="form-control releway-font" placeholder="Login" maxlength="100" value="{{user.login}}" data-toggle="tooltip" data-placement="top" title="Your login">
+          <input required name="email" id="email" type="email" class="form-control releway-font" placeholder="E-mail" maxlength="100" value="{{user.email}}" data-toggle="tooltip" data-placement="top" title="Your e-mail">
+          <input required id="password" name="password" type="password" class="form-control releway-font" placeholder="Password" maxlength="100" data-toggle="tooltip" data-placement="top" title="Your password">
+          <input required id="confirmPassword" name="confirmPassword" type="password" class="form-control releway-font" placeholder="Confirm password" maxlength="100" data-toggle="tooltip" data-placement="top" title="Confirm your password">
           <div class="text-center">
-            <button type="submit" class="btn btn-default ml-auto releway-font sign">Update account</button>
+            <button type="submit" class="btn btn-default ml-auto releway-font sign" data-toggle="tooltip" data-placement="top" title="Update my account">Update my account &nbsp<i class="material-icons">update</i>
           </div>
         </fieldset>
       </form>
       <div class="text-center">
-        <button type="submit" id="btn_delete" class="btn btn-default ml-auto releway-font delete">Delete my account</button>
+        <button type="submit" id="btn_delete" class="btn btn-default ml-auto releway-font delete" data-toggle="tooltip" data-placement="top" title="Delete my account">Delete my account &nbsp<i class="material-icons">delete</i>
       </div>
     </div>
   </div>

@@ -22,7 +22,7 @@
                     <h3>Visitor pages list</h3>
                   </div>
                   <button type="button" class="btn btn-default ml-auto margin-align" onclick="window.location.href='/new_welcome_screen_image'">
-                    <i class="fa fa-plus releway-font btn-add-page">Add new visitor page &nbsp<i class="material-icons">add_photo_alternate</i></i>
+                    <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="right" title="Click here to add a new visitor page">Add new visitor page &nbsp<i class="material-icons">add_photo_alternate</i></i>
                   </button>
                 </div>
               </div>
@@ -44,8 +44,8 @@
                       {{#checkAvailability this}}
                       {{/checkAvailability}}
                       <td>
-                        <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a class="deleteImage" title="Delete" data-toggle="tooltip" onclick="DeleteImage('{{this.id}}');"><i class="material-icons delete-icon">&#xE872;</i></a>
+                        <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit this visitor page" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                        <a class="deleteImage" title="Delete this visitor page" data-toggle="tooltip" onclick="DeleteImage('{{this.id}}');"><i class="material-icons delete-icon">&#xE872;</i></a>
                       </td>
                     </tr>
                   {{/each}}
@@ -61,7 +61,7 @@
                     <h3>Videos list</h3>
                   </div>
                   <button type="button" class="btn btn-default ml-auto margin-align" onclick="window.location.href='/new_welcome_screen_video'">
-                    <i class="fa fa-plus releway-font btn-add-page">Add new video &nbsp<i class="material-icons">video_call</i></i>
+                    <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="left" title="Click here to add a new video">Add new video &nbsp<i class="material-icons">video_call</i></i>
                   </button>
                 </div>
               </div>

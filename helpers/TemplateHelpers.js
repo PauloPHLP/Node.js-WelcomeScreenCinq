@@ -7,15 +7,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs" checked>
-          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
+          <label for="startScheduleWs" class="releway-font" data-toggle="tooltip" data-placement="top" title="Once selected you will be able to choose when this video will be enabled">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" data-toggle="tooltip" data-placement="bottom" title="Set the start date"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
           <label for="finishScheduleWs" class="releway-font">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" data-toggle="tooltip" data-placement="bottom" title="Set the end date"/>
         </div>
       </div>
     `;
@@ -26,34 +26,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+          <label for="startScheduleWs" class="releway-font" data-toggle="tooltip" data-placement="top" title="Once selected you will be able to choose when this video will be enabled">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the start date"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
           <label for="finishScheduleWs" class="releway-font">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
-        </div>
-      </div>
-    `;
-  },
-
-  ProgrammedWelcomeScreen: ws => {
-    return `
-      <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group flt_center">
-          <input type="checkbox" name="startScheduleWs" id="startScheduleWs" checked>
-          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" value="${GlobalHelpers.FormatDate(ws.startDate)}"/>
-        </div>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group flt_center">
-          <input type="checkbox" class="vsb_hidden">
-          <label for="finishScheduleWs" class="releway-font">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" value="${GlobalHelpers.FormatDate(ws.endDate)}"/>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the end date"/>
         </div>
       </div>
     `;
@@ -64,15 +45,15 @@ module.exports = {
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-          <label for="startScheduleWs" class="releway-font">This welcome screen is schedule to:</label>
-          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+          <label for="startScheduleWs" class="releway-font" data-toggle="tooltip" data-placement="top" title="Once selected you will be able to choose when this video will be enabled">This welcome screen is schedule to:</label>
+          <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the start date"/>
         </div>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group flt_center">
           <input type="checkbox" class="vsb_hidden">
           <label for="finishScheduleWs" class="releway-font">Until:</label>
-          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+          <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the end date"/>
         </div>
       </div>
     `;
@@ -88,8 +69,8 @@ module.exports = {
             <td class="releway-font ellipsis">${video.date}</td>
             ${GlobalHelpers.CheckAvailability(video)}
             <td>
-              <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-              <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
+              <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit this video" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+              <a class="deleteVideo" title="Delete this video" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
             </td>
           </tr>
         `
@@ -101,8 +82,8 @@ module.exports = {
               <td class="releway-font ellipsis">${video.date}</td>
               ${GlobalHelpers.CheckAvailability(video)}
               <td>
-                <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                <a class="deleteVideo" title="Delete" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
+                <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit this video" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                <a class="deleteVideo" title="Delete this video" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
               </td>
             </tr>
           ` 

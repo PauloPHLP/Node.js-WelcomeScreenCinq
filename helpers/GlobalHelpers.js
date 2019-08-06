@@ -122,7 +122,6 @@ module.exports = {
           module.exports.EnableCurrentAndDisableAll(video._id);
         } else if (video.activated === 'true' && module.exports.CheckTime(video.startDate, video.endDate) === false) {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
-          //module.exports.EnableDefaultVideoIfNoVideos(); 
           module.exports.EnableDisableDefaultVideoIfNoWS();
         }
       });

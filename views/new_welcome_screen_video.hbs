@@ -17,7 +17,7 @@
               {{#if isAdmin}}
                 <div class="col-xs-12 col-sm-12 col-md-12">
                   <div class="form-group flt_left">
-                    <label for="defaultVideo" class="flt_right releway-font">&nbsp Default video as Welcome Screen</label>
+                    <label for="defaultVideo" class="flt_right releway-font" data-toggle="tooltip" data-placement="right" title="Once selected the default video will be used">&nbsp Default video as Welcome Screen</label>
                     <input type="checkbox" name="defaultVideo" id="defaultVideo">
                   </div>
                 </div>
@@ -25,14 +25,14 @@
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label for="title" class="releway-font-sub">Choose a title for the video</label>
-                  <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title">
+                  <input type="text" name="title" id="title" class="form-control input-sm releway-font" placeholder="Title" data-toggle="tooltip" data-placement="bottom" title="Video title here">
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <label for="video" class="releway-font-sub">Choose a new video</label>
                 <div class="input-group mb-3">
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(false)">
+                    <input type="file" class="custom-file-input releway-font" name="video" id="video" accept=".wmv, .mpg, .mpeg, .mp4, .avi"  onchange="validateVideoFileType(false)" data-toggle="tooltip" data-placement="bottom" title="Select new video">
                     <label class="custom-file-label" for="video">Choose file</label>
                   </div>
                 </div>
@@ -40,20 +40,20 @@
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center">
                   <input type="checkbox" name="startScheduleWs" id="startScheduleWs">
-                  <label for="startScheduleWs" class="releway-font">I want to schedule this WS from:</label>
-                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled/>
+                  <label for="startScheduleWs" class="releway-font" data-toggle="tooltip" data-placement="right" title="Once selected you will be able to choose when this video will be enabled">I want to schedule this WS from:</label>
+                  <input type='text' name="startDate" id="startDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Start time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the start date"/>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="form-group flt_center"> 
                   <input type="checkbox" class="vsb_hidden">
                   <label for="finishScheduleWs" class="releway-font">To:</label>
-                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled/>
+                  <input type='text' name="endDate" id="endDate" class="datepicker-here form-control input-sm releway-font" data-position="top center" data-language='en' data-timepicker="true" placeholder="Finish time" disabled data-toggle="tooltip" data-placement="bottom" title="Set the end date"/>
                 </div>
               </div>
             </div>
             <div class="text-center">
-              <input type="submit" id="confirm" value="Upload and create" class="btn btn-default btn-upload col-6 releway-font">
+              <button type="submit" id="confirm" class="btn btn-default btn-upload col-6 releway-font" data-toggle="tooltip" data-placement="bottom" title="Create new video">Upload and create &nbsp<i class="material-icons">video_call</i>
             </div>
           </form>
         </div>
