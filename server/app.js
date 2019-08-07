@@ -480,7 +480,7 @@ app.get('/edit_welcome_screen_video/:id', Auth, (req, res) => {
         header: true,
         isAdmin: req.user.isAdmin,
         user: req.user,
-        title: 'Edit Welcome Screen'
+        title: 'Edit WS: ' + screenVideo.title
       });
     });
   }    
