@@ -43,7 +43,10 @@
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="video" id="currentVideo" class="releway-font"><label class="releway-font-sub">Current video:</label> {{screenVideo.defaultVideoName}}</label>
+                  <label for="video" id="currentVideo" class="releway-font">
+                    <label class="releway-font-sub">Current video:</label> 
+                    <label id="defVidName">{{screenVideo.defaultVideoName}}</label>
+                  </label>
                   <label id="videoName" class="vsb_hidden">{{screenVideo.videoName}}</label>
                   <br/>
                   <label for="video" class="releway-font-sub">Choose a new video</label>
@@ -83,8 +86,8 @@
   });
   const socket = io();
   const actualDate = new Date();
-  const dateNow = GetTodaysDatePlusOne(actualDate);
-  const dateTomorrow = GetTomorrowsDate(actualDate);
+  const dateNow = GetMinDate(actualDate);
+  const dateTomorrow = GetMinDate(actualDate);
   const initialStartDate = `{{screenVideo.startDate}}`;
   const initialEndDate = `{{screenVideo.endDate}}`;
   const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
@@ -134,23 +137,29 @@
       $('#video').prop('disabled', true);
       $('#title').prop('disabled', true);
       $('#title').prop('value', 'Default video');
-      $('#currentVideo').text('Current video: default_video.mp4');
+      $('#defVidName').text('default_video.mp4');
     } else {
       $('#video').prop('disabled', false);
       $('#title').prop('disabled', false);
       $('#title').prop('value', '{{screenVideo.title}}');
-      $('#currentVideo').text(currentVideo);
+      $('#defVidName').text('{{screenVideo.defaultVideoName}}');
     }
   });
 
   $('#bnt-cancel').on('click', function() {
-    $('#title').prop('value', '{{screenVideo.title}}');
-    $('#currentVideo').prop('value', currentVideo);
-    $("#startDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.startDate}}'));
-    $("#endDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.endDate}}'));
-
     if ('{{isEnabled}}' === 'programmed') {
-      
+      resetToScheduled()
+      $("#startDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.startDate}}'));
+      $("#endDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.endDate}}'));
+    } else 
+      resetToUnscheduled()
+
+    if ('{{screenVideo.defaultVideoName}}' === 'default_video.mp4')
+      resetToDefault();
+    else {
+      resetToNotDefault();
+      $('#title').prop('value', '{{screenVideo.title}}');
+      $('#defVidName').text('{{screenVideo.defaultVideoName}}');
     }
 
   });

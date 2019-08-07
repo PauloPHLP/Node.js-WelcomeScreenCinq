@@ -213,8 +213,38 @@ function CleanStartEndField () {
   $('#endDate').val('');
 }
 
+function resetToScheduled() {
+  $("#startScheduleWs").prop('checked', true);
+  $('#startDate').prop('disabled', false);
+  $('#endDate').prop('disabled', false);
+}
+
+function resetToUnscheduled() {
+  $("#startScheduleWs").prop('checked', false);
+  $('#startDate').prop('disabled', true);
+  $('#endDate').prop('disabled', true);
+}
+
+function resetToDefault() {
+  $('#defaultVideo').prop('checked', true);
+  $('#video').prop('disabled', true);
+  $('#title').prop('disabled', true);
+  $('#title').prop('value', 'Default video');
+  $('#defVidName').text('default_video.mp4');
+}
+
+function resetToNotDefault() {
+  $('#defaultVideo').prop('checked', false);
+  $('#video').prop('disabled', false);
+  $('#title').prop('disabled', false);
+}
+
 function GetTodaysDatePlusOne (dateNow) {
   return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), (dateNow.getHours() + 1), dateNow.getMinutes(), dateNow.getSeconds()); 
+}
+
+function GetMinDate (dateNow) {
+  return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
 }
 
 function GetTomorrowsDate (dateNow) {

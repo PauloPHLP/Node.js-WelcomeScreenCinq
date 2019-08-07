@@ -125,8 +125,8 @@
   });
   const socket = io();
   const actualDate = new Date();
-  const dateNow = GetTodaysDatePlusOne(actualDate);
-  const dateTomorrow = GetTomorrowsDate(actualDate);
+  const dateNow = GetMinDate(actualDate);
+  const dateTomorrow = GetMinDate(actualDate);
   const initialStartDate = `{{screenImage.startDate}}`;
   const initialEndDate = `{{screenImage.endDate}}`;
   const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
