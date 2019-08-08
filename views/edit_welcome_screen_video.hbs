@@ -87,7 +87,7 @@
   const socket = io();
   const actualDate = new Date();
   const dateNow = GetMinDate(actualDate);
-  const dateTomorrow = GetMinDate(actualDate);
+  const dateNowPlusOne = GetTodaysDatePlusOne(actualDate);
   const initialStartDate = `{{screenVideo.startDate}}`;
   const initialEndDate = `{{screenVideo.endDate}}`;
   const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
@@ -98,7 +98,7 @@
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
   let formatedDate = FormatDateBeauty(dateNow);
-  let expirationDate = FormatDateBeauty(dateTomorrow);
+  let expirationDate = FormatDateBeauty(dateNowPlusOne);
   
   $(document).ready(() => {
     if (`{{isEnabled}}` === 'programmed') {
@@ -127,7 +127,7 @@
   $('#isEnable').change(function() {
     ChangeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
   });
-
+  
   $('#currentVideo').change(function() {
     currentVideo = $('#currentVideo').text();
   });
@@ -146,24 +146,6 @@
     }
   });
 
-  $('#bnt-cancel').on('click', function() {
-    if ('{{isEnabled}}' === 'programmed') {
-      resetToScheduled()
-      $("#startDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.startDate}}'));
-      $("#endDate").val(FormatDateBeautyCorrectFormat('{{screenVideo.endDate}}'));
-    } else 
-      resetToUnscheduled()
-
-    if ('{{screenVideo.defaultVideoName}}' === 'default_video.mp4')
-      resetToDefault();
-    else {
-      resetToNotDefault();
-      $('#title').prop('value', '{{screenVideo.title}}');
-      $('#defVidName').text('{{screenVideo.defaultVideoName}}');
-    }
-
-  });
-
   $("#isEnable").on("change", function() {
     if ($(this).is(':checked')) {
       EnableDisableScheduled('disabled');
@@ -177,8 +159,35 @@
       EnableDisableScheduled('programmed');
     } else {
       EnableDisableScheduled('disabled');
-      $("#startDate").val('');
-      $("#endDate").val('');
+    }
+
+    if ('{{isEnabled}}' !== 'programmed') {
+      FormatDateToShow('#startDate', dateNow);
+      FormatDateToShow('#endDate', dateNowPlusOne);
+    }
+  });
+
+
+  $('#bnt-cancel').on('click', function() {
+    if ('{{isEnabled}}' === 'programmed') {
+      resetToScheduled()
+      FormatDateToShow('#startDate', '{{screenVideo.startDate}}');
+      FormatDateToShow('#endDate', '{{screenVideo.endDate}}');
+    } else {
+      resetToUnscheduled();
+    }
+
+    if ('{{isEnabled}}' === 'true') 
+      $("#isEnable").prop("checked", true);
+    else 
+      $("#isEnable").prop("checked", false);
+
+    if ('{{screenVideo.defaultVideoName}}' === 'default_video.mp4')
+      resetToDefault();
+    else {
+      resetToNotDefault();
+      $('#title').prop('value', '{{screenVideo.title}}');
+      $('#defVidName').text('{{screenVideo.defaultVideoName}}');
     }
   });
 
@@ -202,8 +211,8 @@
   $('#endDate').datepicker({
     dateTimeSeparator: " - ",
     clearButton: true,
-    minDate: dateTomorrow,
-    minHours: dateTomorrow,
+    minDate: dateNowPlusOne,
+    minHours: dateNowPlusOne,
     onSelect: function(fd, d, picker) {
       dateEnd = d;
       monthFinish = GetCorrectMonth(d);

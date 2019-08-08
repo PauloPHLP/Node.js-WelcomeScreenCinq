@@ -1,11 +1,11 @@
 let startDateToKeep = '';
 let endDateToKeep = '';
 
-$(window).on("load",function(){
+$(window).on("load", function() {
   $(".loader-wrapper").fadeOut("slow");
 });
 
-$(window).on("reload",function(){
+$(window).on("reload", function() {
   $(".loader-wrapper").fadeOut("slow");
 });
 
@@ -189,7 +189,7 @@ function DeleteImage(id) {
   });
 }
 
-function AddAndRemoveClassConditional (field, classOne, classTwo) {
+function AddAndRemoveClassConditional(field, classOne, classTwo) {
   if ($(field).val() === '' || $(field).val() === ' ') {
     $(field).addClass(classOne);
     $(field).removeClass(classTwo);
@@ -199,12 +199,12 @@ function AddAndRemoveClassConditional (field, classOne, classTwo) {
   }
 }
 
-function AddAndRemoveClassSimple (field, toAdd, toRemove) {
+function AddAndRemoveClassSimple(field, toAdd, toRemove) {
   $(field).removeClass(toRemove);
   $(field).addClass(toAdd);
 } 
 
-function CleanStartEndField () {
+function CleanStartEndField() {
   $('#startDate').removeClass('fulfilledFields');
   $('#startDate').removeClass('emptyFields');
   $('#endDate').removeClass('fulfilledFields');
@@ -223,6 +223,12 @@ function resetToUnscheduled() {
   $("#startScheduleWs").prop('checked', false);
   $('#startDate').prop('disabled', true);
   $('#endDate').prop('disabled', true);
+  $("#startDate").val('');
+  $("#endDate").val('');
+  $('#startDate').removeClass('is-valid');
+  $('#startDate').removeClass('is-invalid');
+  $('#endDate').removeClass('is-valid');
+  $('#endDate').removeClass('is-invalid');
 }
 
 function resetToDefault() {
@@ -239,19 +245,19 @@ function resetToNotDefault() {
   $('#title').prop('disabled', false);
 }
 
-function GetTodaysDatePlusOne (dateNow) {
+function GetTodaysDatePlusOne(dateNow) {
   return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), (dateNow.getHours() + 1), dateNow.getMinutes(), dateNow.getSeconds()); 
 }
 
-function GetMinDate (dateNow) {
-  return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
+function GetMinDate(dateNow) {
+  return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), dateNow.getHours(), (dateNow.getMinutes() + 1), dateNow.getSeconds()); 
 }
 
-function GetTomorrowsDate (dateNow) {
+function GetTomorrowsDate(dateNow) {
   return new Date(dateNow.getFullYear(), dateNow.getMonth(), (dateNow.getDate() + 1), dateNow.getHours(), dateNow.getMinutes(), dateNow.getSeconds()); 
 }
 
-function FormatDateBeauty (date) {
+function FormatDateBeauty(date) {
   return moment(date).format('DD/MM/YYYY - HH:mm');
 }
 
@@ -259,31 +265,31 @@ function FormatDateBeautyCorrectFormat (date) {
   return moment(date).format('MM/DD/YYYY - HH:mm');
 }
 
-function GetCorrectHour (date) {
+function GetCorrectHour(date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate(), (date.getHours() - 1), date.getMinutes(), date.getSeconds())
 }
 
-function FormatDateToShow (field, date) {
+function FormatDateToShow(field, date) {
   $(field).data('datepicker').selectDate(new Date(moment(moment(date, 'DD/MM/YYYY HH:mm')).format('MM/DD/YYYY HH:mm')));
 }
 
-function FormatDateUgly (date) {
+function FormatDateUgly(date) {
   return moment(date).format('DD-M-YY H:m');
 }
 
-function FormatDateToEnroll (date, month, year) {
+function FormatDateToEnroll(date, month, year) {
   return date.getDate() + '-' + month + '-' + year + ' ' + date.getHours() + ':' + date.getMinutes();
 }
 
-function FormatYear (year) {
+function FormatYear(year) {
   return year.getYear().toString().substring(1);
 }
 
-function GetCorrectMonth (month) {
+function GetCorrectMonth(month) {
   return month.getMonth() + 1;
 }
 
-function ChangeCheckBoxLabelText (field, isChecked) {
+function ChangeCheckBoxLabelText(field, isChecked) {
   if (isChecked) {
     $(field).text('\u00A0 This Welcome Screen is enabled');
   } else {
@@ -291,7 +297,7 @@ function ChangeCheckBoxLabelText (field, isChecked) {
   }
 }
 
-function CheckBoxCheck (isProgrammed, initialStartDate, initialEndDate) {
+function CheckBoxCheck(isProgrammed, initialStartDate, initialEndDate) {
   if (isProgrammed === 'programmed') {
     $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
     FormatDateToShow('#startDate', initialStartDate);
@@ -313,21 +319,21 @@ function CheckBoxCheck (isProgrammed, initialStartDate, initialEndDate) {
   }
 }
 
-function EnableDisableVideoAndTitle (isEnable) {
+function EnableDisableVideoAndTitle(isEnable) {
   $('#video').prop('disabled', isEnable);
   $('#title').prop('disabled', isEnable);
 }
 
-function EnableDisableScheduled (isEnabled) {
+function EnableDisableScheduled(isEnabled) {
   DisableScheduleFields(isEnabled);
 }
 
-function RemoveClassForDateFields (className) {
+function RemoveClassForDateFields(className) {
   $('#startDate').removeClass(className);
   $('#endDate').removeClass(className);
 }
 
-function DisableScheduleFields (isEnabled) {
+function DisableScheduleFields(isEnabled) {
   if (isEnabled === 'disabled') {
     $("#startScheduleWs").prop("checked", false);
     $("#startDate").prop("disabled", true);
@@ -339,8 +345,6 @@ function DisableScheduleFields (isEnabled) {
     $("#startScheduleWs").prop("checked", false);
     $("#startDate").prop("disabled", true);
     $("#endDate").prop("disabled", true);
-    $("#startDate").val(this.startDateToKeep);
-    $("#endDate").val(this.endDateToKeep);
   } else if (isEnabled === 'programmed') {
     $("#isEnable").prop("checked", false);
     $("#startScheduleWs").prop("checked", true);
@@ -351,7 +355,7 @@ function DisableScheduleFields (isEnabled) {
   }
 }
 
-function FormatDate (date) {
+function FormatDate(date) {
   return moment(moment(date, 'DD/MM/YYYY HH:mm')).format('DD/MM/YYYY - HH:mm');
 }
 

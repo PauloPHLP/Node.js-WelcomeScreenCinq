@@ -126,7 +126,7 @@
   const socket = io();
   const actualDate = new Date();
   const dateNow = GetMinDate(actualDate);
-  const dateTomorrow = GetMinDate(actualDate);
+  const dateNowPlusOne = GetTodaysDatePlusOne(actualDate);
   const initialStartDate = `{{screenImage.startDate}}`;
   const initialEndDate = `{{screenImage.endDate}}`;
   const compareDate = FormatDate(initialStartDate) <= FormatDate(new Date());
@@ -137,7 +137,7 @@
   let oldTitle = $('#title').val();
   let currentVideo = $('#currentVideo').text();
   let formatedDate = FormatDateBeauty(dateNow);
-  let expirationDate = FormatDateBeauty(dateTomorrow);
+  let expirationDate = FormatDateBeauty(dateNowPlusOne);
   let oldCompany = $('#company1').val();
   let currentImage = $('#currentImage').text();
 
@@ -229,8 +229,8 @@
   $('#endDate').datepicker({
     dateTimeSeparator: " - ",
     clearButton: true,
-    minDate: dateTomorrow,
-    minHours: dateTomorrow,
+    minDate: dateNowPlusOne,
+    minHours: dateNowPlusOne,
     onSelect: function(fd, d, picker) {
       dateEnd = d;
       monthFinish = GetCorrectMonth(d);
