@@ -100,7 +100,8 @@ nav > .nav.nav-tabs {
   border: none;
   color:#FFFFFF;
   background:#272E38;
-  border-radius: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 nav > div a.nav-item.nav-link,
@@ -109,7 +110,8 @@ nav > div a.nav-item.nav-link.active {
   padding: 18px 25px;
   color:#FFFFFF;
   background:#272e38;
-  border-radius: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 nav > div a.nav-item.nav-link.active:after {
@@ -126,8 +128,35 @@ nav > div a.nav-item.nav-link:focus {
   border: none;
   background:#EE9658;
   color:#FFFFFF;
-  border-radius:0;
   transition:background 0.20s linear;
+}
+
+.tab-tible-visitor-page:hover {
+  border-top-left-radius: 10px;
+}
+
+.tab-tible-video:hover {
+  border-top-right-radius: 10px;
+}
+
+.border-shadow {
+  box-shadow: 5px 5px 5px #000000;
+  border-radius: 10px;
+}
+
+.border-shadow-header {
+  box-shadow: 5px 5px 5px #000000;
+}
+
+.border-shadow-nav {
+  box-shadow: 5px 5px 5px #000000;
+  border-radius: 10px;
+}
+
+.border-shadow-list {
+  box-shadow: 5px 5px 5px #000000;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .emptyFields {
