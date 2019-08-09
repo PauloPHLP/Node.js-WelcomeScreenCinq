@@ -33,7 +33,10 @@
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                  <label for="image" id="currentImage" class="releway-font"><label class="releway-font-sub">Current image:</label> {{screenImage.defaultImageName}}</label>
+                  <label for="image" id="currentImage" class="releway-font">
+                    <label class="releway-font-sub">Current image:</label>
+                    <label id="defImgName">{{screenImage.defaultImageName}}</label>
+                  </label>
                   <label id="imageName" class="vsb_hidden">{{screenImage.imageName}}</label>
                   <br/>
                   <label for="image" class="releway-font-sub">Choose a new image</label>
@@ -106,8 +109,9 @@
               </div>
             </div>
             <div class="d-flex justify-content-around">
-              <button type="button" class="btn btn-danger btn-upload col-5 releway-font" onclick="DeleteImage('{{screenImage.id}}');" data-toggle="tooltip" data-placement="bottom" title="Delete visitor page">Delete this Visitor Page &nbsp<i class="material-icons">delete</i>
-              <button type="submit" class="btn btn-default btn-upload col-5 releway-font" data-toggle="tooltip" data-placement="bottom" title="Update visitor page">Update Visitor Page&nbsp<i class="material-icons">update</i>
+              <button type="button" id="bnt-cancel" value="Cancel" class="btn btn-default btn-cancel col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Reset to initial">Cancel &nbsp<i class="material-icons">cancel_presentation</i>
+              <button type="button" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteImage('{{screenImage.id}}');" data-toggle="tooltip" data-placement="bottom" title="Delete visitor page">Delete Page<i class="material-icons">delete</i>
+              <button type="submit" class="btn btn-default btn-upload col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Update visitor page">Update Page<i class="material-icons">update</i>
             </div>
           </form>
         </div>
@@ -135,11 +139,10 @@
   let startDateFormatted = initialStartDate;
   let expirationDateFormatted = initialEndDate;
   let oldTitle = $('#title').val();
-  let currentVideo = $('#currentVideo').text();
   let formatedDate = FormatDateBeauty(dateNow);
   let expirationDate = FormatDateBeauty(dateNowPlusOne);
   let oldCompany = $('#company1').val();
-  let currentImage = $('#currentImage').text();
+  let defImgName = $('#defImgName').text();
 
   $(document).ready(() => {
     if (`{{isEnabled}}` === 'programmed') {
@@ -169,17 +172,17 @@
     ChangeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
   });
 
-  $('#currentImage').change(function() {
-    currentImage = $('#currentImage').text();
+  $('#defImgName').change(function() {
+    defImgName = $('#defImgName').text();
   });
 
   $('#defaultImage').change(function() {
     if ($(this).is(':checked')) {
       $('#image').prop('disabled', true);
-      $('#currentImage').text('Current image: default_image.jpg');
+      $('#defImgName').text('default_image.jpg');
     } else {
       $('#image').prop('disabled', false);
-      $('#currentImage').text(currentImage);
+      $('#defImgName').text('{{screenImage.defaultImageName}}');
     }
   });
 
@@ -207,6 +210,39 @@
     } else {
       EnableDisableScheduled('enabled');
     }
+  });
+
+  $('#bnt-cancel').on('click', function() {
+    if ('{{isEnabled}}' === 'programmed') {
+      resetToScheduled()
+      FormatDateToShow('#startDate', '{{screenImage.startDate}}');
+      FormatDateToShow('#endDate', '{{screenImage.endDate}}');
+    } else {
+      resetToUnscheduled();
+    }
+
+    if ('{{isEnabled}}' === 'true') 
+      $("#isEnable").prop("checked", true);
+    else 
+      $("#isEnable").prop("checked", false);
+
+    if ('{{screenImage.defaultImageName}}' === 'default_image.jpg') {
+      resetToDefaultImage();
+    } else {
+      resetToNotDefaultImage();
+      $('#defImgName').text('{{screenImage.defaultImageName}}');
+    }
+
+    $("#company1").val('{{screenImage.companies.[0]}}');
+    $("#company2").val('{{screenImage.companies.[1]}}');
+    $("#guest1").val('{{screenImage.guestsNames.[0]}}');
+    $("#guest2").val('{{screenImage.guestsNames.[1]}}');
+    $("#guest3").val('{{screenImage.guestsNames.[2]}}');
+    $("#guest4").val('{{screenImage.guestsNames.[3]}}');
+    $("#guest5").val('{{screenImage.guestsNames.[4]}}');
+    $("#guest6").val('{{screenImage.guestsNames.[5]}}');
+    $("#guest7").val('{{screenImage.guestsNames.[6]}}');
+    $("#guest8").val('{{screenImage.guestsNames.[7]}}');
   });
 
   $('#startDate').datepicker({
@@ -245,13 +281,13 @@
 
   $('#update_form').submit(function(e) {
     e.preventDefault();
-    const defaultText = 'Current image: default_image.jpg';
+    const defaultText = 'default_image.jpg';
     const imageEmpty = $('#image').get(0).files.length;
     const isDefaultImage = $('#defaultImage').is(':checked');
-    const newImage = currentImage !== defaultText && imageEmpty !== 0;
+    const newImage = defImgName !== defaultText && imageEmpty !== 0;
     const companyEmptyOrNull = $('#company1').val() !== '' && $('#company1').val() !== ' ';
-    const defaultImage = currentImage === defaultText && imageEmpty !== 0;
-    const notDefaultImage = currentImage !== defaultText && imageEmpty === 0;
+    const defaultImage = defImgName === defaultText && imageEmpty !== 0;
+    const notDefaultImage = defImgName !== defaultText && imageEmpty === 0;
     const isScheduled = $("#startScheduleWs").is(':checked');
     const startDateEmptyOrNull = $("#startDate").val() !== '' && $("#startDate").val() !== ' ';
     const startDateInvalid = $("#startDate").val() === '' || $("#startDate").val() === ' ';
@@ -289,7 +325,7 @@
       var formData = new FormData($(this)[0]);
       
       $.ajax({
-        url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${currentImage.slice(15)}/${schedule}`,
+        url: `/api/update_welcome_screen_image/{{{screenImage._id}}}/${imageName}/${defImgName}/${schedule}`,
         type: 'PUT',
         data: formData,
         async: false,

@@ -239,11 +239,23 @@ function resetToDefault() {
   $('#defVidName').text('default_video.mp4');
 }
 
+function resetToDefaultImage() {
+  $('#defaultImage').prop('checked', true);
+  $('#image').prop('disabled', true);
+  $('#defImgName').text('default_image.jpg');
+}
+
 function resetToNotDefault() {
   $('#defaultVideo').prop('checked', false);
   $('#video').prop('disabled', false);
   $('#title').prop('disabled', false);
 }
+
+function resetToNotDefaultImage() {
+  $('#defaultImage').prop('checked', false);
+  $('#image').prop('disabled', false);
+}
+
 
 function GetTodaysDatePlusOne(dateNow) {
   return new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate(), (dateNow.getHours() + 1), dateNow.getMinutes(), dateNow.getSeconds()); 

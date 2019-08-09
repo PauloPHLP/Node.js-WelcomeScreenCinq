@@ -67,8 +67,8 @@
               </div>
             <div class="d-flex justify-content-around">
               <button type="button" id="bnt-cancel" value="Cancel" class="btn btn-default btn-cancel col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Reset to initial">Cancel &nbsp<i class="material-icons">cancel_presentation</i>
-              <button type="button" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteVideo('{{screenVideo.id}}');" data-toggle="tooltip" data-placement="bottom" title="Delete video">Delete video &nbsp<i class="material-icons">delete</i>
-              <button type="submit" value="Update" class="btn btn-default btn-upload col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Update video">Update video &nbsp<i class="material-icons">update</i>
+              <button type="button" class="btn btn-danger btn-upload col-3 releway-font" onclick="DeleteVideo('{{screenVideo.id}}');" data-toggle="tooltip" data-placement="bottom" title="Delete video">Delete video<i class="material-icons">delete</i>
+              <button type="submit" value="Update" class="btn btn-default btn-upload col-3 releway-font" data-toggle="tooltip" data-placement="bottom" title="Update video">Update video<i class="material-icons">update</i>
             </div>
           </form>
         </div>
@@ -96,7 +96,7 @@
   let startDateFormatted = initialStartDate;
   let expirationDateFormatted = initialEndDate;
   let oldTitle = $('#title').val();
-  let currentVideo = $('#currentVideo').text();
+  let defVidName = $('#defVidName').text();
   let formatedDate = FormatDateBeauty(dateNow);
   let expirationDate = FormatDateBeauty(dateNowPlusOne);
   
@@ -128,8 +128,8 @@
     ChangeCheckBoxLabelText("#isEnableLabel", $(this).is(':checked'));
   });
   
-  $('#currentVideo').change(function() {
-    currentVideo = $('#currentVideo').text();
+  $('#defVidName').change(function() {
+    defVidName = $('#defVidName').text();
   });
 
   $('#defaultVideo').change(function() {
@@ -167,7 +167,6 @@
     }
   });
 
-
   $('#bnt-cancel').on('click', function() {
     if ('{{isEnabled}}' === 'programmed') {
       resetToScheduled()
@@ -182,9 +181,9 @@
     else 
       $("#isEnable").prop("checked", false);
 
-    if ('{{screenVideo.defaultVideoName}}' === 'default_video.mp4')
+    if ('{{screenVideo.defaultVideoName}}' === 'default_video.mp4') {
       resetToDefault();
-    else {
+    } else {
       resetToNotDefault();
       $('#title').prop('value', '{{screenVideo.title}}');
       $('#defVidName').text('{{screenVideo.defaultVideoName}}');
@@ -229,7 +228,7 @@
     e.preventDefault();
 
     const isScheduled = $("#startScheduleWs").is(':checked');
-    const defaultText = 'Current video: default_video.mp4';
+    const defaultText = 'default_video.mp4';
     const videoSize = $('#video').get(0).files.length;
     const isDefaultVideo = $('#defaultVideo').is(':checked');
     const titleNotEmpty = $('#title').val() != '' && $('#title').val() != ' ';
@@ -238,9 +237,9 @@
     const endDateEmptyOrNull = $("#endDate").val() !== '' && $("#endDate").val() !== ' ';
     const endDateInvalid = $("#endDate").val() === '' || $("#endDate").val() === ' ';
     const videoNameTxt = $("#videoName").val();
-    const defaultVideo = currentVideo === defaultText && videoSize !== 0;
-    const notDefaultVideo = currentVideo !== defaultText && videoSize === 0;
-    const newVideo = currentVideo !== defaultText && videoSize !== 0;
+    const defaultVideo = defVidName === defaultText && videoSize !== 0;
+    const notDefaultVideo = defVidName !== defaultText && videoSize === 0;
+    const newVideo = defVidName !== defaultText && videoSize !== 0;
     const scheduledTime = isScheduled && startDateEmptyOrNull;
     const scheduledTimeFinish = isScheduled && endDateEmptyOrNull;
     const startTimeEmpty = isScheduled && startDateInvalid;
@@ -276,7 +275,7 @@
       var formData = new FormData($(this)[0]);
       
       $.ajax({
-        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${currentVideo.slice(15)}/${schedule}`,
+        url: `/api/update_welcome_screen_video/{{{screenVideo._id}}}/${videoName}/${defVidName}/${schedule}`,
         type: 'PUT',
         data: formData,
         async: false,
