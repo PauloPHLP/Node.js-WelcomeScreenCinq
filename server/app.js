@@ -429,12 +429,25 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
       title: 'Login'
     });
   } else {
-    res.render('new_welcome_screen_video', {
-      header: true,
-      isAdmin: req.user.isAdmin,
-      user: req.user,
-      title: 'New video'
+    ScreenImage.find({activated: 'programmed'}).exec((err, images) => {
+      ScreenVideo.find({activated: 'programmed'}).exec((err, videos) => {
+        res.render('new_welcome_screen_video', {
+          header: true,
+          isAdmin: req.user.isAdmin,
+          user: req.user,
+          title: 'New video',
+          images,
+          videos
+        });
+      });
     });
+
+    // res.render('new_welcome_screen_video', {
+    //   header: true,
+    //   isAdmin: req.user.isAdmin,
+    //   user: req.user,
+    //   title: 'New video'
+    // });
   }    
 });
 
