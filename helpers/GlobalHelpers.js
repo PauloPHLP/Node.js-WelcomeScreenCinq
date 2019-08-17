@@ -275,5 +275,43 @@ module.exports = {
     } else {
       return null;
     }
+  },
+
+  DisableWSProgrammedAtTheSameTimeForVideo: newVideo => {
+    ScreenVideo.find({activated: 'programmed'}).then(docVideo => {
+      docVideo.forEach(video => {
+        let result = module.exports.CompareNewAndProgrammedDates(newVideo, video);
+        
+        if (newVideo.id !== video._id) {
+          if (result === false)
+            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false', startDate: null, endDate: null}}, (err, screenVideo) => {});
+        }
+      });
+    });
+    ScreenImage.find({activated: 'programmed'}).then(docImage => {
+      docImage.forEach(image => {
+        let result = module.exports.CompareNewAndProgrammedDates(newVideo, image);
+        if (result === false)
+          ScreenImage.updateOne({_id: image._id}, {$set: {activated: 'false', startDate: null, endDate: null}}, (err, screenImage) => {});
+      });
+    });
+  },
+
+  DisableWSProgrammedAtTheSameTimeForImage: newImage => {
+    ScreenVideo.find({activated: 'programmed'}).then(docVideo => {
+      docVideo.forEach(video => {
+        let result = module.exports.CompareNewAndProgrammedDates(newImage, video);
+        if (result === false)
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false', startDate: null, endDate: null}}, (err, screenVideo) => {});
+      });
+    });
+  },
+
+  CompareNewAndProgrammedDates: (newDate, oldDate) => {
+    if (newDate.startDate >= oldDate.startDate && newDate.startDate < oldDate.endDate)
+      return false;
+    if (newDate.endDate > oldDate.startDate && newDate.endDate < oldDate.endDate)
+      return false;
+    return true;
   }
 }

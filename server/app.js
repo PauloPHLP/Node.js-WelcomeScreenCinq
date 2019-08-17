@@ -348,6 +348,8 @@ app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req
         res.status(400).send(err);
     });
 
+    GlobalHelpers.DisableWSProgrammedAtTheSameTimeForImage(screenImage);
+
     if (err)
       return res.end('An error has occurred!');
     res.end('Image uploaded successfully!');
@@ -467,6 +469,8 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
       if (err)
         res.status(400).send(err);
     });
+
+    GlobalHelpers.DisableWSProgrammedAtTheSameTimeForVideo(screenVideo);
 
     if (err)
       return res.end('An error has occurred!');
