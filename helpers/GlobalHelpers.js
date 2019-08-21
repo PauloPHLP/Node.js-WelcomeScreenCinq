@@ -282,10 +282,8 @@ module.exports = {
       docVideo.forEach(video => {
         let result = module.exports.CompareNewAndProgrammedDates(newVideo, video);
         
-        if (newVideo.id !== video._id) {
-          if (result === false)
-            ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false', startDate: null, endDate: null}}, (err, screenVideo) => {});
-        }
+        if (result === false && newVideo._id != video._id) 
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false', startDate: null, endDate: null}}, (err, screenVideo) => {});
       });
     });
     ScreenImage.find({activated: 'programmed'}).then(docImage => {

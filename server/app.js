@@ -406,6 +406,7 @@ app.put('/api/update_welcome_screen_image/:id/:oldImageName/:currentImage/:isPro
     }}, (err, scrImg) => {
       GlobalHelpers.EnableDefaultVideoIfNoImages();
       SetUpCron(GlobalHelpers.GetDateArray(screenImage.startDate), GlobalHelpers.GetDateArray(screenImage.endDate));
+      GlobalHelpers.DisableWSProgrammedAtTheSameTimeForImage(screenImage);
     });
 
     companies = [];
@@ -520,6 +521,8 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
     }}, (err, scrVid) => {
       GlobalHelpers.EnableDefaultVideoIfNoVideos();
       SetUpCron(GlobalHelpers.GetDateArray(screenVideo.startDate), GlobalHelpers.GetDateArray(screenVideo.endDate));
+      screenVideo._id = req.params.id;
+      GlobalHelpers.DisableWSProgrammedAtTheSameTimeForVideo(screenVideo);
     });
 
     if (err)
