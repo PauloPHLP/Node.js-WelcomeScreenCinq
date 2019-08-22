@@ -303,27 +303,27 @@ function GetCorrectMonth(month) {
 
 function ChangeCheckBoxLabelText(field, isChecked) {
   if (isChecked) {
-    $(field).text('\u00A0 This Welcome Screen is enabled');
+    $(field).text('\u00A0 This WS is enabled');
   } else {
-    $(field).text('\u00A0 This Welcome Screen is disabled');
+    $(field).text('\u00A0 This WS is disabled');
   }
 }
 
 function CheckBoxCheck(isProgrammed, initialStartDate, initialEndDate) {
   if (isProgrammed === 'programmed') {
-    $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
+    $("#isEnableLabel").text(`\xA0 This WS is disabled`);
     FormatDateToShow('#startDate', initialStartDate);
     FormatDateToShow('#endDate', initialEndDate);
     RemoveClassForDateFields('fulfilledFields');
   } else if (isProgrammed === 'true') {
-    $("#isEnableLabel").text(`\xA0 This Welcome Screen is enabled`);
+    $("#isEnableLabel").text(`\xA0 This WS is enabled`);
     $("#isEnable").prop("checked", true);
     RemoveClassForDateFields('fulfilledFields');
   } else if (isProgrammed === 'false') {
-    $("#isEnableLabel").text(`\xA0 This Welcome Screen is disabled`);
+    $("#isEnableLabel").text(`\xA0 This WS is disabled`);
     RemoveClassForDateFields('fulfilledFields');
   } else if (isProgrammed === 'activated') {
-    $("#isEnableLabel").text(`\xA0 This Welcome Screen is enabled`);
+    $("#isEnableLabel").text(`\xA0 This WS is enabled`);
     $("#isEnable").prop("checked", true);
     FormatDateToShow('#startDate', initialStartDate);
     FormatDateToShow('#endDate', initialEndDate);
