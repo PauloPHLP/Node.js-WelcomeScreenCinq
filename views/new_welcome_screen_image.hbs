@@ -146,6 +146,8 @@
   $('#defaultImage').change(function() {
     if ($(this).is(':checked')) {
       $('#image').prop('disabled', true);
+      $("#image").removeClass('is-invalid');
+      $("#image").removeClass('is-valid');
     } else {
       $('#image').prop('disabled', false);
     }
