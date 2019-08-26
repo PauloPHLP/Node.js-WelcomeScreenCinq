@@ -101,6 +101,11 @@
   $('#defaultVideo').change(function() {
     if ($(this).is(':checked')) {
       EnableDisableVideoAndTitle(true);
+      $("#title").val('');
+      $("#title").removeClass('is-valid');
+      $("#title").removeClass('is-invalid');
+      $("#video").removeClass('is-valid');
+      $("#video").removeClass('is-invalid');
     } else {
       EnableDisableVideoAndTitle(false);
     }
@@ -115,6 +120,10 @@
       $('#startDate, #endDate').prop('disabled', true);
       $("#startDate").val('');
       $("#endDate").val('');
+      $("#startDate").removeClass('is-valid');
+      $("#startDate").removeClass('is-invalid');
+      $("#endDate").removeClass('is-valid');
+      $("#endDate").removeClass('is-invalid');
     }
   });
 

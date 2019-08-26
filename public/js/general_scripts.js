@@ -205,10 +205,10 @@ function AddAndRemoveClassSimple(field, toAdd, toRemove) {
 } 
 
 function CleanStartEndField() {
-  $('#startDate').removeClass('fulfilledFields');
-  $('#startDate').removeClass('emptyFields');
-  $('#endDate').removeClass('fulfilledFields');
-  $('#endDate').removeClass('emptyFields');
+  $('#startDate').removeClass('is-valid');
+  $('#startDate').removeClass('is-invalid');
+  $('#endDate').removeClass('is-valid');
+  $('#endDate').removeClass('is-invalid');
   $('#startDate').val('');
   $('#endDate').val('');
 }
@@ -314,20 +314,20 @@ function CheckBoxCheck(isProgrammed, initialStartDate, initialEndDate) {
     $("#isEnableLabel").text(`\xA0 This WS is disabled`);
     FormatDateToShow('#startDate', initialStartDate);
     FormatDateToShow('#endDate', initialEndDate);
-    RemoveClassForDateFields('fulfilledFields');
+    RemoveClassForDateFields('is-valid');
   } else if (isProgrammed === 'true') {
     $("#isEnableLabel").text(`\xA0 This WS is enabled`);
     $("#isEnable").prop("checked", true);
-    RemoveClassForDateFields('fulfilledFields');
+    RemoveClassForDateFields('is-valid');
   } else if (isProgrammed === 'false') {
     $("#isEnableLabel").text(`\xA0 This WS is disabled`);
-    RemoveClassForDateFields('fulfilledFields');
+    RemoveClassForDateFields('is-valid');
   } else if (isProgrammed === 'activated') {
     $("#isEnableLabel").text(`\xA0 This WS is enabled`);
     $("#isEnable").prop("checked", true);
     FormatDateToShow('#startDate', initialStartDate);
     FormatDateToShow('#endDate', initialEndDate);
-    RemoveClassForDateFields('fulfilledFields');
+    RemoveClassForDateFields('is-valid');
   }
 }
 
@@ -384,19 +384,28 @@ function CheckEqualDate(start, finish) {
 }
 
 function CheckTime() {
+  CompareSelectedDates();
+
   if (startDateFormatted > expirationDateFormatted || CheckEqualDate(FormatDateSimple(startDateFormatted), FormatDateSimple(expirationDateFormatted))) {
-    AddAndRemoveClassSimple('#startDate', 'emptyFields', 'fulfilledFields');
-    AddAndRemoveClassSimple('#endDate', 'emptyFields', 'fulfilledFields');
+    AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
+    AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
     Toast.fire({
       type: 'warning',
       title: 'End date should be greater than start date!'
     });
     return false;
   } else {
-    AddAndRemoveClassSimple('#startDate', 'fulfilledFields', 'emptyFields');
-    AddAndRemoveClassSimple('#endDate', 'fulfilledFields', 'emptyFields');
+    AddAndRemoveClassSimple('#startDate', 'is-valid', 'is-invalid');
+    AddAndRemoveClassSimple('#endDate', 'is-valid', 'is-invalid');
     return true;
   };
+}
+
+function CompareSelectedDates() {
+  if ($("#startDate").val() > $('#endDate').val()) {
+    AddAndRemoveClassSimple('#startDate', 'is-invalid', 'is-valid');
+    AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
+  }
 }
 
 function CheckIsProgrammed(isChecked) {
