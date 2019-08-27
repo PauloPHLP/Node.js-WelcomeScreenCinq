@@ -120,10 +120,10 @@
       $('#startDate, #endDate').prop('disabled', true);
       $("#startDate").val('');
       $("#endDate").val('');
-      $("#startDate").removeClass('is-valid');
+      {{!-- $("#startDate").removeClass('is-valid');
       $("#startDate").removeClass('is-invalid');
       $("#endDate").removeClass('is-valid');
-      $("#endDate").removeClass('is-invalid');
+      $("#endDate").removeClass('is-invalid'); --}}
     }
   });
 
@@ -180,15 +180,16 @@
     const finishTimeEmpty = isScheduled && endDateInvalid;
     const dateTime = CheckTime();
     const fileTypeOk = validateVideoFileType();
-    const notDefaultNotScheduled = isDefault && titleEmpty;
+    const notDefaultNotScheduled = isDefault && titleEmpty && !isScheduled;
     const isOrNotScheduled = titleEmptyOrNull && !isDefault && videoEmpty && ((scheduledTime && scheduledTimeFinish) || !isScheduled);
-    const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled) && dateTime && fileTypeOk;
+    const defaultScheduled = isDefault && isScheduled && startDateEmptyOrNull && endDateEmptyOrNull;
+    const conditionToEnroll = (notDefaultNotScheduled || isOrNotScheduled || defaultScheduled) && dateTime && fileTypeOk;
 
     if (!isScheduled) {
       $("#startDate").removeClass('is-valid');
       $("#endDate").removeClass('is-valid');
     }
-
+    
     if (conditionToEnroll) {
       const isProgrammed = CheckIsProgrammed(isScheduled);
       
@@ -232,17 +233,25 @@
         }
       });
     } else {
-      if (!titleEmptyOrNull) 
+      if (!titleEmptyOrNull && !isDefault) 
         $("#title").addClass('is-invalid');
       if (!isDefault && !videoEmpty)
         $("#video").addClass('is-invalid');
-      if (isScheduled && !startDateInvalid)
+      if (isScheduled && startDateInvalid) 
+        AddAndRemoveClassSimple("#startDate", "is-invalid", "is-valid");
+      else 
         AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
-      if (isScheduled && !endDateInvalid)
+      if (isScheduled && endDateInvalid) 
+        AddAndRemoveClassSimple("#endDate", "is-invalid", "is-valid");
+      else 
         AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
+      if (startDateInvalid && !isScheduled)
+        $("#startDate").removeClass('is-valid');
+      if (endDateInvalid && !isScheduled)       
+        $("#endDate").removeClass('is-valid');  
       if (dateTime === false) {
-        AddAndRemoveClassSimple("#startDate", "is-valid", "is-invalid");
-        AddAndRemoveClassSimple("#endDate", "is-valid", "is-invalid");
+        $("#startDate").addClass('is-invalid');
+        $("#endDate").addClass('is-invalid');  
       }
 
       Swal.fire({
