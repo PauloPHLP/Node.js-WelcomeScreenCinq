@@ -316,6 +316,7 @@ input[type="checkbox"].switch_btn:checked:after {
 
 .container_login {
   padding-top: 250px;
+  padding-bottom: 15px;
 }
 
 .page-login {
