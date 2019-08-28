@@ -64,9 +64,9 @@ module.exports = {
         videoName: 'default_video.mp4',
         defaultVideoName: 'default_video.mp4',
         date: moment(Date.now()).format('MM/DD/YY'),
-        startDate: this.startDate,
-        endDate: this.endDate,
-        activated: "true"
+        startDate: req.params.startDate,
+        endDate: req.params.endDate,
+        activated: req.params.isProgrammed
       });
     } else {
       return screenVideo = new ScreenVideo({
