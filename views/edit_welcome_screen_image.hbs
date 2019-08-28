@@ -375,6 +375,8 @@
         AddAndRemoveClassSimple('#endDate', 'is-invalid', 'is-valid');
         $("#image").removeClass('is-invalid');
       }
+      if (notDefaultImage) 
+        AddAndRemoveClassSimple('#image', 'is-valid', 'is-invalid');
 
       Swal.fire({
         title: 'Attention',
