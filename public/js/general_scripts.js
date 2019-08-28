@@ -106,9 +106,6 @@ function DeleteVideo(id) {
         url: `/api/delete_welcome_screen_video/${id}`,
         contentType: 'application/json',
         success: data => {
-          let socketVid = io();
-          socketVid.emit('UpdateOnDatabase');
-
           Swal.fire({
             title: 'Deleted!',
             text: 'Welcome Screen deleted successfully!',
@@ -116,6 +113,8 @@ function DeleteVideo(id) {
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
           }).then(result => {
+            let socketVid = io();
+            socketVid.emit('UpdateOnDatabase');
             window.location.href = "/welcome_screens_list"
           });
         },
@@ -156,9 +155,6 @@ function DeleteImage(id) {
         url: `/api/delete_welcome_screen_image/${id}`,
         contentType: 'application/json',
         success: data => {
-          let socketImg = io();
-          socketImg.emit('UpdateOnDatabase');
-
           Swal.fire({
             title: 'Deleted!',
             text: 'Welcome Screen deleted successfully!',
@@ -166,6 +162,8 @@ function DeleteImage(id) {
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
           }).then(result => {
+            let socketImg = io();
+            socketImg.emit('UpdateOnDatabase');
             window.location.href = "/welcome_screens_list"
           })
         },
