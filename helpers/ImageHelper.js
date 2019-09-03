@@ -91,7 +91,7 @@ module.exports = {
     
     ScreenImage.find({_id: req.params.id}).deleteOne().exec((err, screenImage) => {
       res.status(200).send(screenImage);
-      GlobalHelpers.EnableDefaultVideoIfNoImages();
+      GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
     });
   },
 

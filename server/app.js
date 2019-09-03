@@ -444,13 +444,6 @@ app.get('/new_welcome_screen_video', Auth, (req, res) => {
         });
       });
     });
-
-    // res.render('new_welcome_screen_video', {
-    //   header: true,
-    //   isAdmin: req.user.isAdmin,
-    //   user: req.user,
-    //   title: 'New video'
-    // });
   }    
 });
 
@@ -462,7 +455,7 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
   
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UploadVideo(req);
-
+    
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
       SetUpCron(GlobalHelpers.GetDateArray(screenVideo.startDate), GlobalHelpers.GetDateArray(screenVideo.endDate));
