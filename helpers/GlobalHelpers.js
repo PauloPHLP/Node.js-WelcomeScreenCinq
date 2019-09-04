@@ -110,6 +110,14 @@ module.exports = {
     });
   },
 
+  async RetriveProgrammedVideos () {
+    return await ScreenVideo.find({activated: 'programmed'});
+  },
+
+  async RetriveProgrammedImages () {
+    return await ScreenImage.find({activated: 'programmed'});
+  },
+
   SetProgrammedWS: () => {
     module.exports.SetProgrammedVideo();
     module.exports.SetProgrammedImage();
@@ -312,4 +320,16 @@ module.exports = {
       return false;
     return true;
   }
+}
+
+async function GetProgrammedVideosDates() {
+  const dates = await ScreenVideo.find({activated: 'programmed'});
+
+  return dates;
+}
+
+async function GetProgrammedImagesDates() {
+  const dates = await ScreenImage.find({activated: 'programmed'});
+  
+  return dates;
 }
