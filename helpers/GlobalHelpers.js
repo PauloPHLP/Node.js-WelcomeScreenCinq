@@ -111,11 +111,11 @@ module.exports = {
   },
 
   async RetriveProgrammedVideos () {
-    return await ScreenVideo.find({activated: 'programmed'});
+    return await ScreenVideo.find();
   },
 
   async RetriveProgrammedImages () {
-    return await ScreenImage.find({activated: 'programmed'});
+    return await ScreenImage.find();
   },
 
   SetProgrammedWS: () => {
@@ -320,16 +320,4 @@ module.exports = {
       return false;
     return true;
   }
-}
-
-async function GetProgrammedVideosDates() {
-  const dates = await ScreenVideo.find({activated: 'programmed'});
-
-  return dates;
-}
-
-async function GetProgrammedImagesDates() {
-  const dates = await ScreenImage.find({activated: 'programmed'});
-  
-  return dates;
 }

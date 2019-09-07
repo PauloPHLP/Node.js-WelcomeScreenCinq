@@ -108,9 +108,6 @@ function SetUpCron(startDate, endDate) {
 
 /* #region HTTP methods */
 app.get('/', (req, res) => {
-  GlobalHelpers.EnableDisableProgrammedWs();
-  GlobalHelpers.SetProgrammedWS();
-
   ScreenImage.find().exec((err, docImage) => {
     ScreenVideo.find().exec((err, docVideo) => {
       if (err) 
@@ -276,9 +273,6 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
-  GlobalHelpers.EnableDisableProgrammedWs();
-  GlobalHelpers.SetProgrammedWS();
-
   if (!req.user) { 
     return res.render('login', {
       header: false,
@@ -334,9 +328,6 @@ app.post('/api/new_welcome_screen_image/:startDate/:endDate/:isProgrammed', (req
     for (let i = 1; i < 3; i++) {
       companies.push(req.body['company' + i.toString()]);
     }
-
-    checkDates.startDate = '04-9-19 19:16';
-    checkDates.endDate = '04-9-19 19:17';
 
     screenImage.companies = companies;
     screenImage.guestsNames = guests;
@@ -463,8 +454,8 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UploadVideo(req);
 
-    // screenVideo.startDate = '04-9-19 17:44';
-    // screenVideo.endDate = '04-9-19 17:45';
+    screenVideo.startDate = '06-9-19 21:27';
+    screenVideo.endDate = '06-9-19 21:28';
     
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
@@ -545,12 +536,14 @@ http.listen(config.PORT, '0.0.0.0', () => {
   
   GlobalHelpers.RetriveProgrammedVideos().then(video => {
     video.forEach(vid => {
-      SetUpCron(GlobalHelpers.GetDateArray(vid.startDate), GlobalHelpers.GetDateArray(vid.endDate));
+      if (vid.startDate != null && vid.endDate != null)
+        SetUpCron(GlobalHelpers.GetDateArray(vid.startDate), GlobalHelpers.GetDateArray(vid.endDate));
     });
   });
   GlobalHelpers.RetriveProgrammedImages().then(image => {
     image.map(img => {
-      SetUpCron(GlobalHelpers.GetDateArray(img.startDate), GlobalHelpers.GetDateArray(img.endDate));
+      if (img.startDate != null && img.endDate != null)
+        SetUpCron(GlobalHelpers.GetDateArray(img.startDate), GlobalHelpers.GetDateArray(img.endDate));
     });
   });
 });
