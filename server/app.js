@@ -454,8 +454,8 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UploadVideo(req);
 
-    screenVideo.startDate = '06-9-19 21:27';
-    screenVideo.endDate = '06-9-19 21:28';
+    screenVideo.startDate = '09-9-19 16:34';
+    screenVideo.endDate = '09-9-19 16:35';
     
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
