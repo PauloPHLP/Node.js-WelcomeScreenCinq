@@ -18,12 +18,20 @@
             <div id="ws_list" class="table-wrapper">
               <div class="table-title">
                 <div class="row">
-                  <div class="col-sm-6 tab-title">
+                  <div class="col-6 tab-title">
                     <h3>Visitor pages list</h3>
                   </div>
-                  <button type="button" class="btn btn-default ml-auto margin-align" onclick="window.location.href='/new_welcome_screen_image'">
-                    <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="left" title="Click here to add a new visitor page">Add new visitor page &nbsp<i class="material-icons">add_photo_alternate</i></i>
-                  </button>
+                  <div class="col-6 d-flex justify-content-end">
+                    <button id="delete-all-image" type="button" class="btn btn-danger">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to delete the selected visitor pages">Delete &nbsp<i class="material-icons">delete</i></i>
+                    </button>
+                    <button id="disable-all-image" type="button" class="btn btn-cancel">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to disable the selected visitor pages">Disable &nbsp<i class="material-icons">desktop_access_disabled</i></i>
+                    </button>
+                    <button id="add-new-image" type="button" class="btn btn-default" onclick="window.location.href='/new_welcome_screen_image'">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to add a new visitor page">Add new visitor page &nbsp<i class="material-icons">add_photo_alternate</i></i>
+                    </button>
+                  </div>
                 </div>
               </div>
               <table class="table table-bordered text-center">
@@ -33,6 +41,18 @@
                     <th class="text-center releway-font">Last update</th>
                     <th class="text-center releway-font">Is enable?</th>
                     <th class="text-center releway-font">Actions</th>
+                    <th class="text-center releway-font">
+                      <div class="page">
+                        <div class="page__toggle">
+                          <label class="toggle">
+                            <input id="image_select_all" class="toggle__input" type="checkbox">
+                            <span class="toggle__label">
+                              <span class="toggle__text">Select</span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -47,6 +67,18 @@
                         <a href="/edit_welcome_screen_image/{{this.id}}" class="edit" title="Edit this visitor page" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                         <a class="deleteImage" title="Delete this visitor page" data-toggle="tooltip" onclick="DeleteImage('{{this.id}}');"><i class="material-icons delete-icon">&#xE872;</i></a>
                       </td>
+                      <td>
+                        <div class="page">
+                          <div class="page__toggle">
+                            <label class="toggle">
+                              <input id="image_{{this.id}}" class="toggle__input" type="checkbox">
+                              <span class="toggle__label">
+                                <span class="toggle__text"></span>
+                              </span>
+                            </label>
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   {{/each}}
                 </tbody>
@@ -57,12 +89,20 @@
             <div id="ws_list" class="table-wrapper">
               <div class="table-title">
                 <div class="row">
-                  <div class="col-sm-6 tab-title">
+                  <div class="col-6 tab-title">
                     <h3>Videos list</h3>
                   </div>
-                  <button type="button" class="btn btn-default ml-auto margin-align" onclick="window.location.href='/new_welcome_screen_video'">
-                    <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="left" title="Click here to add a new video">Add new video &nbsp<i class="material-icons">video_call</i></i>
-                  </button>
+                  <div class="col-6 d-flex justify-content-end">
+                    <button id="delete-all-video" type="button" class="btn btn-danger">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to delete the selected video">Delete &nbsp<i class="material-icons">delete</i></i>
+                    </button>
+                    <button id="disable-all-video" type="button" class="btn btn-cancel">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to disable the selected video">Disable &nbsp<i class="material-icons">desktop_access_disabled</i></i>
+                    </button>
+                    <button id="add-new-video" type="button" class="btn btn-default" onclick="window.location.href='/new_welcome_screen_video'">
+                      <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to add a new visitor page">Add new visitor video &nbsp<i class="material-icons">video_call</i></i>
+                    </button>
+                  </div>
                 </div>
               </div>
               <table class="table table-bordered text-center">
@@ -72,6 +112,18 @@
                     <th class="text-center releway-font">Last update</th>
                     <th class="text-center releway-font">Is enable?</th>
                     <th class="text-center releway-font">Actions</th>
+                    <th class="text-center releway-font">
+                      <div class="page">
+                        <div class="page__toggle">
+                          <label class="toggle">
+                            <input id="video_select_all" class="toggle__input" type="checkbox">
+                            <span class="toggle__label">
+                              <span class="toggle__text">Select</span>
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

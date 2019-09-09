@@ -95,6 +95,10 @@ table.table td .add {
   display: none;
 }
 
+.table td, .table th {
+  vertical-align: middle !important;
+}
+
 nav > .nav.nav-tabs {
   margin-top: 5%;
   border: none;
@@ -177,6 +181,129 @@ input[type="checkbox"].switch_btn:checked:after {
 
 .tab-tible-video:hover {
   border-top-right-radius: 10px;
+}
+
+.toggle__label:before, .toggle__label:after{
+  content: "";
+  box-sizing: border-box;  
+  width: 1em;
+  height: 1em;
+  font-size: var(--uiToggleSize);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.toggle__label:before {
+  border: var(--uiToggleBorderWidth) solid var(--uiToggleColor);
+  z-index: 2;
+}
+
+.toggle__input:disabled ~ .toggle__label:before {
+  border-color: var(--uiToggleDisabledColor);
+}
+
+.toggle__input:focus ~ .toggle__label:before {
+  box-shadow: 0 0 0 2px var(--uiToggleBgColor), 0 0 0px 4px var(--uiToggleColor);
+}
+
+.toggle__input:not(:disabled):checked:focus ~ .toggle__label:after {
+  box-shadow: 0 0 0 2px var(--uiToggleBgColor), 0 0 0px 4px var(--uiToggleColor);
+}
+
+.toggle__input:not(:disabled) ~ .toggle__label:after {
+  background-color: var(--uiToggleColor);
+  opacity: 0;
+}
+
+.toggle__input:not(:disabled):checked ~ .toggle__label:after {
+  opacity: 1;
+}
+
+.toggle__text:before {
+  content: "";
+  box-sizing: border-box;
+  width: 0;
+  height: 0;
+  font-size: var(--uiToggleSize);
+  border-left-width: 0;
+  border-bottom-width: 0;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-color: var(--uiToggleArrowColor);
+  position: absolute;
+  top: .5428em;
+  left: .2em;
+  z-index: 3;
+  transform-origin: left top;
+  transform: rotate(-40deg) skew(10deg);
+}
+
+.toggle__input:not(:disabled):checked ~ .toggle__label .toggle__text:before {
+  width: .5em;
+  height: .25em;
+  border-left-width: var(--uiToggleArrowWidth);
+  border-bottom-width: var(--uiToggleArrowWidth);
+  will-change: width, height;
+  transition: width .1s ease-out .2s, height .2s ease-out;
+}
+
+.toggle__label:before, .toggle__label:after {
+  border-radius: 2px;
+}
+
+.toggle__input:not(:disabled) ~ .toggle__label:before,
+.toggle__input:not(:disabled) ~ .toggle__label:after {
+  opacity: 1;
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform .2s ease-out;
+}
+
+.toggle__input:not(:disabled) ~ .toggle__label:before {
+  transform: rotateY(0deg);
+  transition-delay: .2s;
+}
+
+.toggle__input:not(:disabled) ~ .toggle__label:after {
+  transform: rotateY(90deg);
+}
+
+.toggle__input:not(:disabled):checked ~ .toggle__label:before {
+  transform: rotateY(-90deg);
+  transition-delay: 0s;
+}
+
+.toggle__input:not(:disabled):checked ~ .toggle__label:after {
+  transform: rotateY(0deg);
+  transition-delay: .2s;
+}
+
+.toggle__text:before {
+  opacity: 0;
+}
+
+.toggle__input:not(:disabled):checked ~ .toggle__label .toggle__text:before {
+  opacity: 1;
+  transition: opacity .1s ease-out .3s, width .1s ease-out .5s, height .2s ease-out .3s;
+}
+
+.navbar-toggler:focus {
+  outline: none
+}
+
+.switch_label:hover, .switch_label_avai:hover {
+  cursor: pointer;
+}
+
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.cd-slider-nav .nav-item.selected .nav-link,
+.cd-slider-nav .nav-item .nav-link:hover,
+.cd-slider-nav .nav-item .nav-link:focus {	
+	background-color: #EE9658;
 }
 
 .border-shadow {
@@ -337,14 +464,6 @@ input[type="checkbox"].switch_btn:checked:after {
   border-radius: 10px;
 }
 
-.navbar-toggler:focus {
-  outline: none
-}
-
-.switch_label:hover, .switch_label_avai:hover {
-  cursor: pointer;
-}
-
 .check-input {
   vertical-align: middle;
   top: -2px;
@@ -379,10 +498,6 @@ input[type="checkbox"].switch_btn:checked:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-.form-signin .form-control:focus {
-  z-index: 2;
 }
 
 .form-control {
@@ -445,12 +560,6 @@ input[type="checkbox"].switch_btn:checked:after {
 .btn-register {
   margin-top: 10px;
   background-color: #002C4F;
-}
-
-.cd-slider-nav .nav-item.selected .nav-link,
-.cd-slider-nav .nav-item .nav-link:hover,
-.cd-slider-nav .nav-item .nav-link:focus {	
-	background-color: #EE9658;
 }
 
 .nav-item {
@@ -584,18 +693,6 @@ input[type="checkbox"].switch_btn:checked:after {
   border: 1px solid #FFFFFF;
 }
 
-.current_image, .current_image_with_nav, #background_image {
-  width: 100%;
-  height: 100%;
-  left: 0%;
-  z-index: -1;
-  position: fixed;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .current_image_vp {
   width: 100%;
   height: 100%;
@@ -641,11 +738,11 @@ input[type="checkbox"].switch_btn:checked:after {
 }
 
 .tab-content{
-  background:#FDFDFD;
-  line-height: 25px;
+  background: #FDFDFD;
+  line-height: 17px;
   border: 1px solid #DDDDDD;
-  border-top:5px solid #EE9658;
-  border-bottom:5px solid #EE9658;
+  border-top: 5px solid #EE9658;
+  border-bottom: 5px solid #EE9658;
   padding: 30px 25px;
 }
 
@@ -693,6 +790,58 @@ input[type="checkbox"].switch_btn:checked:after {
   animation: loader-inner 2s infinite ease-in;
 }
 
+.toggle {
+  --uiToggleSize: var(--toggleSize, 20px);
+  --uiToggleIndent: var(--toggleIndent, .4em);
+  --uiToggleBorderWidth: var(--toggleBorderWidth, 2px);
+  --uiToggleColor: var(--toggleColor, #000);
+  --uiToggleDisabledColor: var(--toggleDisabledColor, #868e96);
+  --uiToggleBgColor: var(--toggleBgColor, #fff);
+  --uiToggleArrowWidth: var(--toggleArrowWidth, 2px);
+  --uiToggleArrowColor: var(--toggleArrowColor, #fff);
+  display: inline-block;
+  position: relative;
+}
+
+.toggle__input {
+  position: absolute;
+  left: -99999px;
+}
+
+.toggle__label {
+  display: inline-flex;
+  cursor: pointer;
+  min-height: var(--uiToggleSize);
+  padding-left: calc(var(--uiToggleSize) + var(--uiToggleIndent));
+}
+
+.toggle__text {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.toggle {
+  --toggleColor: #EE9658;
+  --toggleBgColor: #EE9658;
+  --toggleSize: 15px;
+  padding: 0px;
+  margin-top: 8px;
+  margin-bottom: 0px;
+  margin-left: 4px;
+}
+
+.current_image, .current_image_with_nav, #background_image {
+  width: 100%;
+  height: 100%;
+  left: 0%;
+  z-index: -1;
+  position: fixed;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 #new_welcome_screen_form {
   margin-top: 40px;
   margin-bottom: 40px;
@@ -718,4 +867,12 @@ input[type="checkbox"].switch_btn:checked:after {
 #nav-toggle-button:hover, #nav-toggle-button:focus {
   background-color: #EE9658;
   border-color: #EE9658;
+}
+
+#disable-all-image, #disable-all-video {
+  margin-left: 10px;
+}
+
+#add-new-image, #add-new-video {
+  margin-left: 10px;
 }
