@@ -110,17 +110,30 @@ module.exports = {
     });
   },
 
+  async RetriveProgrammedVideos () {
+    return await ScreenVideo.find();
+  },
+
+  async RetriveProgrammedImages () {
+    return await ScreenImage.find();
+  },
+
   SetProgrammedWS: () => {
     module.exports.SetProgrammedVideo();
     module.exports.SetProgrammedImage();
   },  
 
   SetProgrammedVideo: () => {
-    ScreenVideo.find().then(doc => {
-      doc.forEach(video => {
-        if (video.activated === 'programmed' && module.exports.CheckTime(video.startDate, video.endDate) === true) {
-          module.exports.EnableCurrentAndDisableAll(video._id);
-        } else if (video.activated === 'true' && module.exports.CheckTime(video.startDate, video.endDate) === false) {
+    ScreenVideo.find().then(docVideo => {
+      module.exports.EnableDisableImages("false");
+      docVideo.forEach(video => {
+        if (video.activated === 'programmed' && module.exports.CheckProgrammedDate(video) === true) {
+          docVideo.forEach(vid => {
+            if (vid.activated === 'true')
+              ScreenVideo.updateOne({_id: vid._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+          });
+          ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'true'}}, (err, screenVideo) => {});
+        } else if (video.activated === 'true' && module.exports.CheckProgrammedDate(video) === false) {
           ScreenVideo.updateOne({_id: video._id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
           module.exports.EnableDisableDefaultVideoIfNoWS();
         }
@@ -171,12 +184,13 @@ module.exports = {
 
   CheckTime: (startDate, endDate) => {
     const dateNow = module.exports.GetDateEnrollFormat();
+    
     if (dateNow >= startDate && dateNow < endDate)
       return true;
     else if (dateNow >= endDate)
       return false;
     else 
-      return null
+      return null;
   },
 
   GetDate: () => {
@@ -202,9 +216,9 @@ module.exports = {
   CheckProgrammedDate: video => {
     const dateNow = module.exports.FormatDate(new Date());
 
-    if (dateNow >= module.exports.FormatDate(video.startDate) && dateNow <= module.exports.FormatDate(video.endDate)) {
+    if (dateNow >= module.exports.FormatDate(video.startDate) && dateNow < module.exports.FormatDate(video.endDate)) {
       return true;
-    } else if (module.exports.FormatDate(video.endDate) < dateNow) {
+    } else if (dateNow >= module.exports.FormatDate(video.endDate)) {
       return false;
     } else
       return null;

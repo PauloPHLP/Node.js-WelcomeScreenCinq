@@ -273,8 +273,6 @@ app.get('/welcome_screen_preview', Auth, (req, res) => {
 });
 
 app.get('/welcome_screens_list', Auth, (req, res) => {
-  GlobalHelpers.EnableDisableProgrammedWs();
-
   if (!req.user) { 
     return res.render('login', {
       header: false,
@@ -455,6 +453,9 @@ app.post('/api/new_welcome_screen_video/:startDate/:endDate/:isProgrammed', (req
   
   upload(req, res, function(err) {
     const screenVideo = VideoHelper.UploadVideo(req);
+
+    screenVideo.startDate = '09-9-19 16:34';
+    screenVideo.endDate = '09-9-19 16:35';
     
     screenVideo.save((err, doc) => {
       GlobalHelpers.EnableDisableProgrammedWs();
@@ -532,5 +533,18 @@ app.delete('/api/delete_welcome_screen_video/:id', (req, res) => {
 /* #region PORT listener */
 http.listen(config.PORT, '0.0.0.0', () => {
   console.log(`Welcome Screen Cinq running on port ${config.PORT}`);
+  
+  GlobalHelpers.RetriveProgrammedVideos().then(video => {
+    video.forEach(vid => {
+      if (vid.startDate != null && vid.endDate != null)
+        SetUpCron(GlobalHelpers.GetDateArray(vid.startDate), GlobalHelpers.GetDateArray(vid.endDate));
+    });
+  });
+  GlobalHelpers.RetriveProgrammedImages().then(image => {
+    image.map(img => {
+      if (img.startDate != null && img.endDate != null)
+        SetUpCron(GlobalHelpers.GetDateArray(img.startDate), GlobalHelpers.GetDateArray(img.endDate));
+    });
+  });
 });
 /* #endregion */
