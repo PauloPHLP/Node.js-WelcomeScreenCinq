@@ -22,10 +22,10 @@
                     <h3>Visitor pages list</h3>
                   </div>
                   <div class="col-6 d-flex justify-content-end">
-                    <button id="delete-all-image" type="button" class="btn btn-danger">
+                    <button id="delete-all-image" type="button" class="btn btn-danger" onclick="deleteAllImages()">
                       <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to delete the selected visitor pages">Delete &nbsp<i class="material-icons">delete</i></i>
                     </button>
-                    <button id="disable-all-image" type="button" class="btn btn-cancel">
+                    <button id="disable-all-image" type="button" class="btn btn-cancel" onclick="disableAllImages()">
                       <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to disable the selected visitor pages">Disable &nbsp<i class="material-icons">desktop_access_disabled</i></i>
                     </button>
                     <button id="add-new-image" type="button" class="btn btn-default" onclick="window.location.href='/new_welcome_screen_image'">
@@ -45,7 +45,7 @@
                       <div class="page">
                         <div class="page__toggle">
                           <label class="toggle">
-                            <input id="image_select_all" class="toggle__input" type="checkbox">
+                            <input id="image_select_all" class="toggle__input" type="checkbox" onclick="selectAllImages(this)">
                             <span class="toggle__label">
                               <span class="toggle__text">Select</span>
                             </span>
@@ -71,7 +71,7 @@
                         <div class="page">
                           <div class="page__toggle">
                             <label class="toggle">
-                              <input id="image_{{this.id}}" class="toggle__input" type="checkbox">
+                              <input id="image_{{this.id}}" name="ws_image" class="toggle__input" type="checkbox">
                               <span class="toggle__label">
                                 <span class="toggle__text"></span>
                               </span>
@@ -93,10 +93,10 @@
                     <h3>Videos list</h3>
                   </div>
                   <div class="col-6 d-flex justify-content-end">
-                    <button id="delete-all-video" type="button" class="btn btn-danger">
+                    <button id="delete-all-video" type="button" class="btn btn-danger" onclick="deleteAllVideos()">
                       <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to delete the selected video">Delete &nbsp<i class="material-icons">delete</i></i>
                     </button>
-                    <button id="disable-all-video" type="button" class="btn btn-cancel">
+                    <button id="disable-all-video" type="button" class="btn btn-cancel" onclick="disableAllVideos()">
                       <i class="fa fa-plus releway-font btn-add-page" data-toggle="tooltip" data-placement="top" title="Click here to disable the selected video">Disable &nbsp<i class="material-icons">desktop_access_disabled</i></i>
                     </button>
                     <button id="add-new-video" type="button" class="btn btn-default" onclick="window.location.href='/new_welcome_screen_video'">
@@ -116,7 +116,7 @@
                       <div class="page">
                         <div class="page__toggle">
                           <label class="toggle">
-                            <input id="video_select_all" class="toggle__input" type="checkbox">
+                            <input id="video_select_all" class="toggle__input" type="checkbox" onclick="selectAllVideos(this)">
                             <span class="toggle__label">
                               <span class="toggle__text">Select</span>
                             </span>
@@ -150,5 +150,8 @@
       window.location = window.location + '#loaded';
       window.location.reload();
     }
+
+    getAllImagesCheckboxes();
+    getAllVideosCheckboxes();
   }
 </script>

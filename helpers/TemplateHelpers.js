@@ -76,7 +76,7 @@ module.exports = {
               <div class="page">
                 <div class="page__toggle">
                   <label class="toggle">
-                    <input id="video_${video.id}" class="toggle__input" type="checkbox">
+                    <input id="video_${video.id}" name="ws_video" class="toggle__input" type="checkbox">
                     <span class="toggle__label">
                       <span class="toggle__text"></span>
                     </span>
@@ -101,7 +101,7 @@ module.exports = {
                 <div class="page">
                   <div class="page__toggle">
                     <label class="toggle">
-                      <input id="video_${video.id}" class="toggle__input" type="checkbox">
+                      <input id="video_${video.id}" name="ws_video" class="toggle__input" type="checkbox">
                       <span class="toggle__label">
                         <span class="toggle__text"></span>
                       </span>

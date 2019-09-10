@@ -325,5 +325,9 @@ module.exports = {
     if (newDate.endDate > oldDate.startDate && newDate.endDate < oldDate.endDate)
       return false;
     return true;
+  },
+
+  SplitIds: idString => {
+    return idString.split(',');
   }
 }

@@ -8,9 +8,9 @@ const bcrypt = require('bcrypt');
 const cron = require('cron').CronJob;
 const config = require('./config/config').get(process.env.NODE_ENV);
 const GlobalHelpers = require('../helpers/GlobalHelpers');
-const HBSHelpers = require('./../helpers/HBSHelpers');
-const ImageHelper = require('./../helpers/ImageHelper');
-const VideoHelper = require('./../helpers/VideoHelper');
+const HBSHelpers = require('../helpers/HBSHelpers');
+const ImageHelper = require('../helpers/ImageHelper');
+const VideoHelper = require('../helpers/VideoHelper');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
@@ -423,6 +423,14 @@ app.delete('/api/delete_welcome_screen_image/:id', (req, res) => {
   ImageHelper.DeleteSingleWSImage(req, res);
 });
 
+app.delete('/api/delete_selected_images/:imagesToDelete', (req, res) => {
+  ImageHelper.DeleteManyWSImages(req, res);
+});
+
+app.put('/api/disable_selected_images/:imagesToDisable', (req, res) => {
+  ImageHelper.DisableManyWSImages(req, res);
+})
+
 app.get('/new_welcome_screen_video', Auth, (req, res) => {
   if (!req.user) { 
     return res.render('login', {
@@ -525,6 +533,14 @@ app.put('/api/update_welcome_screen_video/:id/:oldVideoName/:currentVideo/:isPro
 app.delete('/api/delete_welcome_screen_video/:id', (req, res) => { 
   VideoHelper.DeleteSingleWSVideo(req, res);
 });
+
+app.delete('/api/delete_selected_videos/:videosToDelete', (req, res) => {
+  VideoHelper.DeleteManyWSVideos(req, res);
+});
+
+app.put('/api/disable_selected_videos/:videosToDisable', (req, res) => {
+  VideoHelper.DisableManyWSVideos(req, res);
+})
 /* #endregion */
 
 /* #region PORT listener */

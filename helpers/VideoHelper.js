@@ -95,6 +95,14 @@ module.exports = {
     });
   },
 
+  DeleteVideoById: id => {
+    ScreenVideo.findById(id, (err, screenVideo) => {
+      if (screenVideo.videoName != 'default_video.mp4') {
+        fileStream.unlink('./uploads/' + screenVideo.videoName, err => {});
+      }
+    });
+  },
+
   DeleteSingleWSVideo: (req, res) => {
     module.exports.DeleteSingleVideo(req);
   
@@ -102,6 +110,31 @@ module.exports = {
       res.status(200).send(screenVideo);
       GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
     });
+  },
+
+  DeleteManyWSVideos: (req, res) => {
+    const videosToDelete = GlobalHelpers.SplitIds(req.params.videosToDelete);
+    
+    videosToDelete.map(id => {
+      module.exports.DeleteVideoById(id);
+      
+      ScreenVideo.find({_id: id}).deleteOne().exec((err, screenVideo) => {
+        GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
+      });
+    });
+
+    res.status(200).send('OK');
+  },
+
+  DisableManyWSVideos: (req, res) => {
+    const videosToDisable = GlobalHelpers.SplitIds(req.params.videosToDisable);
+    
+    videosToDisable.map(id => {
+      ScreenVideo.updateOne({_id: id}, {$set: {activated: 'false'}}, (err, screenVideo) => {});
+      GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
+    });
+
+    res.status(200).send('OK');
   },
   
   UpdateVideo: req => {
