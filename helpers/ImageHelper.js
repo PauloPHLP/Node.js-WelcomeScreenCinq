@@ -86,6 +86,14 @@ module.exports = {
     });
   },
 
+  DeleteImageById: id => {
+    ScreenImage.findById(id, (err, screenImage) => {
+      if (screenImage.imageName != 'default_image.jpg') {
+        fileStream.unlink('./uploads/' + screenImage.imageName, err => {});
+      }
+    });
+  },
+
   DeleteSingleWSImage: (req, res) => {
     module.exports.DeleteSingleImage(req);
     
@@ -93,6 +101,31 @@ module.exports = {
       res.status(200).send(screenImage);
       GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
     });
+  },
+
+  DeleteManyWSImages: (req, res) => {
+    const imagesToDelete = GlobalHelpers.SplitIds(req.params.imagesToDelete);
+    
+    imagesToDelete.map(id => {
+      module.exports.DeleteImageById(id);
+      
+      ScreenImage.find({_id: id}).deleteOne().exec((err, screenImage) => {
+        GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
+      });
+    });
+
+    res.status(200).send('OK');
+  },
+
+  DisableManyWSImages: (req, res) => {
+    const imagesToDisable = GlobalHelpers.SplitIds(req.params.imagesToDisable);
+    
+    imagesToDisable.map(id => {
+      ScreenImage.updateOne({_id: id}, {$set: {activated: 'false'}}, (err, screenImage) => {});
+      GlobalHelpers.EnableDisableDefaultVideoIfNoWS();
+    });
+
+    res.status(200).send('OK');
   },
 
   UpdateImage: req => {

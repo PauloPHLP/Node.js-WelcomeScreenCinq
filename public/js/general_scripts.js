@@ -61,6 +61,175 @@ function validateVideoFileType(isOnEdit) {
   }   
 }
 
+function DeleteVideo(id) {
+  Swal.fire({
+    title: 'Are you sure about this?',
+    text: 'You will not be able to recover this video!',
+    type: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    confirmButtonColor: '#EE9658',
+    cancelButtonText: 'No, keep it!',
+    cancelButtonColor: '#F50000'
+  }).then(result => {
+    if (result.value) {
+      $.ajax({
+        type:'DELETE',
+        url: `/api/delete_welcome_screen_video/${id}`,
+        contentType: 'application/json',
+        success: data => {
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Video deleted successfully!',
+            type: 'success',
+            confirmButtonText: 'OK, keep going!',
+            confirmButtonColor: '#EE9658'
+          }).then(result => {
+            let socketVid = io();
+            socketVid.emit('UpdateOnDatabase');
+            window.location.href = "/welcome_screens_list"
+          });
+        },
+        error: () => {
+          Swal.fire ({
+            title: 'Sorry',
+            text: 'An issue has occurred :(',
+            type: 'error',
+            confirmButtonColor: '#EE9658'
+          });
+        }
+      });
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire({
+        title: 'Cancelled',
+        text: 'This video is safe :)',
+        type: 'error',
+        confirmButtonColor: '#EE9658'
+      });
+    }
+  });
+}
+
+function deleteAllVideos() {
+  const videos = getCheckedVideos();
+
+  if (videos.length > 0) {
+    Swal.fire({
+      title: 'Are you sure about this?',
+      text: 'You will not be able to recover the selected videos!',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: "Yes, let's delete!",
+      confirmButtonColor: '#EE9658',
+      cancelButtonText: "No, let's keep!",
+      cancelButtonColor: '#F50000'
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          type:'DELETE',
+          url: `/api/delete_selected_videos/${videos}`,
+          contentType: 'application/json',
+          success: data => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Videos deleted successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              let socketImg = io();
+              socketImg.emit('UpdateOnDatabase');
+              window.location.href = "/welcome_screens_list"
+            })
+          },
+          error: () => {
+            Swal.fire ({
+              title: 'Sorry',
+              text: 'An issue has occurred :(',
+              type: 'error',
+              confirmButtonColor: '#EE9658'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'These videos are safe :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      title: 'Nothing was selected',
+      text: 'Please, select something to keep going :)',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+  }
+}
+
+function disableAllVideos() {
+  const videos = getCheckedVideos();
+
+  if (videos.length > 0) {
+    Swal.fire({
+      title: 'Are you sure about this?',
+      text: 'This will disable everything, including the scheduled videos!',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: "Yes, let's disable!",
+      confirmButtonColor: '#EE9658',
+      cancelButtonText: "No, let's keep!",
+      cancelButtonColor: '#F50000'
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          type:'PUT',
+          url: `/api/disable_selected_videos/${videos}`,
+          contentType: 'application/json',
+          success: data => {
+            Swal.fire({
+              title: 'Disabled!',
+              text: 'Videos disabled successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              let socketImg = io();
+              socketImg.emit('UpdateOnDatabase');
+              window.location.href = "/welcome_screens_list"
+            })
+          },
+          error: () => {
+            Swal.fire ({
+              title: 'Sorry',
+              text: 'An issue has occurred :(',
+              type: 'error',
+              confirmButtonColor: '#EE9658'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'These videos are safe :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      title: 'Nothing was selected',
+      text: 'Please, select something to keep going :)',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+  }
+}
+
 function validateImageFileType(isOnEdit) {
   let fileName = document.getElementById("image").value;
   let idxDot = fileName.lastIndexOf(".") + 1;
@@ -89,59 +258,10 @@ function validateImageFileType(isOnEdit) {
   }   
 }
 
-function DeleteVideo(id) {
-  Swal.fire({
-    title: 'Are you sure about this?',
-    text: 'You will not be able to recover this Welcome Screen!',
-    type: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete it!',
-    confirmButtonColor: '#EE9658',
-    cancelButtonText: 'No, keep it!',
-    cancelButtonColor: '#F50000'
-  }).then(result => {
-    if (result.value) {
-      $.ajax({
-        type:'DELETE',
-        url: `/api/delete_welcome_screen_video/${id}`,
-        contentType: 'application/json',
-        success: data => {
-          Swal.fire({
-            title: 'Deleted!',
-            text: 'Welcome Screen deleted successfully!',
-            type: 'success',
-            confirmButtonText: 'OK, keep going!',
-            confirmButtonColor: '#EE9658'
-          }).then(result => {
-            let socketVid = io();
-            socketVid.emit('UpdateOnDatabase');
-            window.location.href = "/welcome_screens_list"
-          });
-        },
-        error: () => {
-          Swal.fire ({
-            title: 'Sorry',
-            text: 'An issue has occurred :(',
-            type: 'error',
-            confirmButtonColor: '#EE9658'
-          });
-        }
-      });
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire({
-        title: 'Cancelled',
-        text: 'This Welcome Screen is safe :)',
-        type: 'error',
-        confirmButtonColor: '#EE9658'
-      });
-    }
-  });
-}
-
 function DeleteImage(id) {
   Swal.fire({
     title: 'Are you sure about this?',
-    text: 'You will not be able to recover this Welcome Screen!',
+    text: 'You will not be able to recover this visitor page!',
     type: 'question',
     showCancelButton: true,
     confirmButtonText: 'Yes, delete it!',
@@ -157,7 +277,7 @@ function DeleteImage(id) {
         success: data => {
           Swal.fire({
             title: 'Deleted!',
-            text: 'Welcome Screen deleted successfully!',
+            text: 'Visitor page deleted successfully!',
             type: 'success',
             confirmButtonText: 'OK, keep going!',
             confirmButtonColor: '#EE9658'
@@ -179,12 +299,132 @@ function DeleteImage(id) {
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire({
         title: 'Cancelled',
-        text: 'This Welcome Screen is safe :)',
+        text: 'This visitor page is safe :)',
         type: 'error',
         confirmButtonColor: '#EE9658'
       });
     }
   });
+}
+
+function deleteAllImages() {
+  const images = getCheckedImages();
+
+  if (images.length > 0) {
+    Swal.fire({
+      title: 'Are you sure about this?',
+      text: 'You will not be able to recover the selected visitor pages!',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: "Yes, let's delete!",
+      confirmButtonColor: '#EE9658',
+      cancelButtonText: "No, let's keep!",
+      cancelButtonColor: '#F50000'
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          type:'DELETE',
+          url: `/api/delete_selected_images/${images}`,
+          contentType: 'application/json',
+          success: data => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Visitor pages deleted successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              let socketImg = io();
+              socketImg.emit('UpdateOnDatabase');
+              window.location.href = "/welcome_screens_list"
+            })
+          },
+          error: () => {
+            Swal.fire ({
+              title: 'Sorry',
+              text: 'An issue has occurred :(',
+              type: 'error',
+              confirmButtonColor: '#EE9658'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'These visitor pages are safe :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      title: 'Nothing was selected',
+      text: 'Please, select something to keep going :)',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+  }
+}
+
+function disableAllImages() {
+  const images = getCheckedImages();
+
+  if (images.length > 0) {
+    Swal.fire({
+      title: 'Are you sure about this?',
+      text: 'This will disable everything, including the scheduled visitors pages!',
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonText: "Yes, let's disable!",
+      confirmButtonColor: '#EE9658',
+      cancelButtonText: "No, let's keep!",
+      cancelButtonColor: '#F50000'
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          type:'PUT',
+          url: `/api/disable_selected_images/${images}`,
+          contentType: 'application/json',
+          success: data => {
+            Swal.fire({
+              title: 'Disabled!',
+              text: 'Visitor pages disabled successfully!',
+              type: 'success',
+              confirmButtonText: 'OK, keep going!',
+              confirmButtonColor: '#EE9658'
+            }).then(result => {
+              let socketImg = io();
+              socketImg.emit('UpdateOnDatabase');
+              window.location.href = "/welcome_screens_list"
+            })
+          },
+          error: () => {
+            Swal.fire ({
+              title: 'Sorry',
+              text: 'An issue has occurred :(',
+              type: 'error',
+              confirmButtonColor: '#EE9658'
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          title: 'Cancelled',
+          text: 'These visitor pages are safe :)',
+          type: 'error',
+          confirmButtonColor: '#EE9658'
+        });
+      }
+    });
+  } else {
+    Swal.fire({
+      title: 'Nothing was selected',
+      text: 'Please, select something to keep going :)',
+      type: 'error',
+      confirmButtonColor: '#EE9658'
+    });
+  }
 }
 
 function AddAndRemoveClassConditional(field, classOne, classTwo) {
@@ -422,4 +662,110 @@ function CheckSchedule(isScheduled) {
   } else if (isScheduled && !$("#isEnable").is(':checked')) {
     return 'programmed'
   }
+}
+
+function selectAllImages(source) {
+  let checkboxes = document.getElementsByName('ws_image');
+
+  for (let i = 0, n = checkboxes.length; i < n ; i++)
+    checkboxes[i].checked = source.checked;
+}
+
+function selectAllVideos(source) {
+  let checkboxes = document.getElementsByName('ws_video');
+
+  for (let i = 0, n = checkboxes.length; i < n ; i++)
+    checkboxes[i].checked = source.checked;
+}
+
+function getAllImageCheckboxes() {
+  return Array.from(document.getElementsByName('ws_image'));
+}
+
+function getAllVideoCheckboxes() {
+  return Array.from(document.getElementsByName('ws_video'));
+}
+
+function getAllImagesCheckboxes() {
+  let checkboxes = getAllImageCheckboxes();
+  let selectAll = document.getElementById('image_select_all');
+  let checkList = [];
+
+  selectAll.addEventListener('change', () => {
+    if ($('#image_select_all').is(':checked')) {
+      checkboxes.map(item => {
+        checkList.push(item.id);
+      });
+    } else {
+      checkList = [];
+    }
+  });
+
+  checkboxes.map(item => {
+    item.addEventListener('change', () => {
+      if (checkList.includes(item.id)) 
+        checkList = checkList.filter(ws => ws !== item.id);
+      else 
+        checkList.push(item.id);
+
+      if (checkList.length == checkboxes.length)
+        document.getElementById('image_select_all').checked = true;
+      else
+        document.getElementById('image_select_all').checked = false;
+    });
+  });
+}
+
+function getAllVideosCheckboxes() {
+  let checkboxes = getAllVideoCheckboxes();
+  let selectAll = document.getElementById('video_select_all');
+  let checkList = [];
+
+  selectAll.addEventListener('change', () => {
+    if ($('#video_select_all').is(':checked')) {
+      checkboxes.map(item => {
+        checkList.push(item.id);
+      });
+    } else {
+      checkList = [];
+    }
+  });
+
+  checkboxes.map(item => {
+    item.addEventListener('change', () => {
+      if (checkList.includes(item.id)) 
+        checkList = checkList.filter(id => { return id != item.id; });
+      else 
+        checkList.push(item.id);
+
+      if (checkList.length == checkboxes.length)
+        document.getElementById('video_select_all').checked = true;
+      else 
+        document.getElementById('video_select_all').checked = false;
+    });
+  });
+}
+
+function getCheckedImages() {
+  const images = getAllImageCheckboxes();
+  let finalArray = [];
+
+  images.map(image => {
+    if ($('#' + image.id).is(':checked'))
+      finalArray.push(image.id.replace('image_', ''));
+  });
+
+  return finalArray;
+}
+
+function getCheckedVideos() {
+  const videos = getAllVideoCheckboxes();
+  let finalArray = [];
+
+  videos.map(video => {
+    if ($('#' + video.id).is(':checked'))
+      finalArray.push(video.id.replace('video_', ''));
+  });
+
+  return finalArray;
 }

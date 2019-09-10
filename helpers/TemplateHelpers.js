@@ -72,6 +72,18 @@ module.exports = {
               <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit this video" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
               <a class="deleteVideo" title="Delete this video" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
             </td>
+            <td>
+              <div class="page">
+                <div class="page__toggle">
+                  <label class="toggle">
+                    <input id="video_${video.id}" name="ws_video" class="toggle__input" type="checkbox">
+                    <span class="toggle__label">
+                      <span class="toggle__text"></span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </td>
           </tr>
         `
       } else if (!isAdmin) {
@@ -84,6 +96,18 @@ module.exports = {
               <td>
                 <a href="/edit_welcome_screen_video/${video.id}" class="edit" title="Edit this video" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                 <a class="deleteVideo" title="Delete this video" data-toggle="tooltip" onclick="DeleteVideo('${video.id}');"><i class="material-icons delete-icon">&#xE872;</i></a>
+              </td>
+              <td>
+                <div class="page">
+                  <div class="page__toggle">
+                    <label class="toggle">
+                      <input id="video_${video.id}" name="ws_video" class="toggle__input" type="checkbox">
+                      <span class="toggle__label">
+                        <span class="toggle__text"></span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </td>
             </tr>
           ` 
