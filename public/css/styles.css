@@ -28,6 +28,10 @@ ul {
   list-style-type: none;
 }
 
+input[type="file"]:hover {
+  cursor: pointer;
+}
+
 input[type="submit"]:disabled {
   background-color: #EE9658;
 }

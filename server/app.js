@@ -11,6 +11,7 @@ const GlobalHelpers = require('../helpers/GlobalHelpers');
 const HBSHelpers = require('../helpers/HBSHelpers');
 const ImageHelper = require('../helpers/ImageHelper');
 const VideoHelper = require('../helpers/VideoHelper');
+const fs = require("fs");
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
@@ -540,7 +541,25 @@ app.delete('/api/delete_selected_videos/:videosToDelete', (req, res) => {
 
 app.put('/api/disable_selected_videos/:videosToDisable', (req, res) => {
   VideoHelper.DisableManyWSVideos(req, res);
-})
+});
+
+app.get('/guia_do_usuario', (req, res) => {
+  let pdf = "./user_guides/pdf/User_Guide_PT.pdf";
+
+  fs.readFile(pdf, (err, data) => {
+    res.contentType("application/pdf");
+    res.send(data);
+  });
+});
+
+app.get('/user_guide', (req, res) => {
+  let pdf = "./user_guides/pdf/User_Guide_EN.pdf";
+
+  fs.readFile(pdf, (err, data) => {
+    res.contentType("application/pdf");
+    res.send(data);
+  });
+});
 /* #endregion */
 
 /* #region PORT listener */
