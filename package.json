@@ -1,6 +1,6 @@
 {
   "name": "welcomescreencinq",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Welcome screen manager for Cinq's kiosk.",
   "main": "index.js",
   "dependencies": {
