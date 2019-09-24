@@ -12,6 +12,7 @@ const HBSHelpers = require('../helpers/HBSHelpers');
 const ImageHelper = require('../helpers/ImageHelper');
 const VideoHelper = require('../helpers/VideoHelper');
 const fs = require("fs");
+const favicon = require('serve-favicon');
 const {ScreenImage} = require('./models/screen_image');
 const {ScreenVideo} = require('./models/screen_video');
 const {User} = require('./models/user');
@@ -79,6 +80,7 @@ app.use('/slick', express.static(__dirname + './../public/slick'));
 app.use('/images', express.static(__dirname + './../public/images'));
 app.use('/icons', express.static(__dirname + './../public/icons'));
 app.use('/uploads', express.static(__dirname + './../uploads'));
+app.use(favicon(__dirname + './../public/icons/icon.ico'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 /* #endregion */

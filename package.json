@@ -15,6 +15,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.5.1",
     "multer": "^1.4.1",
+    "serve-favicon": "^2.5.0",
     "slick-carousel": "^1.8.1",
     "socket.io": "^2.2.0",
     "sweetalert2": "^8.13.0"
