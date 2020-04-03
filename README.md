@@ -1,4 +1,4 @@
-# Welcome Screen Cinq
+# Welcome Screen Cinq 1.0
 
 Welcome screen manager for Cinq's kiosk.
 
